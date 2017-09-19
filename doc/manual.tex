@@ -1,0 +1,369 @@
+\documentclass[floatfix,aps,prd,nofootinbib,superscriptaddress,preprint]{revtex4}
+
+\pdfoutput=1
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{slashed}
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks=true,linkcolor=blue,bookmarksopen,bookmarksnumbered]{hyperref}
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{soul}
+\usepackage{units}
+\usepackage{rotating}
+\usepackage{hhline,multirow,tabularx}
+\usepackage{bm}
+
+% math macros 
+\newcommand{\T}[1]{\boldsymbol{#1}_{\text{T}}}
+\newcommand{\kT}{\ensuremath{k_{\rm T}}}
+\newcommand{\ktmax}{\ensuremath{k_{\rm T max}}}
+\newcommand{\ktmaxsq}{\ensuremath{k_{\rm T max}^2}}
+\newcommand\3[1]{\boldsymbol{#1}}
+\newcommand{\Tsc}[2]{#1_{#2\text{T}}}
+\newcommand{\Tscsq}[2]{#1^2_{#2\text{T}}}
+\newcommand{\no}{\nonumber \\}
+\newcommand{\parz}[1]{\ensuremath{\left(#1\right)}}
+\newcommand{\order}[1]{\ensuremath{O\parz{#1}}}
+\newcommand{\mhad}{\ensuremath{M}}
+\newcommand{\alfa}{\ensuremath{\alpha}}
+\newcommand{\xbj}{\ensuremath{x_{\rm bj}}}
+\newcommand{\xn}{\ensuremath{x_{\rm n}}}
+\newcommand{\mquark}{\ensuremath{m_{q}}}
+\newcommand{\mgluon}{\ensuremath{m_{s}}}
+\newcommand{\spectator}{\ensuremath{p_s}}
+\newcommand{\jet}{\ensuremath{p_q}}
+\newcommand{\pdfblob}{{\ensuremath{\mathcal F}}}
+\newcommand{\ffblob}{{\ensuremath{\mathcal J}}}
+\newcommand{\prop}{{[ \ensuremath{\rm Prop} ]}}
+\newcommand{\num}{{\ensuremath{\rm T}}}
+\newcommand{\jac}[1]{{\ensuremath{[ {\rm Jac_{#1}} ] }}}
+\newcommand{\arrowcom}[1]{\textcolor{red}{\textbf{$\Longrightarrow$ #1}} \\}
+\newcommand{\arrowcomtwo}[1]{\textcolor{blue}{ \textbf{$\Longrightarrow$ #1}} \\}
+\newcommand{\arrowcomthree}[1]{\textcolor{magenta}{ \textbf{$\Longrightarrow$ #1}} \\}
+\newcommand{\diff}[1]{\mathrm{d}#1}
+\newcommand{\moderate}{{\color{red}low}}
+
+\newcommand{\vect}[1]{\ensuremath{{\bm{#1}}}}
+\newcommand{\bfkperp}{{\bf k}_\perp} 
+\newcommand{\bfpperp}{{\bf P}_\perp} 
+\newcommand{\bfhp}{\hat{\bf h}} 
+\newcommand{\bfPhperp}{{\bf P}_{hT}}
+\newcommand{\Phperp}{P_{hT}}
+\newcommand{\kperp}{k_\perp}
+\newcommand{\pperp}{P_\perp}
+\newcommand{\avkperp}{\la \kperp^2 \ra}
+\newcommand{\avpperp}{\la \pperp^2 \ra}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+
+
+% ref macros
+\newcommand{\eref}[1]{Eq.~(\ref{e.#1})}
+\newcommand{\erefs}[2]{Eqs.~(\ref{e.#1})--(\ref{e.#2})}
+\newcommand{\fref}[1]{Fig.~\ref{f.#1}}
+\newcommand{\frefs}[2]{Figs.~\ref{f.#1}--\ref{f.#2}}
+\newcommand{\aref}[1]{Appendix~\ref{a.#1}}
+\newcommand{\sref}[1]{Sec.~\ref{s.#1}}
+\newcommand{\ssref}[1]{Section~\ref{ss.#1}}
+\newcommand{\sssref}[1]{Section~\ref{sss.#1}}
+\newcommand{\tref}[1]{Table~\ref{t.#1}}
+
+
+
+
+
+
+
+
+\begin{document}\title{Extraction and Validation Framework (EVA)}
+{\color{red} TODO: update authors and affiliations}
+\author{A.~Prokudin}
+\author{D.~Riser}
+\author{N.~Sato}
+\author{K.~Tezgin}
+\email{nsato@jlab.org}
+\email{kemal.tezgin@uconn.edu}
+\email{david.riser@uconn.edu}
+\affiliation{University of Conneticut}
+
+\maketitle
+
+\newpage
+
+\newcommand{\avp}{\ensuremath{\la P_{\perp}^2\ra_q}}
+\newcommand{\avk}{\ensuremath{\la k_{\perp}^2\ra_q}}
+
+\newcommand{\pdf}{{\color{blue} \ensuremath{f_1^q}}}
+\newcommand{\ff}{{\color{red} \ensuremath{D_1^{q}}}}
+\newcommand{\ppdf}{{\color{Emerald} \ensuremath{g_1^q}}}
+\newcommand{\transversity}{{\color{gray} \ensuremath{h_1^q}}}
+\newcommand{\sivers}{{\color{brown} \ensuremath{f^{\perp(1)q}_{1T}}}}
+\newcommand{\boermulders}{{\color{purple} \ensuremath{h^{\perp(1)q}_1 }}}
+\newcommand{\pretzelosity}{{\color{violet} \ensuremath{h^{\perp(1)q}_{1T} }}}
+\newcommand{\collins}{{\color{orange} \ensuremath{H^{\perp(1)q}_{1} }}}
+\newcommand{\gww}{{\color{magenta} \ensuremath{g^{\perp q}_{1T}}}}
+\newcommand{\hww}{{\color{cyan}\ensuremath{h^{\perp q}_{1L}}}}
+
+\newcommand{\wpdf}{0.57}
+\newcommand{\wff}{0.12}
+\newcommand{\wppdf}{0.19}
+\newcommand{\wtransversity}{0.25}
+\newcommand{\wsivers}{0.143}
+\newcommand{\wboermulders}{0.085}
+\newcommand{\wpretzelosity}{0.137}
+\newcommand{\wcollins}{0.11}
+\newcommand{\wgww}{0.19}
+\newcommand{\whww}{0.25}
+
+
+\section{SIDIS setup}
+
+The differential cross section is given by 
+
+\begin{align}
+\frac{d\sigma}{dx ~ dy ~ d\Psi ~ dz ~ d\phi_h ~ d\Phperp^2} = 
+\frac{\alpha^2}{xyQ^2}\frac{y^2}{2(1-\varepsilon)}\left(1+\frac{\gamma^2}{2x} \right) 
+\sum_{i=1}^{18} F_i(x,z,Q^2,\Phperp^2) \beta_i 
+\end{align}
+
+\begin{table}[h!]
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$F_i$    & Standard label                    & $\beta_i$\\\hline
+$F_1$    & $F_{UU,T}$                        & 1\\\hline
+$F_2$    & $F_{UU,L}$                        & $\varepsilon$\\\hline
+$F_3$    & $F_{UU}^{\cos \phi_h}$            & $\sqrt{2\varepsilon (1+\varepsilon)} ~ \cos\phi_h$\\\hline
+$F_4$    & $F_{UU}^{\cos 2\phi_h}$           & $\varepsilon ~ \cos(2\phi_h)$\\\hline
+$F_5$    & $F_{LU}^{\sin\phi_h}$             & $\lambda_e\sqrt{2\varepsilon (1-\varepsilon)} \sin\phi_h $\\\hline
+$F_6$    & $F_{UL}^{\sin\phi_h}$             & $S_{||}\sqrt{2\varepsilon (1+\varepsilon)}\sin\phi_h$\\\hline
+$F_7$    & $F_{UL}^{\sin ~ 2\phi_h}$         & $S_{||}\varepsilon \sin(2\phi_h)$\\\hline
+$F_8$    & $F_{LL}$                          & $S_{||} \lambda_e \sqrt{1-\varepsilon^2}$\\\hline
+$F_9$    & $F_{LL}^{\cos\phi_h}$             & $S_{||} \lambda_e  \sqrt{2\varepsilon(1-\varepsilon)} \cos\phi_h$\\\hline
+$F_{10}$ & $F_{UT,T}^{\sin(\phi_h-\phi_S)}$  & $|\vec{S}_\perp|\sin(\phi_h-\phi_S)$\\\hline
+$F_{11}$ & $F_{UT,L}^{\sin(\phi_h-\phi_S)}$  & $|\vec{S}_\perp|\varepsilon\sin(\phi_h-\phi_S)$\\\hline
+$F_{12}$ & $F_{UT}^{\sin(\phi_h+\phi_S)}$    & $|\vec{S}_\perp|\varepsilon\sin(\phi_h+\phi_S)$\\\hline
+$F_{13}$ & $F_{UT}^{\sin(3\phi_h - \psi_S)}$ & $|\vec{S}_\perp| \varepsilon \sin(3\phi_h - \phi_S)$\\\hline
+$F_{14}$ & $F_{UT}^{\sin\phi_S}$             & $|\vec{S}_\perp| \sqrt{2\varepsilon (1+\varepsilon)}\sin\phi_S$\\\hline
+$F_{15}$ & $F_{UT}^{\sin(2\phi_h-\phi_S)}$   & $|\vec{S}_\perp| \sqrt{2\varepsilon (1+\varepsilon)}\sin(2\phi_h-\phi_S)$\\\hline
+$F_{16}$ & $F_{LT}^{\cos(\phi_h-\phi_S)}$    & $|\vec{S}_\perp|\lambda_e \sqrt{1-\varepsilon^2}\cos(\phi_h-\phi_S)$\\\hline
+$F_{17}$ & $F_{LT}^{ \cos\phi_S}$            & $|\vec{S}_\perp|\lambda_e \sqrt{2\varepsilon(1-\varepsilon)} \cos\phi_S$\\\hline
+$F_{18}$ & $F_{LT}^{\cos(2\phi_h-\phi_S)}$   & $|\vec{S}_\perp|\lambda_e \sqrt{2\varepsilon(1-\varepsilon)} \cos(2\phi_h-\phi_S)$\\\hline
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+\item {\color{red} TODO: what is $\Psi$?}
+\item {\color{red} TODO: explicit expression for $|S_{\perp}|$}
+\item {\color{red} TODO: explicit expression for $\varepsilon$}
+\end{itemize}
+
+The 18 structure function in SIDIS at leading-order will be expressed
+in the context of WW-type approximation in terms of a ``minimal''
+TMD basis using the gaussian ansatz:
+%
+\begin{align}
+{\cal F}_q(\xi,p_{\perp})&={\cal K}_q ~ {\cal C}_q(\xi) \frac{\exp\left(-k_{\perp}^2/\omega_q\right)}{\pi \omega_q}\\
+{\cal D}_q(\xi,p_{\perp})&={\cal K}_q ~ {\cal C}_q(\xi) \frac{\exp\left(-P_{\perp}^2/\omega_q\right)}{\pi \omega_q}.
+\end{align}
+%
+We denote the transverse momentum of the quark inside a fast moving
+proton by $\bfkperp$. We use the notation $\bfpperp$ for the
+transverse momentum of the quark relative to the original parton
+motion. The structure functions are expressed as
+%
+\begin{align}
+F&=\sum_q e_q^2 ~ {\cal K}_q ~ {\cal F}_q(x) ~{\cal D}_q(z) \frac{\exp\left(-\Phperp^2/\Omega_q\right)}{\pi \Omega_q}\\
+\Omega_q&=z^2\avk + \avp
+\end{align}
+
+%
+
+\begin{table}[h!]
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+type       & Name         & ${\cal K}_q$                  & ${\cal C}_q$    \\\hline
+${\cal F}_q$ & upol. PDF    & $1$                           & $\pdf$          \\\hline
+${\cal F}_q$ & pol. PDF     & $1$                           & $\ppdf$         \\\hline
+${\cal F}_q$ & Transversity & $1$                           & $\transversity$ \\\hline
+${\cal F}_q$ & Sivers       & $\frac{2M^2}{\omega_q}$       & $\sivers$       \\\hline
+${\cal F}_q$ & Boer-Mulders & $\frac{2M^2}{\omega_q}$       & $\boermulders$  \\\hline
+${\cal F}_q$ & Pretzelosity & $\frac{2M^2}{\omega_q}$       & $\pretzelosity$ \\\hline
+${\cal F}_q$ & Worm Gear    & $1$                           & $\gww$          \\\hline
+${\cal F}_q$ & Worm Gear    & $1$                           & $\hww$          \\\hline
+\hline
+${\cal C}_q$ & FF           & $1$                           & $\ff$           \\\hline
+${\cal C}_q$ & Collins      & $\frac{2z^2 m_h^2}{\omega_q}$ & $\collins$      \\\hline
+\end{tabular}
+\caption{The minimal basis}
+\label{t.mbasis}
+\end{table}
+
+
+\begin{table}[h!]
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+         &                                     & ${\cal{K}}_q$                                                                               & ${\cal F}_q(x)$ & ${\cal D}_q(z)$ \\\hline
+$F_1$    & $F_{UU,T}$                          & $x$                                                                                         & $\pdf$          & $\ff $          \\\hline
+$F_2$    & $F_{UU,L}$                          & $0$                                                                                         &                 & \\\hline
+$F_3$    & $F_{LL}$                            & $x$                                                                                         & $\ppdf$         & $\ff$           \\\hline
+$F_4$    & $F_{UT}^{\sin(\phi_h+\phi_S)}$      & $\frac{2 x z \Phperp  m_h}{w_q}$                                                            & $\transversity$ & $\collins$      \\\hline
+$F_5$    & $F_{UT,T}^{\sin(\phi_h-\phi_S)}$    & $-\frac{2xzM \Phperp}{w_q}$                                                                 & $\sivers$       & $\ff$           \\\hline
+$F_6$    & $F_{UT,L}^{\sin(\phi_h-\phi_S)}$    & $0$                                                                                         &                 & \\\hline
+$F_7$    & $F_{UU}^{\cos(2\phi_h)}$            & $\frac{4 x z^2 M \Phperp^2 m_h}{w_q^2} $                                                    & $\boermulders$  & $\collins $     \\\hline
+$F_8$    & $F_{UT}^{\sin(3\phi_h-\phi_S)}$     & $\frac{2 x z^3 \Phperp^3 m_h \avk}{w_q^3} $                                                 & $\pretzelosity$ & $\collins $     \\\hline
+$F_9$    & $F_{LT}^{\cos(\phi_h -\phi_S)}$     & $ \frac{2xzM\Phperp}{w_q} $                                                                 & $\gww$          & $\ff$           \\\hline
+$F_{10}$ & $F_{UL}^{\sin(2\phi_h)}$            & $ \frac{4 xz^2M \Phperp^2 m_h}{w_q^2} $                                                     & $\hww$          & $\collins $     \\\hline
+$F_{11}$ & $F_{LT}^{\cos\phi_S}$               & $-\frac{2M}{Q} x\frac{z^2\avk \left[\Phperp^2+ \avp\right] + \avpperp^2}{ w_q^2}$           & $\gww$          & $\ff$           \\\hline
+$F_{12}$ & $F_{LL}^{\cos\phi_h}$               & $-\frac{2xz\Phperp}{Q}\frac{\avk}{w_q}$                                                     & $\ppdf$         & $\ff$           \\\hline
+$F_{13}$ & $F_{LT}^{\cos(2\phi_h -\phi_S)}$    & $-\frac{2 x z^2 M \Phperp^2}{Q}\frac{\avk}{w_q^2}$                                          & $\gww$          & $\ff$           \\\hline
+$F_{14}$ & $F_{UL}^{\sin\phi_h}$               & $-\frac{8M^3}{Q} x \frac{z^2\avk (\Phperp^2-z^2\avk)+\avp^2}{w_q^3}$                        & $\hww$          & $\collins$      \\\hline
+$F_{15}$ & $F_{LU}^{\sin\phi_h}$               & $0$                                                                                         &                 & \\\hline
+$F_{16}$ & $F_{UU}^{\cos\phi_h}(i)$            & $-\frac{2M}{Q} x \frac{ 4 M^2 \left[\avp^2+z^2 \avk (\Phperp^2  -z^2\avk ) \right]}{w_q^3}$ & $\boermulders$  & $\collins$      \\\hline
+$F_{16}$ & $F_{UU}^{\cos\phi_h}(ii)$           & $-\frac{2M}{Q} x\frac{\avk}{w_q}$                                                           & $\pdf$          & $\ff $          \\\hline
+$F_{17}$ & $F_{UT}^{\sin\phi_S}(i)$            & $-\frac{2M}{Q} x \frac{z^2\avk \left(\Phperp^2+\avp\right) + \avp^2}{w_q^2}$                & $\sivers$       & $\ff$           \\\hline
+$F_{17}$ & $F_{UT}^{\sin\phi_S}(ii)$           & $\frac{4 x z^2 m_h}{Q}\frac{\avk\left(-\Phperp^2+w_q\right)}{w_q^2} $                       & $\transversity$ & $\collins$      \\\hline
+$F_{18}$ & $F_{UT}^{\sin(2\phi_h-\phi_S)}(i)$  & $-\frac{2M^2}{Q} x \frac{\avk M}{w_q^2} $                                                   & $\sivers$       & $\ff$           \\\hline
+$F_{18}$ & $F_{UT}^{\sin(2\phi_h-\phi_S)}(ii)$ & $-\frac{2M^2}{Q} x \frac{4z^2 \Phperp^2 m_h}{w_q^2}$                                        & $\pretzelosity$ & $\collins$      \\\hline
+\end{tabular}
+\caption{SIDIS structure functions up to twist 3}
+\label{t.chi2}
+\end{table}
+
+
+
+%with the following parametrizations 
+%
+%\begin{align}
+%  \transversity &= \frac{1}{2} ~ N_q(x) \left[ \pdf + \ppdf \right] \nonumber \\
+%  \sivers &= -\sqrt{\frac{e}{2}} ~ N_q(x) \frac{1}{M ~ M_S} \frac{\Omega_5^2}{\Omega_1} \pdf \nonumber \\
+%  \boermulders &= -\sqrt{\frac{e}{2}} ~ N_q(x) \frac{1}{M ~ M_{BM}} \frac{\Omega_6^2}{\Omega_1} \pdf \nonumber \\
+%  \pretzelosity &= e ~ N_q(x) \frac{1}{M_P^2} \frac{\Omega_7^2}{\Omega_1} \left[ \pdf - \ppdf \right] \nonumber \\
+%  \collins &= \sqrt{\frac{e}{2}} ~ N_q(x) \frac{M_C^3}{z ~ m_h} \frac{\Omega_8}{(M_C^2 + \Omega_8)^2} \ff \nonumber \\ 
+%  \gww &= x\int_x^1 \frac{dy}{y}\ppdf(y) \nonumber \\
+%  \hww &= x\int_x^1 \frac{dy}{y}\transversity(y)
+%\end{align}
+%where the PDFs $\pdf$,$\ppdf$,$\ff$ are experimentally accessible and are obtained from CJ15, LSS and DSS libraries respectively. The $WW$-type approximations are used to obtain the  PDFs $\gww$ and $\hww$.  
+
+
+\newpage
+\section{SIA setup}
+
+{\color{red} TODO: add table of SIA structure functions}
+
+\newpage
+\section{Tutorial}
+{\color{red} TODO: Add more details }
+
+Here is a general workflow
+
+\begin{itemize}
+\item Identify which parameters are needed to be fitted for a given set of TMDs
+\item Identify available observables to extract the TMDs 
+\item Create xlsx files for each data sets (see the database repo)
+\item Create and input file (see i.e. fitlab/inputs/upol.py). Here you will specify 
+      which data sets are going to be used
+\item Test in a single fit (fitter.py) that a reasonable $\chi^2$ is obtained 
+\item Once the test fit is ready, proceed to run a multinest which is an nested sampling algorithm 
+      to map out the likelihood function. In the input file you must specify the output.
+      Look for the line "output dir " in the input file. It is recommended to store the results in the 
+      repo analysis. 
+\item Once the multinest finishes it produces a nestout file at the path that was specified. 
+      Use one of the jupyter templates to proceed to analyze the output. You need to place the notebook 
+      at the root of analysis. Otherwise the paths wont match.  
+\end{itemize}
+
+If you want to run the codes but you want to modify things here and there, 
+create a new workspace via pacman/gen-fitpack, and cd to fitpack. The latter 
+has an exact copy of all the repos, and you can do with that whatever you want. 
+Once you see that some of your modifications should be placed in the actual
+repositories, proceed to do it.
+
+\newpage
+\section{Unpolarized TMDS}
+
+\begin{itemize}
+\item {\color{red} TODO: table of data sets with the following columns: exp, observable, num points, chi2 }
+\item {\color{red} TODO: what TMDS are going to be fitted? what is the parametrization}
+\item {\color{red} TODO: distribution of the parameters}
+\item {\color{red} TODO: chi2 distributions for each data sets}
+\item {\color{red} TODO: plot the x or z dependece}
+\item {\color{red} TODO: plot the $k_{\perp}$ or $P_{\perp}$ dependece}
+\end{itemize}
+
+\newpage
+\section{Sivers}
+
+\begin{itemize}
+\item {\color{red} TODO: table of data sets with the following columns: exp, observable, num points, chi2 }
+\item {\color{red} TODO: what TMDS are going to be fitted? what is the parametrization}
+\item {\color{red} TODO: distribution of the parameters}
+\item {\color{red} TODO: chi2 distributions for each data sets}
+\item {\color{red} TODO: plot the x or z dependece}
+\item {\color{red} TODO: plot the $k_{\perp}$ or $P_{\perp}$ dependece}
+\end{itemize}
+
+\newpage
+\section{Collins function from $e^+e^-$}
+
+\begin{itemize}
+\item {\color{red} TODO: table of data sets with the following columns: exp, observable, num points, chi2 }
+\item {\color{red} TODO: what TMDS are going to be fitted? what is the parametrization}
+\item {\color{red} TODO: distribution of the parameters}
+\item {\color{red} TODO: chi2 distributions for each data sets}
+\item {\color{red} TODO: plot the x or z dependece}
+\item {\color{red} TODO: plot the $k_{\perp}$ or $P_{\perp}$ dependece}
+\end{itemize}
+
+\newpage
+\section{transversity}
+
+\begin{itemize}
+\item {\color{red} TODO: table of data sets with the following columns: exp, observable, num points, chi2 }
+\item {\color{red} TODO: what TMDS are going to be fitted? what is the parametrization}
+\item {\color{red} TODO: distribution of the parameters}
+\item {\color{red} TODO: chi2 distributions for each data sets}
+\item {\color{red} TODO: plot the x or z dependece}
+\item {\color{red} TODO: plot the $k_{\perp}$ or $P_{\perp}$ dependece}
+\end{itemize}
+
+\newpage
+\section{Boer-Mulders}
+
+\begin{itemize}
+\item {\color{red} TODO: table of data sets with the following columns: exp, observable, num points, chi2 }
+\item {\color{red} TODO: what TMDS are going to be fitted? what is the parametrization}
+\item {\color{red} TODO: distribution of the parameters}
+\item {\color{red} TODO: chi2 distributions for each data sets}
+\item {\color{red} TODO: plot the x or z dependece}
+\item {\color{red} TODO: plot the $k_{\perp}$ or $P_{\perp}$ dependece}
+\end{itemize}
+
+\newpage
+\section{pretzelosity}
+
+\begin{itemize}
+\item {\color{red} TODO: table of data sets with the following columns: exp, observable, num points, chi2 }
+\item {\color{red} TODO: what TMDS are going to be fitted? what is the parametrization}
+\item {\color{red} TODO: distribution of the parameters}
+\item {\color{red} TODO: chi2 distributions for each data sets}
+\item {\color{red} TODO: plot the x or z dependece}
+\item {\color{red} TODO: plot the $k_{\perp}$ or $P_{\perp}$ dependece}
+\end{itemize}
+
+\newpage
+\section{worm-gear}
+
+\begin{itemize}
+\item {\color{red} TODO: table of data sets with the following columns: exp, observable, num points, chi2 }
+\item {\color{red} TODO: what TMDS are going to be fitted? what is the parametrization}
+\item {\color{red} TODO: distribution of the parameters}
+\item {\color{red} TODO: chi2 distributions for each data sets}
+\item {\color{red} TODO: plot the x or z dependece}
+\item {\color{red} TODO: plot the $k_{\perp}$ or $P_{\perp}$ dependece}
+\end{itemize}
+
+\end{document}

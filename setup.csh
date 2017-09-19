@@ -1,0 +1,2 @@
+setenv PYTHONPATH `pwd`
+
