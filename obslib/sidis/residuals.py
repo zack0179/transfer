@@ -136,7 +136,7 @@ class RESIDUALS(_RESIDUALS):
             + self.stfuncs.get_FX(1, x, z, Q2, mu2, pT, 'n', hadron)
 
       epsilon = (1-y)/(1-y+0.5*y**2)
-      thy = (epsilon/2)*FUUcos2/FUU
+      thy = (epsilon)*FUUcos2/FUU
 
     else:
       print 'ERR: exp=%d obs=%s and target=%s not implemented'%(k,obs,target)
