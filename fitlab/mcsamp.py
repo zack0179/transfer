@@ -68,9 +68,9 @@ class MCSAMP:
     conf['par lims'] = self.get_par_lims()
     conf['method']='cov'
     conf['kappa']=1.0
-    conf['tol']=10e-10
-    conf['num points'] = 100#0
-    conf['sample size']= conf['num points']
+    conf['tol']=10e-3
+    conf['num points'] =self.npar*2#0
+    conf['sample size']= 10000#conf['num points']
     nest=NEST(conf).run()
     save(nest,'%s/nest%d'%(outputdir,self.conf['args'].runid))
 
