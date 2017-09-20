@@ -57,9 +57,12 @@ class ELLIPSE:
     F=kappa*np.amax([np.einsum('i,ij,j',y-y0,icov,y-y0) for y in samples])**0.5
         
     # generate the unit sphere
-    z=np.random.randn(N,self.dim)
+    #z=np.random.randn(N,self.dim)
+    #r=np.array([np.dot(z[i],z[i])**0.5 for i in range(N)])
+    #X=np.array([z[i]/r[i]*np.random.rand()**0.5 for i in range(N)])
+    z=np.random.randn(N,self.dim+2)
     r=np.array([np.dot(z[i],z[i])**0.5 for i in range(N)])
-    X=np.array([z[i]/r[i]*np.random.rand()**0.5 for i in range(N)])
+    X=np.array([z[i][:-2]/r[i] for i in range(N)])
 
     # generate sphere samples
     Y=np.einsum('ij,nj->ni',F*self.T,X) + y0
