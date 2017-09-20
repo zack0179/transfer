@@ -43,9 +43,10 @@ class ELLIPSE:
 
   def __init__(self,samples,kappa=1.1,N=None):
 
+    self.N=N    
     self.dim=len(samples[0])
     # generate transformation matrix
-    y0=np.mean(samples,axis=0)
+    self.y0=np.mean(samples,axis=0)
     cov=np.cov(np.transpose(samples))
     icov=np.linalg.inv(cov)
     w,v=np.linalg.eig(icov)
@@ -54,15 +55,18 @@ class ELLIPSE:
     self.T=np.transpose(v)
     
     # get enlargement factor
-    F=kappa*np.amax([np.einsum('i,ij,j',y-y0,icov,y-y0) for y in samples])**0.5
-        
+    self.F=kappa*np.amax([np.einsum('i,ij,j',y-self.y0,icov,y-self.y0) for y in samples])**0.5
+
+    self.gen_new_samples()
+
+  def gen_new_samples(self):
     # generate the unit sphere
-    z=np.random.randn(N,self.dim)
-    r=np.array([np.dot(z[i],z[i])**0.5 for i in range(N)])
-    X=np.array([z[i]/r[i]*np.random.rand()**(1.0/self.dim) for i in range(N)])
+    z=np.random.randn(self.N,self.dim)
+    r=np.array([np.dot(z[i],z[i])**0.5 for i in range(self.N)])
+    X=np.array([z[i]/r[i]*np.random.rand()**(1.0/self.dim) for i in range(self.N)])
 
     # generate sphere samples
-    Y=np.einsum('ij,nj->ni',F*self.T,X) + y0
+    Y=np.einsum('ij,nj->ni',self.F*self.T,X) + self.y0
     self.Y=[y for y in Y]
 
   def status(self):
@@ -94,8 +98,8 @@ class NEST:
     self.attempts=None
     self.set_active_sets(self.N)
     self.status='warming'
-    if conf['method']=='cov':
-      self.ellipse=ELLIPSE(self.active_p,conf['kappa'],conf['sample size'])
+    #if conf['method']=='cov':
+    #  self.ellipse=ELLIPSE(self.active_p,conf['kappa'],conf['sample size'])
 
   # param generators
   
@@ -160,11 +164,14 @@ class NEST:
 
   def gen_par_cov(self,nll):
     self.attempts=0
+    ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
     while 1:
       self.attempts+=1
-      if self.ellipse.status()==False:
-        self.ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
-      p=self.ellipse.get_sample()
+      if ellipse.status()==False:
+        #ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
+        #self.ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
+        ellipse.gen_new_samples()
+      p=ellipse.get_sample()
       if any([x<0 for x in p-self.pmin]): continue
       if any([x<0 for x in self.pmax-p]): continue    
       _nll = self.get_nll(p)
