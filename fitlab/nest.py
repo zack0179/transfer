@@ -183,9 +183,9 @@ class NEST:
   def gen_sample(self):
   
     # remove entry from active arrays
-    #imax=np.argmax(self.active_nll)
-    nll=self.active_nll.pop()
-    p=self.active_p.pop()
+    imax=np.argmax(self.active_nll)
+    nll=self.active_nll.pop(imax)
+    p=self.active_p.pop(imax)
 
     # update samples 
     self.samples_nll.append(nll)
@@ -219,9 +219,9 @@ class NEST:
       self.active_p.append(p)
       self.active_nll.append(nll)
       if cnt_active==N: break
-    I=np.argsort(self.active_nll)
-    self.active_nll=[self.active_nll[i] for i in I]
-    self.active_p=[self.active_p[i] for i in I]
+    #I=np.argsort(self.active_nll)
+    #self.active_nll=[self.active_nll[i] for i in I]
+    #self.active_p=[self.active_p[i] for i in I]
 
   def next(self,t_elapsed):
     self.gen_sample()
@@ -230,8 +230,8 @@ class NEST:
       z_past=np.exp(self.logz[-2])
       z_current=np.exp(self.logz[-1])
       rel = np.abs(1-z_past/z_current)
-      nllmax=self.active_nll[-1]
-      nllmin=self.active_nll[0]
+      nllmax=np.amax(self.active_nll)
+      nllmin=np.amin(self.active_nll)
       msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  nll_min=%.3e nll_max=%0.3e  attemps=%10d'
       msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,nllmin,nllmax,self.attempts)
       lprint(msg)
@@ -306,19 +306,19 @@ if __name__=='__main__':
   conf['nll'] = nll
   conf['par lims'] =[[-20,20],[-20,20]]
   conf['tol']=1e-4
-  for N in [100,200,300,400,500]:
+  for N in [100]:#,200,300,400,500]:
     conf['num points'] = N
     conf['sample size']= N
     print 'N=',N
     NEST(conf).run()
 
-  print 
-  print 'VEGAS:'
-  import vegas
-  integ = vegas.Integrator([[-20, 20], [-20, 20]])
-  result = integ(likelihood, nitn=10, neval=1000)
-  print result.summary() 
-  print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
+  #print 
+  #print 'VEGAS:'
+  #import vegas
+  #integ = vegas.Integrator([[-20, 20], [-20, 20]])
+  #result = integ(likelihood, nitn=10, neval=1000)
+  #print result.summary() 
+  #print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
 
 
 
