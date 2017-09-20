@@ -62,6 +62,8 @@ class MCSAMP:
     #sys.exit()
 
     conf={}
+    if self.conf['args'].file!='':
+      conf['nestout']=load(self.conf['args'].file)
     conf['nll'] = self.nll
     conf['par lims'] = self.get_par_lims()
     conf['method']='cov'

@@ -89,17 +89,27 @@ class NEST:
     self.N=conf['num points'] # number of active set
     self.factor=self.N/(self.N+1.) # factor to estimate prior mass
 
-    self.samples_p=[]
-    self.samples_x=[1]
-    self.samples_l=[0]
-    self.samples_nll=[]
-    self.logz=[]
-    self.cnt=0 # counter
-    self.attempts=None
-    self.set_active_sets(self.N)
-    self.status='warming'
-    #if conf['method']=='cov':
-    #  self.ellipse=ELLIPSE(self.active_p,conf['kappa'],conf['sample size'])
+    if 'nestout' not in conf:
+      self.samples_p=[]
+      self.samples_x=[1]
+      self.samples_l=[0]
+      self.samples_nll=[]
+      self.logz=[]
+      self.cnt=0 # counter
+      self.attempts=None
+      self.set_active_sets(self.N)
+    else:
+      self.active_p=conf['nestout']['active p']
+      self.active_nll=conf['nestout']['active nll']
+      self.samples_p=conf['nestout']['samples'][::-1]
+      self.samples_x=conf['nestout']['x'][::-1]
+      self.samples_l=conf['nestout']['l'][::-1]
+      self.samples_nll=[-np.log(l) for l in self.samples_l]
+      self.logz=conf['nestout']['logz']
+      self.cnt=len(self.samples_l) # counter
+      self.attempts=None
+
+    self.status='ready'
 
   # param generators
   
@@ -168,8 +178,6 @@ class NEST:
     while 1:
       self.attempts+=1
       if ellipse.status()==False:
-        #ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
-        #self.ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
         ellipse.gen_new_samples()
       p=ellipse.get_sample()
       if any([x<0 for x in p-self.pmin]): continue
@@ -214,14 +222,10 @@ class NEST:
       lprint('getting initial active p: %d/%d'%(cnt_active+1,N))
       p=self.gen_par()
       nll=self.get_nll(p)
-      #if np.exp(-nll)>0:
       cnt_active+=1
       self.active_p.append(p)
       self.active_nll.append(nll)
       if cnt_active==N: break
-    #I=np.argsort(self.active_nll)
-    #self.active_nll=[self.active_nll[i] for i in I]
-    #self.active_p=[self.active_p[i] for i in I]
 
   def next(self,t_elapsed):
     self.gen_sample()
@@ -259,7 +263,8 @@ class NEST:
     data['l']=self.samples_l[1:][::-1]
     data['logz']=self.logz
     data['weights']=weights[1:][::-1]
-
+    data['active p']=self.active_p
+    data['active nll']=self.active_nll
     return data
 
   def run(self):
