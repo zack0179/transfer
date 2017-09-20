@@ -130,7 +130,7 @@ if __name__=='__main__':
   ap.add_argument('-i','--runid',type=int,default=0,help=msg)
   #ap.add_argument('-o','--outdir',type=str,default='.',help="output directory (default: %(default)s)")
   #ap.add_argument('-x','--ignoresnap',action='store_true',help='do not load snapshot file')
-  #ap.add_argument('-f','--nestfile',type=str,default='.',help=" path to nest file")
+  ap.add_argument('-f','--file',type=str,default='',help=" path to nest file")
   #ap.add_argument('-q','--snapshot',type=str,default='.',help=" path to snapshot file")
   args = ap.parse_args()
   
