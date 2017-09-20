@@ -183,9 +183,9 @@ class NEST:
   def gen_sample(self):
   
     # remove entry from active arrays
-    imax=np.argmax(self.active_nll)
-    nll=self.active_nll.pop(imax)
-    p=self.active_p.pop(imax)
+    #imax=np.argmax(self.active_nll)
+    nll=self.active_nll.pop()
+    p=self.active_p.pop()
 
     # update samples 
     self.samples_nll.append(nll)
@@ -219,6 +219,9 @@ class NEST:
       self.active_p.append(p)
       self.active_nll.append(nll)
       if cnt_active==N: break
+    I=np.argsort(self.active_nll)
+    self.active_nll=[self.active_nll[i] for i in I]
+    self.active_p=[self.active_p[i] for i in I]
 
   def next(self,t_elapsed):
     self.gen_sample()
@@ -227,8 +230,10 @@ class NEST:
       z_past=np.exp(self.logz[-2])
       z_current=np.exp(self.logz[-1])
       rel = np.abs(1-z_past/z_current)
-      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  nll=%.3e  attemps=%10d'
-      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,self.samples_nll[-1],self.attempts)
+      nllmax=self.active_nll[-1]
+      nllmin=self.active_nll[0]
+      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  nll_min=%.3e nll_max=%0.3e  attemps=%10d'
+      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,nllmin,nllmax,self.attempts)
       lprint(msg)
       # stopping criterion
       if 'itmax' in self.conf and self.cnt==self.conf['itmax']: 
