@@ -41,7 +41,7 @@ def load_snapshot(name):
 
 class ELLIPSE:
 
-  def __init__(self,samples,kappa=1.1,N=None):
+  def __init__(self,samples,kappa=1.0,N=None):
 
     self.N=N    
     self.dim=len(samples[0])
@@ -62,8 +62,8 @@ class ELLIPSE:
   def gen_new_samples(self):
     # generate the unit sphere
     z=np.random.randn(self.N,self.dim)
-    r=np.array([np.dot(z[i],z[i])**0.5 for i in range(self.N)])
-    X=np.array([z[i]/r[i]*np.random.rand()**(1.0/self.dim) for i in range(self.N)])
+    #r=np.array([np.dot(z[i],z[i])**0.5 for i in range(self.N)])
+    #X=np.array([z[i]/r[i]*np.random.rand()**(1.0/self.dim) for i in range(self.N)])
 
     # generate sphere samples
     Y=np.einsum('ij,nj->ni',self.F*self.T,X) + self.y0
@@ -88,6 +88,8 @@ class NEST:
     self.jac=np.prod(self.dp)
     self.N=conf['num points'] # number of active set
     self.factor=self.N/(self.N+1.) # factor to estimate prior mass
+    self.V0=np.prod(self.dp)
+    self.Vk=self.V0
 
     if 'nestout' not in conf:
       self.samples_p=[]
@@ -117,14 +119,19 @@ class NEST:
     u=uniform(0,1,self.dim)
     return self.pmin + u*self.dp    
   
-  def gen_par_flat(self,nll):
+  def gen_par_flat(self,nll,verb=True):
     self.attempts=0
+    pmin=np.amin(self.active_p,axis=0)
+    pmax=np.amax(self.active_p,axis=0)
+    dp=pmax-pmin
+    self.Vk=np.prod(dp)
     while 1:
       self.attempts+=1
-      p=self.gen_par()
+      u=uniform(0,1,self.dim)
+      p=pmin + u*dp
       _nll = self.get_nll(p)
       if _nll<nll: break
-    return p,_nll
+    return p,_nll 
   
   def gen_par_kde(self,nll):
     kde=gaussian_kde(np.transpose(self.active_p),self.conf['kde bw'])
@@ -139,9 +146,9 @@ class NEST:
     return p,_nll
   
   def gen_par_hmc(self,par,nll):
-  
-    delta=self.conf['hmc delta']
-    steps=self.conf['hmc steps']
+    dim=len(par)  
+    delta=0.1#self.conf['hmc delta']
+    steps=30#self.conf['hmc steps']
   
     get_U=lambda q: self.get_nll(q)
     
@@ -159,31 +166,56 @@ class NEST:
     q0=np.copy(par)
     H0=get_H(q0,par)
     while 1:
+      print 'hmc attempt',self.attempts
       p0=randn(dim)
       p=np.copy(p0)
       q=np.copy(q0)
       p=p0-delta/2*get_dU(q0)
       q=q0+delta*p
       for i in range(steps):
+        print 'walking',i
         p=p-delta*get_dU(q)
         q=q+delta*get_dK(p)
       p=p-delta/2*get_dU(q)
-      _nll = get_nll(q)
+      _nll = self.get_nll(q)
       if _nll<nll: break
     return q,_nll
 
-  def gen_par_cov(self,nll):
+  def gen_par_cov(self,nll,p0=None,verb=True):
     self.attempts=0
     ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
+    pmin=np.amin(self.active_p,axis=0)
+    pmax=np.amax(self.active_p,axis=0)
+    dp=pmax-pmin
+    out=0
     while 1:
+
+      if verb: print 'cov attempt',self.attempts
       self.attempts+=1
-      if ellipse.status()==False:
-        ellipse.gen_new_samples()
-      p=ellipse.get_sample()
-      if any([x<0 for x in p-self.pmin]): continue
-      if any([x<0 for x in self.pmax-p]): continue    
+      if ellipse.status()==False: ellipse.gen_new_samples()
+
+      if out<1000:
+        p=ellipse.get_sample()
+      else:
+        u=uniform(0,1,self.dim)
+        p=pmin + u*dp
+
+      # check limits
+      flag=False
+      for i in range(p.size):
+        if p[i]<self.pmin[i]: 
+          flag=True
+          break
+        if p[i]>self.pmax[i]: 
+          flag=True
+          break
+      if flag: 
+        out+=1
+        continue
+
       _nll = self.get_nll(p)
       if _nll<nll: break
+
     return p,_nll
 
   # nested sampling routines
@@ -204,7 +236,7 @@ class NEST:
   
     # sample new parms
     if self.conf['method']=='flat': _p,_nll=self.gen_par_flat(nll)
-    if self.conf['method']=='cov':  _p,_nll=self.gen_par_cov(nll)
+    if self.conf['method']=='cov':  _p,_nll=self.gen_par_cov(nll,p)
     if self.conf['method']=='kde':  _p,_nll=self.gen_par_kde(nll)
     if self.conf['method']=='hmc':  _p,_nll=self.gen_par_hmc(p,nll)
   
@@ -236,8 +268,8 @@ class NEST:
       rel = np.abs(1-z_past/z_current)
       nllmax=np.amax(self.active_nll)
       nllmin=np.amin(self.active_nll)
-      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  nll_min=%.3e nll_max=%0.3e  attemps=%10d'
-      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,nllmin,nllmax,self.attempts)
+      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  nll_min=%.3e nll_max=%0.3e  attemps=%d  ' # Vk/V0=%0.3e'
+      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,nllmin,nllmax,self.attempts)#,self.Vk/self.V0)
       lprint(msg)
       # stopping criterion
       if 'itmax' in self.conf and self.cnt==self.conf['itmax']: 
