@@ -48,6 +48,7 @@ class ELLIPSE:
     # generate transformation matrix
     self.y0=np.mean(samples,axis=0)
     cov=np.cov(np.transpose(samples))
+    self.det=np.linalg.det(cov)
     icov=np.linalg.inv(cov)
     w,v=np.linalg.eig(icov)
     v=np.transpose(v)
@@ -188,14 +189,19 @@ class NEST:
     pmax=np.amax(self.active_p,axis=0)
     dp=pmax-pmin
     out=0
+    failed=False
+    if ellipse.det<=0: failed=False
     while 1:
 
       if verb: print 'cov attempt',self.attempts
       self.attempts+=1
       if ellipse.status()==False: ellipse.gen_new_samples()
 
-      if out<1000:
-        p=ellipse.get_sample()
+      if out<1000 and failed==False:
+        p=ellipse.get_sample().real
+        if any(np.isnan(p))==True:
+          failed=True
+          continue
       else:
         u=uniform(0,1,self.dim)
         p=pmin + u*dp
@@ -352,7 +358,6 @@ def example1():
   #conf['kde bw']=None
 
   NEST(conf).run()
-
 
 def example2():
 
