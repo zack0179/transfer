@@ -12,6 +12,7 @@ import zlib
 import warnings
 warnings.filterwarnings('ignore')
 from timeit import default_timer as timer
+from numpy import linalg as la
 
 # aux funcs
 
@@ -39,6 +40,111 @@ def load_snapshot(name):
   data=pickle.loads(open(name,"rb").read())
   self.__dict__.update(data.__dict__)
 
+
+def _getAplus(A):
+  eigval, eigvec = np.linalg.eig(A)
+  Q = np.matrix(eigvec)
+  xdiag = np.matrix(np.diag(np.maximum(eigval, 0)))
+  return Q*xdiag*Q.T
+
+def _getPs(A, W=None):
+  W05 = np.matrix(W**.5)
+  return  W05.I * _getAplus(W05 * A * W05) * W05.I
+
+def _getPu(A, W=None):
+  Aret = np.array(A.copy())
+  Aret[W > 0] = np.array(W)[W > 0]
+  return np.matrix(Aret)
+
+def nearPD(A, nit=10):
+  n = A.shape[0]
+  W = np.identity(n) 
+  # W is the matrix used for the norm (assumed to be Identity matrix here)
+  # the algorithm should work for any diagonal W
+  deltaS = 0
+  Yk = A.copy()
+  for k in range(nit):
+      Rk = Yk - deltaS
+      Xk = _getPs(Rk, W=W)
+      deltaS = Xk - Rk
+      Yk = _getPu(Xk, W=W)
+  return Yk
+
+def nearPSD(A,epsilon=0):
+   n = A.shape[0]
+   eigval, eigvec = np.linalg.eig(A)
+   val = np.matrix(np.maximum(eigval,epsilon))
+   vec = np.matrix(eigvec)
+   T = 1/(np.multiply(vec,vec) * val.T)
+   T = np.matrix(np.sqrt(np.diag(np.array(T).reshape((n)) )))
+   B = T * vec * np.diag(np.array(np.sqrt(val)).reshape((n)))
+   out = B*B.T
+   return(out)
+
+## need to fix this!!!!
+
+
+def nearestPD(A):
+    """Find the nearest positive-definite matrix to input
+
+    A Python/Numpy port of John D'Errico's `nearestSPD` MATLAB code [1], which
+    credits [2].
+
+    [1] https://www.mathworks.com/matlabcentral/fileexchange/42885-nearestspd
+
+    [2] N.J. Higham, "Computing a nearest symmetric positive semidefinite
+    matrix" (1988): https://doi.org/10.1016/0024-3795(88)90223-6
+    """
+
+    B = (A + A.T) / 2
+    _, s, V = la.svd(B)
+
+    H = np.dot(V.T, np.dot(np.diag(s), V))
+
+    A2 = (B + H) / 2
+
+    A3 = (A2 + A2.T) / 2
+
+    if isPD(A3):
+        return A3
+
+    spacing = np.spacing(la.norm(A))
+    # The above is different from [1]. It appears that MATLAB's `chol` Cholesky
+    # decomposition will accept matrixes with exactly 0-eigenvalue, whereas
+    # Numpy's will not. So where [1] uses `eps(mineig)` (where `eps` is Matlab
+    # for `np.spacing`), we use the above definition. CAVEAT: our `spacing`
+    # will be much larger than [1]'s `eps(mineig)`, since `mineig` is usually on
+    # the order of 1e-16, and `eps(1e-16)` is on the order of 1e-34, whereas
+    # `spacing` will, for Gaussian random matrixes of small dimension, be on
+    # othe order of 1e-16. In practice, both ways converge, as the unit test
+    # below suggests.
+    I = np.eye(A.shape[0])
+    k = 1
+    while not isPD(A3):
+        mineig = np.min(np.real(la.eigvals(A3)))
+        A3 += I * (-mineig * k**2 + spacing)
+        k += 1
+
+    return A3
+
+def isPD(B):
+    """Returns true when input is positive-definite, via Cholesky"""
+    try:
+        _ = la.cholesky(B)
+        return True
+    except la.LinAlgError:
+        return False
+
+if __name__ == '__main__':
+    import numpy as np
+    for i in xrange(10):
+        for j in xrange(2, 100):
+            A = np.random.randn(j, j)
+            B = nearestPD(A)
+            assert(isPD(B))
+    print('unit test passed!')
+
+
 class ELLIPSE:
 
   def __init__(self,samples,kappa=1.0,N=None):
@@ -47,28 +153,67 @@ class ELLIPSE:
     self.dim=len(samples[0])
     # generate transformation matrix
     self.y0=np.mean(samples,axis=0)
+
     cov=np.cov(np.transpose(samples))
-    self.det=np.linalg.det(cov)
+    if isPD(cov)==False:
+      cov=nearestPD(cov)
+
+    w,v=np.linalg.eig(cov)
+    if np.any(np.isnan(v)): raise ValueError('nan eigenvectors')
+    #if np.any(w<0): raise ValueError('negative eigenvalues')
+    w=np.abs(w)
+
+    #flag=False
+    ###if det<0: flag=True
+    #for i in range(len(w)):
+    #  if any(np.isnan(v[i])): flag=True
+    #if flag==True:
+    #  cov=nearPSD(cov)
+
+    #mask = w < 1.e-10
+    #if np.any(mask):
+    #  nzprod = np.product(w[~mask])  # product of nonzero eigenvalues
+    #  nzeros = mask.sum()  # number of zero eigenvalues
+    #  w[mask] = (V / nzprod) ** (1./nzeros)  # adjust zero eigvals
+    #  cov = np.dot(np.dot(v, np.diag(w)), np.linalg.inv(v))  # re-form cov
+
+
     icov=np.linalg.inv(cov)
-    w,v=np.linalg.eig(icov)
+    if np.any(np.isnan(icov)): raise ValueError('icov is nan')
+    self.det=np.linalg.det(cov)
+
+
     v=np.transpose(v)
-    for i in range(w.size): v[i]/=w[i]**0.5
+    for i in range(w.size): v[i]*=w[i]**0.5
     self.T=np.transpose(v)
+    if np.any(np.isnan(self.T)): raise ValueError('T is nan')
+    self.w=w
+    self.v=v
     
     # get enlargement factor
     self.F=kappa*np.amax([np.einsum('i,ij,j',y-self.y0,icov,y-self.y0) for y in samples])**0.5
-
+    if np.isnan(self.F): raise ValueError('F is nan')
     self.V=(self.F*self.det)**0.5
     self.gen_new_samples()
 
   def gen_new_samples(self):
+
     # generate the unit sphere
     z=np.random.randn(self.N,self.dim)
     r=np.array([np.dot(z[i],z[i])**0.5 for i in range(self.N)])
     X=np.array([z[i]/r[i]*np.random.rand()**(1.0/self.dim) for i in range(self.N)])
+    #print '='*100
+    #print 'det='
+    #print self.det
+    #print 'w='
+    #print self.w
+    #print 'X='
+    #print X[0]
+
 
     # generate sphere samples
     Y=np.einsum('ij,nj->ni',self.F*self.T,X) + self.y0
+    #print Y[-10:]
     self.Y=[y for y in Y]
 
   def status(self):
@@ -187,7 +332,9 @@ class NEST:
   #@profile
   def gen_par_cov(self,nll,p0=None,verb=False):
     self.attempts=0
+    #print 'building ellipse'
     ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
+    #print 'got ellips'
     self.Vk=ellipse.V
     #pmin=np.amin(self.active_p,axis=0)
     #pmax=np.amax(self.active_p,axis=0)
@@ -196,12 +343,15 @@ class NEST:
     #failed=False
     #if ellipse.det<=0: failed=False
     cnt=0
+    #print 'start loop'
     while 1:
       self.attempts+=1
       if verb: print 'cov attempt',self.attempts
       if ellipse.status()==False: ellipse.gen_new_samples()
       p=ellipse.get_sample().real
-
+      if np.any(np.isnan(p)):
+        raise ValueError('parameters are nan')
+      
       #if self.attempts<1000:
       #  p=ellipse.get_sample().real
       #  self.msg='normal'
@@ -221,13 +371,13 @@ class NEST:
       #  u=uniform(0,1,self.dim)
       #  p=pmin + u*dp
 
+      #print self.attempts
       # check limits
-      if any([x<0 for x in p-self.pmin]) or any([x<0 for x in self.pmax-p]): 
-        continue
-
+      if any([x<0 for x in p-self.pmin]) or any([x<0 for x in self.pmax-p]): continue
+      #print 'get nll'
       _nll = self.get_nll(p)
       if _nll<nll: break
-
+    #print 'out>>>'
     return p,_nll
 
   # nested sampling routines
@@ -248,10 +398,13 @@ class NEST:
     self.cnt+=1
   
     # sample new parms
+    #print 
+    #print 'request'
     if self.conf['method']=='flat': _p,_nll=self.gen_par_flat(nll)
     if self.conf['method']=='cov':  _p,_nll=self.gen_par_cov(nll,p)
     if self.conf['method']=='kde':  _p,_nll=self.gen_par_kde(nll)
     if self.conf['method']=='hmc':  _p,_nll=self.gen_par_hmc(p,nll)
+    #print 'got it'
   
     self.active_nll.append(_nll)
     self.active_p.append(_p)
