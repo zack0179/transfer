@@ -69,7 +69,7 @@ class MCSAMP:
 
     #conf['method']='flat'
     conf['method']='cov'
-    conf['kappa']=1.0
+    conf['kappa']=1.1
 
     conf['tol']=10e-10
     conf['num points'] = 50#self.npar*3
