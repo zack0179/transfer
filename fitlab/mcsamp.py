@@ -71,7 +71,7 @@ class MCSAMP:
     conf['method']='cov'
     conf['kappa']=1.0
 
-    conf['tol']=10e-4
+    conf['tol']=10e-10
     conf['num points'] = 50#self.npar*3
     conf['sample size']= 10000#conf['num points']
     nest=NEST(conf).run()
