@@ -22,7 +22,9 @@ class _READER:
     XLSX=self.conf['datasets'][reaction]['xlsx']
     TAB={}
     for k in XLSX: 
-      print 'loading %s data sets %d'%(reaction,k)
+      sys.stdout.write('\r')
+      sys.stdout.write('loading %s data sets %d'%(reaction,k))
+      sys.stdout.flush()
       fname=self.conf['datasets'][reaction]['xlsx'][k]
       tab=pd.read_excel(fname)
       tab=self.modify_table(tab,k)
