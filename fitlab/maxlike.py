@@ -16,6 +16,9 @@ class ML:
     self.PARAMS=[]
     self.TOT=[]
 
+    if 'screen mode' not in conf: 
+      conf['screen mode']='plain'
+
   def get_stats(self,res,rres,nres,delay):
 
     shifts=self.conf['parman'].shifts

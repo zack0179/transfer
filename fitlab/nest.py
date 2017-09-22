@@ -62,8 +62,8 @@ class ELLIPSE:
   def gen_new_samples(self):
     # generate the unit sphere
     z=np.random.randn(self.N,self.dim)
-    #r=np.array([np.dot(z[i],z[i])**0.5 for i in range(self.N)])
-    #X=np.array([z[i]/r[i]*np.random.rand()**(1.0/self.dim) for i in range(self.N)])
+    r=np.array([np.dot(z[i],z[i])**0.5 for i in range(self.N)])
+    X=np.array([z[i]/r[i]*np.random.rand()**(1.0/self.dim) for i in range(self.N)])
 
     # generate sphere samples
     Y=np.einsum('ij,nj->ni',self.F*self.T,X) + self.y0
@@ -119,7 +119,7 @@ class NEST:
     u=uniform(0,1,self.dim)
     return self.pmin + u*self.dp    
   
-  def gen_par_flat(self,nll,verb=True):
+  def gen_par_flat(self,nll,verb=False):
     self.attempts=0
     pmin=np.amin(self.active_p,axis=0)
     pmax=np.amax(self.active_p,axis=0)
@@ -181,7 +181,7 @@ class NEST:
       if _nll<nll: break
     return q,_nll
 
-  def gen_par_cov(self,nll,p0=None,verb=True):
+  def gen_par_cov(self,nll,p0=None,verb=False):
     self.attempts=0
     ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
     pmin=np.amin(self.active_p,axis=0)
@@ -312,8 +312,49 @@ class NEST:
         break
     print 
     return self.results() 
- 
-if __name__=='__main__':
+
+def example1():
+
+  dim=2
+  sigma=np.ones(dim)
+  mean=np.zeros(dim)*0.1
+  def likelihood(p):
+    norm=1/np.prod(np.sqrt(2*np.pi*sigma**2))
+    return norm * np.exp(-0.5*np.sum((p-mean)**2/sigma**2))
+
+  nll=lambda p: -np.log(likelihood(p))
+
+
+  print 'True:'
+  print 'logz=',np.log(1)
+  print 'min nll=',nll(np.zeros(dim))
+  print 
+  print 'VEGAS:'
+  import vegas
+  integ = vegas.Integrator([[-5, 5] for i in range(dim)])
+  result = integ(likelihood, nitn=10, neval=1000)
+  print result.summary() 
+  print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
+
+  print 
+  print 'Nested Sampling:'
+  conf={}
+  conf['nll'] = nll
+  conf['par lims'] =[[-5,5] for i in range(dim)]
+  conf['tol']=1e-10
+  conf['num points'] = 1000
+
+  conf['method']='cov'
+  conf['kappa']=1.0
+  conf['sample size']= 100
+
+  #conf['method']='kde'
+  #conf['kde bw']=None
+
+  NEST(conf).run()
+
+
+def example2():
 
   shift1=np.array([1, 1])
   shift2=np.array([1,-1])
@@ -333,21 +374,22 @@ if __name__=='__main__':
   print 
   print 'Nested Sampling:'
   conf={}
+  conf['nll'] = nll
+  conf['par lims'] =[[-20,20],[-20,20]]
+  conf['tol']=1e-4
+  conf['num points'] = 100
+
+
   conf['method']='cov'
-  conf['kappa']=1.1
+  conf['kappa']=1
 
   #conf['method']='kde'
   #conf['kde bw']=None
   ##conf['itmax']=None
 
-  conf['nll'] = nll
-  conf['par lims'] =[[-20,20],[-20,20]]
-  conf['tol']=1e-4
-  for N in [100]:#,200,300,400,500]:
-    conf['num points'] = N
-    conf['sample size']= N
-    print 'N=',N
-    NEST(conf).run()
+  conf['sample size']= N
+  print 'N=',N
+  NEST(conf).run()
 
   #print 
   #print 'VEGAS:'
@@ -357,14 +399,9 @@ if __name__=='__main__':
   #print result.summary() 
   #print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
 
+if __name__=='__main__':
 
-
-
-
-
-
-
-
+  example1()
 
 
 
