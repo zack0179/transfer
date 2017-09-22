@@ -116,40 +116,43 @@ conf['datasets']['sidis']['xlsx']={}
 #conf['datasets']['sidis']['xlsx'][1006]='../database/sidis/expdata/1006.xlsx' # deuteron | k+  | M_Hermes   | hermes 
 #conf['datasets']['sidis']['xlsx'][1007]='../database/sidis/expdata/1007.xlsx' # deuteron | k-  | M_Hermes   | hermes 
 
-conf['datasets']['sidis']['xlsx'][3000]='../database/sidis/expdata/3000.xlsx' # proton   | pi+ | AUTcollins | hermes  | x
-conf['datasets']['sidis']['xlsx'][3003]='../database/sidis/expdata/3003.xlsx' # proton   | pi+ | AUTcollins | hermes  | z
-conf['datasets']['sidis']['xlsx'][3026]='../database/sidis/expdata/3026.xlsx' # proton   | pi+ | AUTcollins | hermes  | pt
-conf['datasets']['sidis']['xlsx'][3004]='../database/sidis/expdata/3004.xlsx' # proton   | pi- | AUTcollins | hermes  | x
-conf['datasets']['sidis']['xlsx'][3018]='../database/sidis/expdata/3018.xlsx' # proton   | pi- | AUTcollins | hermes  | z
-conf['datasets']['sidis']['xlsx'][3016]='../database/sidis/expdata/3016.xlsx' # proton   | pi- | AUTcollins | hermes  | pt
+conf["datasets"]["sidis"]["xlsx"][4007]="../database/sidis/expdata/4007.xlsx"  #  compass  deuteron   k+   pT
+conf["datasets"]["sidis"]["xlsx"][4006]="../database/sidis/expdata/4006.xlsx"  #  compass  deuteron   k+    x
+conf["datasets"]["sidis"]["xlsx"][4008]="../database/sidis/expdata/4008.xlsx"  #  compass  deuteron   k+    z
+conf["datasets"]["sidis"]["xlsx"][4010]="../database/sidis/expdata/4010.xlsx"  #  compass  deuteron   k-   pT
+conf["datasets"]["sidis"]["xlsx"][4009]="../database/sidis/expdata/4009.xlsx"  #  compass  deuteron   k-    x
+conf["datasets"]["sidis"]["xlsx"][4011]="../database/sidis/expdata/4011.xlsx"  #  compass  deuteron   k-    z
+conf["datasets"]["sidis"]["xlsx"][4001]="../database/sidis/expdata/4001.xlsx"  #  compass  deuteron  pi+   pT
+conf["datasets"]["sidis"]["xlsx"][4000]="../database/sidis/expdata/4000.xlsx"  #  compass  deuteron  pi+    x
+conf["datasets"]["sidis"]["xlsx"][4002]="../database/sidis/expdata/4002.xlsx"  #  compass  deuteron  pi+    z
+conf["datasets"]["sidis"]["xlsx"][4004]="../database/sidis/expdata/4004.xlsx"  #  compass  deuteron  pi-   pT
+conf["datasets"]["sidis"]["xlsx"][4003]="../database/sidis/expdata/4003.xlsx"  #  compass  deuteron  pi-    x
+conf["datasets"]["sidis"]["xlsx"][4005]="../database/sidis/expdata/4005.xlsx"  #  compass  deuteron  pi-    z
+conf["datasets"]["sidis"]["xlsx"][6003]="../database/sidis/expdata/6003.xlsx"  #  compass    proton   k+   pt
+conf["datasets"]["sidis"]["xlsx"][6004]="../database/sidis/expdata/6004.xlsx"  #  compass    proton   k+    x
+conf["datasets"]["sidis"]["xlsx"][6005]="../database/sidis/expdata/6005.xlsx"  #  compass    proton   k+    z
+conf["datasets"]["sidis"]["xlsx"][6000]="../database/sidis/expdata/6000.xlsx"  #  compass    proton   k-   pt
+conf["datasets"]["sidis"]["xlsx"][6001]="../database/sidis/expdata/6001.xlsx"  #  compass    proton   k-    x
+conf["datasets"]["sidis"]["xlsx"][6002]="../database/sidis/expdata/6002.xlsx"  #  compass    proton   k-    z
+conf["datasets"]["sidis"]["xlsx"][3027]="../database/sidis/expdata/3027.xlsx"  #  compass    proton  pi+   pt
+conf["datasets"]["sidis"]["xlsx"][3025]="../database/sidis/expdata/3025.xlsx"  #  compass    proton  pi+    x
+conf["datasets"]["sidis"]["xlsx"][3010]="../database/sidis/expdata/3010.xlsx"  #  compass    proton  pi+    z
+conf["datasets"]["sidis"]["xlsx"][3012]="../database/sidis/expdata/3012.xlsx"  #  compass    proton  pi-   pt
+conf["datasets"]["sidis"]["xlsx"][3005]="../database/sidis/expdata/3005.xlsx"  #  compass    proton  pi-    x
+conf["datasets"]["sidis"]["xlsx"][3013]="../database/sidis/expdata/3013.xlsx"  #  compass    proton  pi-    z
+conf["datasets"]["sidis"]["xlsx"][3024]="../database/sidis/expdata/3024.xlsx"  #   HERMES    proton   k+   pt
+conf["datasets"]["sidis"]["xlsx"][3007]="../database/sidis/expdata/3007.xlsx"  #   HERMES    proton   k+    x
+conf["datasets"]["sidis"]["xlsx"][3008]="../database/sidis/expdata/3008.xlsx"  #   HERMES    proton   k+    z
+conf["datasets"]["sidis"]["xlsx"][3021]="../database/sidis/expdata/3021.xlsx"  #   HERMES    proton   k-   pt
+conf["datasets"]["sidis"]["xlsx"][3017]="../database/sidis/expdata/3017.xlsx"  #   HERMES    proton   k-    x
+conf["datasets"]["sidis"]["xlsx"][3023]="../database/sidis/expdata/3023.xlsx"  #   HERMES    proton   k-    z
+conf["datasets"]["sidis"]["xlsx"][3026]="../database/sidis/expdata/3026.xlsx"  #   HERMES    proton  pi+   pt
+conf["datasets"]["sidis"]["xlsx"][3000]="../database/sidis/expdata/3000.xlsx"  #   HERMES    proton  pi+    x
+conf["datasets"]["sidis"]["xlsx"][3003]="../database/sidis/expdata/3003.xlsx"  #   HERMES    proton  pi+    z
+conf["datasets"]["sidis"]["xlsx"][3016]="../database/sidis/expdata/3016.xlsx"  #   HERMES    proton  pi-   pt
+conf["datasets"]["sidis"]["xlsx"][3004]="../database/sidis/expdata/3004.xlsx"  #   HERMES    proton  pi-    x
+conf["datasets"]["sidis"]["xlsx"][3018]="../database/sidis/expdata/3018.xlsx"  #   HERMES    proton  pi-    z
 
-conf['datasets']['sidis']['xlsx'][3025]='../database/sidis/expdata/3025.xlsx' # proton   | pi+ | AUTcollins | compass | x
-conf['datasets']['sidis']['xlsx'][3010]='../database/sidis/expdata/3010.xlsx' # proton   | pi+ | AUTcollins | compass | z
-conf['datasets']['sidis']['xlsx'][3027]='../database/sidis/expdata/3027.xlsx' # proton   | pi+ | AUTcollins | compass | pt
-conf['datasets']['sidis']['xlsx'][3005]='../database/sidis/expdata/3005.xlsx' # proton   | pi- | AUTcollins | compass | x
-conf['datasets']['sidis']['xlsx'][3012]='../database/sidis/expdata/3012.xlsx' # proton   | pi- | AUTcollins | compass | pt
-conf['datasets']['sidis']['xlsx'][3013]='../database/sidis/expdata/3013.xlsx' # proton   | pi- | AUTcollins | compass | z
-
-conf['datasets']['sidis']['xlsx'][4000]='../database/sidis/expdata/4000.xlsx' # deuteron | pi+ | AUTcollins | compass | x
-conf['datasets']['sidis']['xlsx'][4001]='../database/sidis/expdata/4001.xlsx' # deuteron | pi+ | AUTcollins | compass | pt
-conf['datasets']['sidis']['xlsx'][4002]='../database/sidis/expdata/4002.xlsx' # deuteron | pi+ | AUTcollins | compass | z
-conf['datasets']['sidis']['xlsx'][4003]='../database/sidis/expdata/4003.xlsx' # deuteron | pi- | AUTcollins | compass | x
-conf['datasets']['sidis']['xlsx'][4004]='../database/sidis/expdata/4004.xlsx' # deuteron | pi- | AUTcollins | compass | pt
-conf['datasets']['sidis']['xlsx'][4005]='../database/sidis/expdata/4005.xlsx' # deuteron | pi- | AUTcollins | compass | z
-
-conf['datasets']['sidis']['xlsx'][3007]='../database/sidis/expdata/3007.xlsx' # proton   | k+  | AUTcollins | hermes  | x  
-conf['datasets']['sidis']['xlsx'][3008]='../database/sidis/expdata/3008.xlsx' # proton   | k+  | AUTcollins | hermes  | z  
-conf['datasets']['sidis']['xlsx'][3024]='../database/sidis/expdata/3024.xlsx' # proton   | k+  | AUTcollins | hermes  | pt 
-conf['datasets']['sidis']['xlsx'][3017]='../database/sidis/expdata/3017.xlsx' # proton   | k-  | AUTcollins | hermes  | x  
-conf['datasets']['sidis']['xlsx'][3021]='../database/sidis/expdata/3021.xlsx' # proton   | k-  | AUTcollins | hermes  | pt 
-conf['datasets']['sidis']['xlsx'][3023]='../database/sidis/expdata/3023.xlsx' # proton   | k-  | AUTcollins | hermes  | z  
-
-conf['datasets']['sidis']['xlsx'][4006]='../database/sidis/expdata/4006.xlsx' # proton   | k+  | AUTcollins | hermes  | x  
-conf['datasets']['sidis']['xlsx'][4008]='../database/sidis/expdata/4008.xlsx' # proton   | k+  | AUTcollins | hermes  | z  
-conf['datasets']['sidis']['xlsx'][4007]='../database/sidis/expdata/4007.xlsx' # proton   | k+  | AUTcollins | hermes  | pt 
-conf['datasets']['sidis']['xlsx'][4009]='../database/sidis/expdata/4009.xlsx' # proton   | k-  | AUTcollins | hermes  | x  
-conf['datasets']['sidis']['xlsx'][4011]='../database/sidis/expdata/4011.xlsx' # proton   | k-  | AUTcollins | hermes  | z  
-conf['datasets']['sidis']['xlsx'][4010]='../database/sidis/expdata/4010.xlsx' # proton   | k-  | AUTcollins | hermes  | pt 
 
 for k in conf['datasets']['sidis']['xlsx']: conf['datasets']['sidis']['norm'][k]={'value':1,'fixed':True,'min':0,'max':1} 
 
