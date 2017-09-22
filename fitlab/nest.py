@@ -184,6 +184,7 @@ class NEST:
       if _nll<nll: break
     return q,_nll
 
+  #@profile
   def gen_par_cov(self,nll,p0=None,verb=False):
     self.attempts=0
     ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
@@ -231,6 +232,7 @@ class NEST:
 
   # nested sampling routines
   
+  #@profile
   def gen_sample(self):
   
     # remove entry from active arrays
@@ -340,12 +342,12 @@ def example1():
   print 'logz=',np.log(1)
   print 'min nll=',nll(np.zeros(dim))
   print 
-  print 'VEGAS:'
-  import vegas
-  integ = vegas.Integrator([[-5, 5] for i in range(dim)])
-  result = integ(likelihood, nitn=10, neval=1000)
-  print result.summary() 
-  print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
+  #print 'VEGAS:'
+  #import vegas
+  #integ = vegas.Integrator([[-5, 5] for i in range(dim)])
+  #result = integ(likelihood, nitn=10, neval=1000)
+  #print result.summary() 
+  #print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
 
   print 
   print 'Nested Sampling:'
@@ -353,7 +355,7 @@ def example1():
   conf['nll'] = nll
   conf['par lims'] =[[-5,5] for i in range(dim)]
   conf['tol']=1e-10
-  conf['num points'] = 1000
+  conf['num points'] = 50
 
   conf['method']='cov'
   conf['kappa']=1.0
