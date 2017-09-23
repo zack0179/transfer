@@ -65,27 +65,29 @@ class RESIDUALS(_RESIDUALS):
       if   'collins' in obs: 
 
         ii=4
-        if col=='HERMES':  phase=1    # hermes is sin(phi_s+phi_h)
-        if col=='COMPASS': phase=-1  # compass is sin(phi_s+phi_h+pi)
+        if col=='HERMES':  factor= 1   # hermes is sin(phi_s+phi_h)
+        if col=='COMPASS': factor=-1   # compass is sin(phi_s+phi_h+pi)
+
+        # add depolarization factor only for HERMES
+        if col=='HERMES':  factor* = 2*(1-y)/(1+(1-y)**2)
 
       elif 'sivers' in obs : 
         ii=5
-        phase=1
+        factor=1
 
       Q2=2.0
-
 
       if target=='proton': 
 
         FUT=self.stfuncs.get_FX(ii,x,z,Q2,mu2,pT,'p',hadron)
         FUU=self.stfuncs.get_FX(1,x,z,Q2,mu2,pT,'p',hadron)
-        thy = phase*FUT/FUU
+        thy = factor*FUT/FUU
 
       elif target=='neutron': 
 
         FUT=self.stfuncs.get_FX(ii,x,z,Q2,mu2,pT,'n',hadron)
         FUU=self.stfuncs.get_FX(1,x,z,Q2,mu2,pT,'n',hadron)
-        thy = phase*FUT/FUU
+        thy = factor*FUT/FUU
 
       elif target=='deuteron': 
 
@@ -94,7 +96,7 @@ class RESIDUALS(_RESIDUALS):
         FUU=self.stfuncs.get_FX(1,x,z,Q2,mu2,pT,'p',hadron)\
            +self.stfuncs.get_FX(1,x,z,Q2,mu2,pT,'n',hadron)
 
-        thy = phase*FUT/FUU
+        thy = factor*FUT/FUU
 
     elif obs == 'AUUcos':      
       if target == 'proton':
