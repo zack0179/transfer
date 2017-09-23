@@ -69,7 +69,7 @@ class RESIDUALS(_RESIDUALS):
         if col=='COMPASS': factor=-1   # compass is sin(phi_s+phi_h+pi)
 
         # add depolarization factor only for HERMES
-        if col=='HERMES':  factor* = 2*(1-y)/(1+(1-y)**2)
+        if col=='HERMES':  factor*= 2*(1-y)/(1+(1-y)**2)
 
       elif 'sivers' in obs : 
         ii=5
