@@ -68,7 +68,6 @@ class ELLIPSE:
     self.V=(self.F*self.det)**0.5
     self.gen_new_samples()
 
-
   def is_positive_semi_definite(self,cov):
     test=True
     w,v=np.linalg.eig(cov)
@@ -85,7 +84,9 @@ class ELLIPSE:
       cnt=0
       while 1:
         cnt+=1
-        if cnt%100==0: print 'fixing cov attempts:',cnt
+        #if cnt%100==0: 
+        print 
+        print 'fixing cov attempts:',cnt
         fake_samples=[sample+np.random.randn(sigma.size)*sigma for sample in samples]  
         cov=np.cov(np.transpose(fake_samples))
         if self.is_positive_semi_definite(cov): break
