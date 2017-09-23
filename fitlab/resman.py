@@ -123,8 +123,9 @@ if __name__=='__main__':
   msg =" 0: speedtest"
   msg+=" 1: maxlike-minimize"
   msg+=" 2: maxlike-leastsq"
-  msg+=" 3: mcsamp-run"
-  msg+=" 4: mcsamp-analysis"
+  msg+=" 3: mcsamp-nest"
+  msg+=" 4: mcsamp-imc"
+  msg+=" 5: mcsamp-analysis"
   ap.add_argument('-t','--task',type=int,default=0,help=msg)
   ap.add_argument('-i','--runid',type=int,default=0,help=msg)
   #ap.add_argument('-o','--outdir',type=str,default='.',help="output directory (default: %(default)s)")
@@ -140,7 +141,8 @@ if __name__=='__main__':
   if   args.task==0: SPEEDTEST(conf).run()
   elif args.task==1: ML(conf).run_minimize()
   elif args.task==2: ML(conf).run_leastsq()
-  elif args.task==3: MCSAMP(conf).run()
-  elif args.task==4: MCSAMP(conf).analysis()
+  elif args.task==3: MCSAMP(conf).run_nest()
+  elif args.task==4: MCSAMP(conf).run_imc()
+  elif args.task==5: MCSAMP(conf).analysis()
 
 

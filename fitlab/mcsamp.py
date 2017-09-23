@@ -4,6 +4,7 @@ import numpy as np
 from tools.tools import load,save,checkdir,load_config
 from tools.bar import BAR
 from nest import NEST
+from imc import IMC
 
 class MCSAMP:
 
@@ -43,7 +44,7 @@ class MCSAMP:
       plims.append([pmin,pmax])
     return plims
 
-  def run(self):
+  def run_nest(self):
 
     inputfile=self.conf['args'].config
     run_id=inputfile.replace('inputs/','')
@@ -88,6 +89,25 @@ class MCSAMP:
     #  raise ValueError('cannot stablish num points')
     #conf['args']=self.conf['args']
     #nest=NEST(conf).run()
+
+  def run_imc(self):
+
+    inputfile=self.conf['args'].config
+    run_id=inputfile.replace('inputs/','')
+    outputdir='outputs/%s'%run_id.replace('.py','')
+    checkdir(outputdir)
+    os.system('cp %s %s/'%(inputfile,outputdir))
+
+    self.npar=len(self.conf['parman'].par)
+
+    conf={}
+    conf['nll'] = self.nll
+    conf['par lims'] = self.get_par_lims()
+    conf['kappa']=1.1
+    conf['tol']=10e-10
+    conf['num points'] = 100
+    imc=IMC(conf).run()
+    save(imc,'%s/nest%d'%(outputdir,self.conf['args'].runid))
 
   # analysis routines. Use analysis as the gate
 
