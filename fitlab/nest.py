@@ -287,7 +287,10 @@ class NEST:
     # update samples 
     self.samples_nll.append(nll)
     self.samples_l.append(np.exp(-nll))
-    self.samples_p=np.append(self.samples_p,p)
+    if len(self.samples_p)==0:
+      self.samples_p=[p]
+    else:
+      self.samples_p=np.concatenate((self.samples_p,[p]),axis=0)
     self.samples_x.append(self.samples_x[-1]*self.factor)  
     self.cnt+=1
   
@@ -375,7 +378,7 @@ class NEST:
 
 def example1():
 
-  dim=30
+  dim=5
   sigma=np.ones(dim)
   mean=np.zeros(dim)*0.1
   def likelihood(p):
