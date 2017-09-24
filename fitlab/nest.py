@@ -225,7 +225,6 @@ class NEST:
       if _nll<nll: break
     return q,_nll
 
-  #@profile
   def gen_par_cov(self,nll,p0=None,verb=False):
     self.attempts=0
     #print 'building ellipse'
@@ -278,7 +277,6 @@ class NEST:
 
   # nested sampling routines
   
-  #@profile
   def gen_sample(self):
   
     # remove entry from active arrays
@@ -289,7 +287,7 @@ class NEST:
     # update samples 
     self.samples_nll.append(nll)
     self.samples_l.append(np.exp(-nll))
-    self.samples_p.append(p)
+    self.samples_p=np.append(self.samples_p,p)
     self.samples_x.append(self.samples_x[-1]*self.factor)  
     self.cnt+=1
   
@@ -377,7 +375,7 @@ class NEST:
 
 def example1():
 
-  dim=2
+  dim=30
   sigma=np.ones(dim)
   mean=np.zeros(dim)*0.1
   def likelihood(p):
