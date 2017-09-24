@@ -105,7 +105,7 @@ class MCSAMP:
     conf['par lims'] = self.get_par_lims()
     conf['kappa']=1.1
     conf['tol']=10e-10
-    conf['num points'] = 100
+    conf['num points'] = 50
     imc=IMC(conf).run()
     save(imc,'%s/nest%d'%(outputdir,self.conf['args'].runid))
 
