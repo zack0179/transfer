@@ -15,6 +15,7 @@ from qcdlib.tmdlib import COLLINS
 from qcdlib.tmdlib import WORMGEARG
 from qcdlib.tmdlib import WORMGEARH
 from qcdlib.aux import AUX
+import matplotlib.pyplot as plt
 
 class STFUNCS:
 
@@ -161,7 +162,7 @@ if __name__=='__main__':
   conf['collins']=COLLINS(conf)
 
   stfuncs=STFUNCS(conf)
-  x=0.15
+  x=0.25
   z=0.5
   Q2=2.4
   mu2=2.0
@@ -176,3 +177,12 @@ if __name__=='__main__':
   for i in range(1,22): print i,stfuncs.get_FX(i,x,z,Q2,mu2,pT,target,hadron)
   print stfuncs.dcs(x,Q2,mu2,y,z,pT,sangle,hangle,target,hadron)
   print stfuncs.unpolarizedCS(x,Q2,mu2,y,z,pT,sangle,hangle,target,hadron)
+#  for j in range(1,36): plt.plot([j*math.pi/18] , [stfuncs.unpolarizedCS(x,Q2,mu2,y,z,pT,sangle,j*math.pi/18,target,hadron)], 'ro')
+  for j in range(1,36): plt.plot([j*math.pi/18] , [stfuncs.dcs(x,Q2,mu2,y,z,pT,sangle,j*math.pi/18,target,hadron)], 'ro')
+
+  plt.xlabel('Hadronic Angle (rad)')
+  plt.ylabel('Full Cross Section')
+  plt.title('WW-type Approximation for $Q^2=3.6$')
+
+  plt.show()
+  
