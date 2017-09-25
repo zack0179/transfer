@@ -297,7 +297,7 @@ class NEST:
     # sample new parms
     #print 
     #print 'request'
-    if self.cnt<100:
+    if self.cnt<500:
       _p,_nll=self.gen_par_flat(nll)
     else:
       _p,_nll=self.gen_par_cov(nll,p)
