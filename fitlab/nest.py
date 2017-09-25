@@ -298,9 +298,9 @@ class NEST:
     #print 
     #print 'request'
     if self.cnt<100:
-      if self.conf['method']=='flat': _p,_nll=self.gen_par_flat(nll)
+      self.conf['method']=='flat': _p,_nll=self.gen_par_flat(nll)
     else:
-      if self.conf['method']=='cov':  _p,_nll=self.gen_par_cov(nll,p)
+      self.conf['method']=='cov':  _p,_nll=self.gen_par_cov(nll,p)
     #if self.conf['method']=='kde':  _p,_nll=self.gen_par_kde(nll)
     #if self.conf['method']=='hmc':  _p,_nll=self.gen_par_hmc(p,nll)
     #print 'got it'
