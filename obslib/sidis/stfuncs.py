@@ -122,6 +122,20 @@ class STFUNCS:
     cstotal=csleading+cssubleading
     return cstotal/(2*0.938*11.0*x)
 
+  def unpolarizedCS(self,x,Q2,mu2,y,z,pT,sangle,hangle,target,hadron):
+    coupling=1.0/137
+    p1=(1.0-y)/(1.0-y+y**2/2)
+    p2=y*(1.0-y/2)/(1.0-y+y**2/2)
+    p3=(2.0-y)*(math.sqrt(1.0-y))/(1.0-y+y**2/2)
+    p4=y*math.sqrt(1.0-y)/(1.0-y+y**2/2)
+    SL=math.cos(sangle)
+    ST=math.sin(sangle)
+    helicity=1.0/2
+    factor=coupling**2/(x*y*Q2)*(1-y+y**2)
+    cs = factor*(self.get_FX(1,x,z,Q2,mu2,pT,target,hadron)+math.cos(2*hangle)*p1*self.get_FX(7,x,z,Q2,mu2,pT,target,hadron)+math.cos(hangle)*p3*(self.get_FX(16,x,z,Q2,mu2,pT,target,hadron)+self.get_FX(17,x,z,Q2,mu2,pT,target,hadron)))
+    
+    return cs/(2*0.938*11.0*x)
+
 if __name__=='__main__':
 
   conf={}
@@ -161,4 +175,4 @@ if __name__=='__main__':
   hadron='pi+' 
   for i in range(1,22): print i,stfuncs.get_FX(i,x,z,Q2,mu2,pT,target,hadron)
   print stfuncs.dcs(x,Q2,mu2,y,z,pT,sangle,hangle,target,hadron)
-
+  print stfuncs.unpolarizedCS(x,Q2,mu2,y,z,pT,sangle,hangle,target,hadron)
