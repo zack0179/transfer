@@ -15,7 +15,7 @@ class MCSAMP:
     res,rres,nres=self.conf['resman'].get_residuals(par)
     if len(rres)!=0: res=np.append(res,rres)
     if len(nres)!=0: res=np.append(res,nres)
-    return res
+    return res 
 
   def loglike(self,par):
     return -0.5*np.sum(self.get_residuals(par)**2)
@@ -53,6 +53,8 @@ class MCSAMP:
     os.system('cp %s %s/'%(inputfile,outputdir))
 
     self.npar=len(self.conf['parman'].par)
+    par=self.conf['parman'].par
+    res=self.get_residuals(par)
 
     conf={}
     if self.conf['args'].file!='':
@@ -66,6 +68,7 @@ class MCSAMP:
     conf['num points'] = self.conf['num points']
     conf['sample size']= self.conf['sample size']
     conf['burn size']= self.conf['burn size']
+    conf['data size']=len(res)
     nest=NEST(conf).run()
     save(nest,'%s/nest%d'%(outputdir,self.conf['args'].runid))
 

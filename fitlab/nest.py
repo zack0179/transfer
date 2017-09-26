@@ -323,8 +323,8 @@ class NEST:
     self.logz.append(self.get_logz())
     if self.cnt>2: 
       #z_past=np.average([np.exp(self.logz[-2]),np.exp(self.logz[-3]),np.exp(self.logz[-4])])
-      std=np.std(self.active_nll)
-      mean=np.mean(self.active_nll)
+      std=np.std(np.array(self.active_nll)+self.conf['data size'])
+      mean=np.mean(np.array(self.active_nll)+self.conf['data size'])
       #z_current=np.exp(self.logz[-1])
       #rel = np.abs(1-z_past/z_current)
       rel = std/mean
