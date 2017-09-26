@@ -322,9 +322,12 @@ class NEST:
     self.gen_sample()
     self.logz.append(self.get_logz())
     if self.cnt>2: 
-      z_past=np.exp(self.logz[-2])
-      z_current=np.exp(self.logz[-1])
-      rel = np.abs(1-z_past/z_current)
+      #z_past=np.average([np.exp(self.logz[-2]),np.exp(self.logz[-3]),np.exp(self.logz[-4])])
+      std=np.std(self.active_nll)
+      mean=np.mean(self.active_nll)
+      #z_current=np.exp(self.logz[-1])
+      #rel = np.abs(1-z_past/z_current)
+      rel = std/mean
       nllmax=np.amax(self.active_nll)
       nllmin=np.amin(self.active_nll)
       msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  nll_min=%.3e nll_max=%0.3e  attemps=%10d  Vk/V0=%0.3e  %s  '
