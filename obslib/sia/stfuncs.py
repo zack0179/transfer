@@ -43,7 +43,7 @@ class STFUNCS:
       else : return 1./(2.*np.pi)  
     elif i==2:
       if pT != None: return 4*self.Mh[hadron1]**2*z1**2*pT**2/wq**2
-      else: return 2.*self.Mh[hadron1]**2*(z1*z2)**2/(np.pi*wq)  
+      else: return 2.*self.Mh[hadron1]**2*z1**2/(np.pi*wq)  
 
   def get_Wq(self,z1,z2,k1,k2,hadron1,hadron2):
     return ( z1**2*self.conf[k1].widths[hadron2]\
