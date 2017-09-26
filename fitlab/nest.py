@@ -294,16 +294,10 @@ class NEST:
     self.samples_x.append(self.samples_x[-1]*self.factor)  
     self.cnt+=1
   
-    # sample new parms
-    #print 
-    #print 'request'
-    if self.cnt<500:
+    if self.cnt<self.conf['burn size']:
       _p,_nll=self.gen_par_flat(nll)
     else:
       _p,_nll=self.gen_par_cov(nll,p)
-    #if self.conf['method']=='kde':  _p,_nll=self.gen_par_kde(nll)
-    #if self.conf['method']=='hmc':  _p,_nll=self.gen_par_hmc(p,nll)
-    #print 'got it'
   
     self.active_nll.append(_nll)
     self.active_p.append(_p)

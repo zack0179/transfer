@@ -54,41 +54,20 @@ class MCSAMP:
 
     self.npar=len(self.conf['parman'].par)
 
-    #print 'VEGAS:'
-    #import vegas
-    #integ = vegas.Integrator(self.get_par_lims())
-    #result = integ(self.likelihood, nitn=2, neval=1000)
-    #print result.summary() 
-    #print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
-    #sys.exit()
-
     conf={}
     if self.conf['args'].file!='':
       conf['nestout']=load(self.conf['args'].file)
+
     conf['nll'] = self.nll
     conf['par lims'] = self.get_par_lims()
-
-    #conf['method']='flat'
-    conf['method']='cov'
-    conf['kappa']=1.1
-
-    conf['tol']=10e-10
-    conf['num points'] = 50#self.npar*3
-    conf['sample size']= 10000#conf['num points']
+    conf['method']=self.conf['method']
+    conf['kappa']=self.conf['kappa']
+    conf['tol']=self.conf['tol']
+    conf['num points'] = self.conf['num points']
+    conf['sample size']= self.conf['sample size']
+    conf['burn size']= self.conf['burn size']
     nest=NEST(conf).run()
     save(nest,'%s/nest%d'%(outputdir,self.conf['args'].runid))
-
-    #conf['method']=self.conf['method']
-    #conf['itmax']=self.conf['itmax']
-    #conf['kde bw']=self.conf['kde bw']
-    #if 'num points factor' in self.conf:
-    #  conf['num points'] = self.npar * self.conf['num points factor']
-    #elif 'num points' in self.conf:
-    #  conf['num points'] = self.conf['num points']
-    #else:
-    #  raise ValueError('cannot stablish num points')
-    #conf['args']=self.conf['args']
-    #nest=NEST(conf).run()
 
   def run_imc(self):
 
