@@ -3,9 +3,9 @@ conf={}
 ############################################################################
 conf['method']='cov'
 conf['kappa']=1.1
-conf['tol']=10e-10
-conf['num points'] = 50#self.npar*3
-conf['burn size']  = 1000
+conf['tol']=10e-4
+conf['num points'] = 19*100
+conf['burn size']  = 100
 conf['sample size']= 10000
 
 ############################################################################
