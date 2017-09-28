@@ -83,7 +83,7 @@ if __name__=='__main__':
   pT=1.0
   hadron1='pi+'
   hadron2='pi-'
-  for i in range(1,3): print i,stfuncs.ZX(i,z1,z2,Q2,pT,hadron1,hadron2)
+  for i in [2]: print i,stfuncs.ZX(i,z1,z2,Q2,pT,hadron1,hadron2)
 
 
 
