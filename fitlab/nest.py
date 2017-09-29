@@ -43,7 +43,7 @@ def load_snapshot(name):
 class ELLIPSE:
 
   def __init__(self,samples,kappa=1.0,iteration=None,N=None):
-    self.iteration
+    self.iteration=iteration
     self.N=N    
     self.dim=len(samples[0])
     # generate transformation matrix
@@ -280,7 +280,7 @@ class NEST:
   def gen_par_cov(self,nll,p0=None,verb=False):
     self.attempts=0
     #print 'building ellipse'
-    ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.conf['sample size'])
+    ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.cnt,self.conf['sample size'])
     #print 'got ellips'
     self.Vk=ellipse.V
     #pmin=np.amin(self.active_p,axis=0)
