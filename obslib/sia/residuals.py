@@ -26,6 +26,7 @@ class RESIDUALS(_RESIDUALS):
     z2 =self.tabs[k]['z2'][i]
     Q2 =self.tabs[k]['Q2'][i]
     factor=self.tabs[k]['S2/1+C2'][i]
+    
 
     if obs=='AUL-0-PT':
       pT =self.tabs[k]['pT'][i]
@@ -60,6 +61,7 @@ class RESIDUALS(_RESIDUALS):
     else:
       print 'ERR: obs=%s  not implemented'%obs
       sys.exit()
+    thy = thy * 100. # from obs to %
     return k,i,thy
 
   def gen_report(self,verb=1,level=1):
