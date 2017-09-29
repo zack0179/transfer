@@ -42,8 +42,8 @@ def load_snapshot(name):
 
 class ELLIPSE:
 
-  def __init__(self,samples,kappa=1.0,N=None):
-
+  def __init__(self,samples,kappa=1.0,iteration=None,N=None):
+    self.iteration
     self.N=N    
     self.dim=len(samples[0])
     # generate transformation matrix
@@ -75,22 +75,82 @@ class ELLIPSE:
     if np.any(np.isnan(v)): test=False
     return test
 
+  # fix cov matrix. 
+
+  def fix_cov1(self,samples,cov):
+    sigma=np.abs(np.diagonal(cov))**0.5
+    cnt=0
+    while 1:
+      cnt+=1
+      #if cnt%100==0: 
+      print '\nfixing cov attempts:',cnt
+      fake_samples=[sample+np.random.randn(sigma.size)*sigma for sample in samples]  
+      cov=np.cov(np.transpose(fake_samples))
+      if self.is_positive_semi_definite(cov): break
+    return cov
+
+  def vol_prefactor(n):
+      """Volume constant for an n-dimensional sphere:
+      for n even:      (2pi)^(n    /2) / (2 * 4 * ... * n)
+      for n odd :  2 * (2pi)^((n-1)/2) / (1 * 3 * ... * n)
+      """
+      if n % 2 == 0:
+          f = 1.
+          i = 2
+          while i <= n:
+              f *= (2. / i * math.pi)
+              i += 2
+      else:
+          f = 2.
+          i = 3
+          while i <= n:
+              f *= (2. / i * math.pi)
+              i += 2
+      return f
+
+  def make_eigvals_positive(self,cov, targetprod):
+      """
+      For the symmetric square matrix ``cov``, increase any zero eigenvalues
+      to fulfill the given target product of eigenvalues.
+      Returns a (possibly) new matrix.
+      """  
+      w, v = np.linalg.eigh(cov)  # Use eigh because we assume a is symmetric.
+      mask = w < 1.e-10
+      if np.any(mask):
+          nzprod = np.product(w[~mask])  # product of nonzero eigenvalues
+          nzeros = mask.sum()  # number of zero eigenvalues
+          w[mask] = (targetprod / nzprod) ** (1./nzeros)  # adjust zero eigvals
+          cov = np.dot(np.dot(v, np.diag(w)), np.linalg.inv(v))  # re-form cov
+      return cov
+
+  def fix_cov2(self,samples,cov):
+      """
+      Ensure that ``cov`` is nonsingular.
+      It can be singular when the ellipsoid has zero volume, which happens
+      when npoints <= ndim or when enough points are linear combinations
+      of other points. (e.g., npoints = ndim+1 but one point is a linear
+      combination of others). When this happens, we expand the ellipse
+      in the zero dimensions to fulfill the volume expected from
+      ``pointvol``.
+      """
+      print '\nfixing cov'
+      npoints=self.N
+      expected_vol = np.exp(-iteration / float(npoints) )
+      pointvol= expected_vol / npoints 
+      targetprod = (npoints * pointvol / self.vol_prefactor(self.ndim))**2
+      return make_eigvals_positive(cov, targetprod)
+
   def get_cov(self,samples):
     cov=np.cov(np.transpose(samples))
     if self.is_positive_semi_definite(cov): 
       return cov
     else:
-      sigma=np.abs(np.diagonal(cov))**0.5
-      cnt=0
-      while 1:
-        cnt+=1
-        #if cnt%100==0: 
-        print 
-        print 'fixing cov attempts:',cnt
-        fake_samples=[sample+np.random.randn(sigma.size)*sigma for sample in samples]  
-        cov=np.cov(np.transpose(fake_samples))
-        if self.is_positive_semi_definite(cov): break
-      return cov
+      #return self.fix_cov1(samples,cov)
+      return self.fix_cov2(samples,cov)
+
+      print 
+      print 'cov is singular'
+      sys.exit() 
 
   def gen_new_samples(self):
 
@@ -98,14 +158,6 @@ class ELLIPSE:
     z=np.random.randn(self.N,self.dim)
     r=np.array([np.dot(z[i],z[i])**0.5 for i in range(self.N)])
     X=np.array([z[i]/r[i]*np.random.rand()**(1.0/self.dim) for i in range(self.N)])
-    #print '='*100
-    #print 'det='
-    #print self.det
-    #print 'w='
-    #print self.w
-    #print 'X='
-    #print X[0]
-
 
     # generate sphere samples
     Y=np.einsum('ij,nj->ni',self.F*self.T,X) + self.y0
@@ -126,9 +178,9 @@ class NEST:
     self.get_nll = conf['nll']
     self.pmin=np.array([entry[0] for entry in conf['par lims']])
     self.pmax=np.array([entry[1] for entry in conf['par lims']])
-    self.dp=np.array([entry[1]-entry[0] for entry in conf['par lims']])
+    self.dp=np.array([float(entry[1]-entry[0]) for entry in conf['par lims']])
     self.dim =len(conf['par lims']) 
-    self.jac=np.prod(self.dp)
+    self.jac=np.abs(np.prod(self.dp))
     self.N=conf['num points'] # number of active set
     self.factor=self.N/(self.N+1.) # factor to estimate prior mass
     self.V0=np.prod(self.dp)
@@ -345,9 +397,9 @@ class NEST:
         #  self.status='stop'
 
   def results(self):
-    log_x=np.log(self.samples_x)
-    log_l=np.log(self.samples_l)
-    log_w=log_x+log_l-self.logz[-1]
+    dx=0.5*(np.array(self.samples_x[:-1])-np.array(self.samples_x[1:]))
+    log_l=np.log(self.samples_l[1:])
+    log_w=np.log(dx*self.jac)+log_l
     weights=np.exp(log_w)
     weights/=np.sum(weights)
   
@@ -356,7 +408,7 @@ class NEST:
     data['x']=self.samples_x[1:][::-1]
     data['l']=self.samples_l[1:][::-1]
     data['logz']=self.logz
-    data['weights']=weights[1:][::-1]
+    data['weights']=weights[::-1]
     data['active p']=self.active_p
     data['active nll']=self.active_nll
     return data
