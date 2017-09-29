@@ -39,8 +39,8 @@ class STFUNCS:
 
   def get_K(self,i,z1,z2,pT,wq,k1,k2,hadron1,hadron2):
     if   i==1:
-      if pT != None: return 1
-      else : return 1./(2.*np.pi)  
+      if pT != None: return np.ones(11)
+      else : return 1./(2.*np.pi)*np.ones(11)
     elif i==2:
       if pT != None: return 4*self.Mh[hadron1]**2*z1**2*pT**2/wq**2
       else: return 2.*self.Mh[hadron1]**2*z1**2/(np.pi*wq)  
@@ -52,7 +52,7 @@ class STFUNCS:
 
   def get_gauss(self,z1,z2,pT,k1,k2,wq):
     if pT != None: return np.exp(-pT**2/wq)/(np.pi*wq)
-    else: return 1  
+    else: return np.ones(11)
 
   def ZX(self,i,z1,z2,Q2,pT,hadron1,hadron2):
     k1=self.D[i]['k1']
@@ -63,7 +63,13 @@ class STFUNCS:
     Wq=self.get_Wq(z1,z2,k1,k2,hadron1,hadron2)
     gauss=self.get_gauss(z1,z2,pT,k1,k2,Wq)
     K=self.get_K(i,z1,z2,pT,Wq,k1,k2,hadron1,hadron2)
-    return np.sum(self.e2*K*D1*D2*gauss)
+    return self.e2[1]*D1[1]*D2[2]*K[1]*gauss[1]\
+          +self.e2[2]*D1[2]*D2[1]*K[2]*gauss[2]\
+          +self.e2[3]*D1[3]*D2[4]*K[3]*gauss[3]\
+          +self.e2[4]*D1[4]*D2[3]*K[4]*gauss[4]\
+          +self.e2[5]*D1[5]*D2[6]*K[5]*gauss[5]\
+          +self.e2[6]*D1[6]*D2[5]*K[6]*gauss[6]
+    #return np.sum(self.e2*K*D1D2*gauss)
 
 
 if __name__=='__main__':
