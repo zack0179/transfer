@@ -246,28 +246,15 @@ class SIVERS(CORE):
 
     self.shape={}
     self.shape['p']=np.zeros((11,5))
-    self.shape['p'][1]=[0.4,0.35,2.6,0,0]
-    self.shape['p'][3]=[-0.97,0.44,0.9,0,0]
+    self.shape['p'][1]=[0.46,1.11,3.64,0,0]
+    self.shape['p'][3]=[-1,1.11,3.64,0,0]
 
     self.widths0={}
-    self.widths0['valence']=0.143
-    self.widths0['sea']=0.143
+    self.widths0['valence']=0.26
+    self.widths0['sea']=0.26
 
     self.widths={}
     self.widths['p']=np.ones(11)
-
-    self.M={}
-    self.M['p']=0.19**0.5
-    self.M['n']=0.19**0.5
-
-    self.K={}
-    self.norm={}
-
-  def get_norm(self,hadron):
-    return -np.sqrt(np.exp(1)/2)/(self.aux.M*self.M[hadron])*self.widths[hadron]**2/self.conf['pdf'].widths[hadron]
-
-  def get_K(self,hadron):
-    return 2*self.aux.M/self.widths[hadron]
 
   def setup(self):
     for i in range(11):
@@ -277,13 +264,9 @@ class SIVERS(CORE):
         self.widths['p'][i]=self.widths0['sea']
     self.shape['n']=self.p2n(self.shape['p'])
     self.widths['n']=self.p2n(self.widths['p'])
-    for hadron in ['p','n']:
-      self.norm[hadron]=self.get_norm(hadron)
-      self.K[hadron]=self.get_K(hadron)
 
   def get_C(self,x,Q2,target='p'):
-    #unpol=self.conf['_pdf'].get_f(x,Q2)
-    C=self.get_collinear(x,target)#*unpol
+    C=self.get_collinear(x,target)
     if target=='n': C=self.p2n(C)
     return C
 
@@ -296,14 +279,6 @@ class TRANSVERSITY(CORE):
     self.setup()
 
   def set_default_params(self):
-
-    self.K={}
-    self.K['p']=np.ones(11)
-    self.K['n']=np.ones(11)
-
-    self.norm={}
-    self.norm['p']=np.ones(11)
-    self.norm['n']=np.ones(11)
 
     self.shape={}
     self.shape['p']=np.zeros((11,5))
@@ -327,9 +302,7 @@ class TRANSVERSITY(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
 
   def get_C(self,x,Q2,target='p'):
-    #unpol=self.conf['_pdf'].get_f(x,Q2)
-    #pol=self.conf['_ppdf'].get_f(x,Q2)
-    C=self.get_collinear(x,target)#*(unpol+pol)/2
+    C=self.get_collinear(x,target)
     if target=='n': C=self.p2n(C)
     return C
 

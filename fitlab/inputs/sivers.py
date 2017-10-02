@@ -38,16 +38,16 @@ conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.8559904950540290213
 
 conf['params']['sivers']={}
 conf['params']['sivers']['widths0 valence'] = {'value':<<    1.00000000000000008180e-05>>,'fixed':False,'min':1e-5,'max':2}
-conf['params']['sivers']['widths0 sea']     = {'value':<<    1.00000000000000008180e-05>>,'fixed':False,'min':1e-5,'max':2}
-conf['params']['sivers']['u N']  = {'value':<<   -1.51665326727977944898e-01>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['sivers']['u a']  = {'value':<<   -1.59394237888853318452e-01>> ,'fixed':False,'min':-1,'max':10}
-conf['params']['sivers']['u b']  = {'value':<<    2.69011049157482418082e+00>> ,'fixed':False,'min':1e-5,'max':10}
-conf['params']['sivers']['d N']  = {'value':<<    1.09797471381981523453e-01>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['sivers']['d a']  = {'value':<<    5.97783094536552539466e-02>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['sivers']['d b']  = {'value':<<    4.55829923372643808221e+00>> ,'fixed':False,'min':1e-5,'max':20}
-conf['params']['sivers']['s N']  = {'value':<<    3.06489330647090017778e-02>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['sivers']['s a']  = {'value':<<    3.55356385002334462797e-02>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['sivers']['s b']  = {'value':<<    2.21886724234243715159e-02>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['sivers']['widths0 sea']     = {'value':<<    3.88407094276222220053e-01>>,'fixed':False,'min':1e-5,'max':2}
+conf['params']['sivers']['u N']  = {'value':<<   -1.59566060810277743354e-01>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['sivers']['u a']  = {'value':<<   -3.19648809885775264661e-01>> ,'fixed':False,'min':-1,'max':10}
+conf['params']['sivers']['u b']  = {'value':<<    2.11682143552287582722e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['sivers']['d N']  = {'value':<<    1.29900971564707534700e-01>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['sivers']['d a']  = {'value':<<    2.80154926366549261729e-02>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['sivers']['d b']  = {'value':<<    3.95641834085269827881e+00>> ,'fixed':False,'min':1e-5,'max':20}
+conf['params']['sivers']['s N']  = {'value':<<    1.49607169817950261259e-02>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['sivers']['s a']  = {'value':<<    1.29166014285342356516e-03>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['sivers']['s b']  = {'value':<<    1.65373612389350554963e-01>> ,'fixed':False,'min':1e-5,'max':10}
 
 conf['params']['sivers']['u c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['sivers']['d c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
