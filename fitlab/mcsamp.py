@@ -139,3 +139,30 @@ class MCSAMP:
       RAW={'THY':THY,'RES':RES}
       save(RAW,'%s/raw%d'%(outputdir,i))
 
+  def sivers_simulation(self):
+    resman=self.conf['resman']
+    inputfile=self.conf['args'].config
+    nestfile=self.conf['args'].file
+    nest=load(nestfile)
+    par=nest['samples'][0]
+    resman.get_residuals(par)
+
+    for k in self.conf['datasets']: 
+      if k=='sidis': 
+        for kk in self.conf['datasets'][k]['xlsx']: 
+          resman.sidisres.tabs[kk]['value']=resman.sidisres.tabs[kk]['thy']
+          tab=pd.DataFrame(resman.sidisres.tabs[kk])
+          writer = pd.ExcelWriter(self.conf['datasets'][k]['xlsx'][kk])
+          tab.to_excel(writer,'Sheet1')
+          writer.save()
+
+
+
+
+
+
+
+
+
+
+

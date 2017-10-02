@@ -160,7 +160,7 @@ class RESIDUALS(_RESIDUALS):
     L.append(self.reaction)
 
     for k in self.tabs:
-      print k,len(self.tabs[k]['value'])
+      #print k,len(self.tabs[k]['value'])
       if self.tabs[k]['value'].size==0: continue
       res =self._get_residuals(k)
       rres=self._get_rres(k)
