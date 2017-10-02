@@ -96,13 +96,13 @@ class RESIDUALS(_RESIDUALS):
 
         FUT=self.stfuncs.get_FX(5,x,z,Q2,pT,'p',hadron)
         FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
-        thy = factor*FUT/FUU
+        thy = FUT/FUU
 
       elif target=='neutron': 
 
         FUT=self.stfuncs.get_FX(5,x,z,Q2,pT,'n',hadron)
         FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'n',hadron)
-        thy = factor*FUT/FUU
+        thy = FUT/FUU
 
       elif target=='deuteron': 
 
@@ -111,7 +111,7 @@ class RESIDUALS(_RESIDUALS):
         FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)\
            +self.stfuncs.get_FX(1,x,z,Q2,pT,'n',hadron)
 
-        thy = factor*FUT/FUU
+        thy = FUT/FUU
 
     elif obs == 'AUUcos':      
 
