@@ -71,7 +71,7 @@ class STFUNCS:
     elif i==2: return 0
     elif i==3: return x
     elif i==4: return 2*x*z*pT*self.Mh[hadron]/wq
-    elif i==5: return -2*x*z*pT*self.aux.M*pT/wq
+    elif i==5: return -2*x*z*pT*self.aux.M/wq
     elif i==6: return 0
     elif i==7: return 4*x*z**2*self.aux.M*pT**2*self.Mh[hadron]/wq**2
     elif i==8: return 2*x*z**3*pT**3*self.Mh[hadron]*self.conf[k1].widths[target]/wq**3
