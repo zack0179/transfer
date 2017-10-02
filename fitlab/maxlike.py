@@ -123,6 +123,7 @@ class ML:
     #outputdir='runs/%s'%name
     #checkdir(outputdir)
     #outputfile='%s/%s.py'%(outputdir,name)
+
     F=open(inputfile,'w')
     F.writelines(L)
     F.close()
@@ -181,3 +182,4 @@ class ML:
     fit=leastsq(self.get_residuals,guess,full_output = 1, ftol=1e-2)#,ftol=1e-2)#,factor=0.1)#,ftol=1e-2)
     #res=self.get_residuals(fit[0],delay=True)
 
+    self.gen_output()
