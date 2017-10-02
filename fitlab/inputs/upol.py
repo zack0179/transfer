@@ -66,10 +66,12 @@ conf['datasets']['sidis']['xlsx'][1007]='../database/sidis/expdata/1007.xlsx'  #
 conf['datasets']['sidis']['norm']={}
 for k in conf['datasets']['sidis']['xlsx']: conf['datasets']['sidis']['norm'][k]={'value':1,'fixed':True,'min':0,'max':1} 
 
-conf['datasets']['sidis']['filters']=[]
-conf['datasets']['sidis']['filters'].append("z<0.6") 
-conf['datasets']['sidis']['filters'].append("Q2>1.69") 
-conf['datasets']['sidis']['filters'].append("pT>0.2 and pT<0.9") 
+conf['datasets']['sidis']['filters']={}
+conf['datasets']['sidis']['filters'][0]={}
+conf['datasets']['sidis']['filters'][0]['idx']=[1000]#,1001,1004,1005,1002,1003,1006,1007]
+conf['datasets']['sidis']['filters'][0]['filter']="z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9"
+
+
 
 
 
