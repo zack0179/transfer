@@ -8,6 +8,7 @@ from external.CJLIB.CJ import CJ
 from external.LSSLIB.LSS import LSS
 from external.DSSLIB.DSS import DSS
 from aux import AUX
+from scipy.special import gamma
 
 class CORE:
 
@@ -47,14 +48,20 @@ class CORE:
     km[6] = s
     return km
 
-  def get_shape(self,x,p):
-    return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
+  def beta(self,a,b):
+    return gamma(a)*gamma(b)/gamma(a+b)
 
-  def get_prefactor(self,x,hadron):
+  def get_shape(self,x,p):
+    if self.conf['shape']==0:
+       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
+    elif self.conf['shape']==1:
+       norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
+       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
+
+  def get_collinear(self,x,hadron):
     N=np.zeros(11)
     for i in range(11): 
       N[i]=self.get_shape(x,self.shape[hadron][i])
-      #return self.norm[hadron]*N
     return N
 
   def get_gauss(self,kT2,hadron):
@@ -181,8 +188,8 @@ class COLLINS(CORE):
     self.widths0['k+ unfav'] =0.11
 
     self.shape={}
-    self.shape['pi+']=np.zeros((11,5))
-    self.shape['k+']=np.zeros((11,5))
+    self.shape['pi+']=np.zeros((11,5))+0.1
+    self.shape['k+']=np.zeros((11,5))+0.1
     
     self.widths={}
     self.widths['pi+']=np.ones(11)
@@ -222,7 +229,7 @@ class COLLINS(CORE):
 
   def get_C(self,z,Q2,hadron='pi+'):
     #ff=self.conf['_ff'].get_f(z,Q2,hadron)
-    C=self.get_prefactor(z,hadron)#*ff
+    C=self.get_collinear(z,hadron)#*ff
     #print hadron,self.shape[hadron]
     C[0]=0 # glue is not supported
     return C
@@ -276,7 +283,7 @@ class SIVERS(CORE):
 
   def get_C(self,x,Q2,target='p'):
     #unpol=self.conf['_pdf'].get_f(x,Q2)
-    C=self.get_prefactor(x,target)#*unpol
+    C=self.get_collinear(x,target)#*unpol
     if target=='n': C=self.p2n(C)
     return C
 
@@ -322,7 +329,7 @@ class TRANSVERSITY(CORE):
   def get_C(self,x,Q2,target='p'):
     #unpol=self.conf['_pdf'].get_f(x,Q2)
     #pol=self.conf['_ppdf'].get_f(x,Q2)
-    C=self.get_prefactor(x,target)#*(unpol+pol)/2
+    C=self.get_collinear(x,target)#*(unpol+pol)/2
     if target=='n': C=self.p2n(C)
     return C
 
@@ -413,7 +420,7 @@ class BOERMULDERS(CORE):
 
   def get_C(self,x,Q2,target='p'):
     unpol=self.conf['_pdf'].get_f(x,Q2)
-    C=self.get_prefactor(x,target)*unpol
+    C=self.get_collinear(x,target)*unpol
     if target=='n': C=self.p2n(C)
     return C
 
@@ -469,7 +476,7 @@ class PRETZELOSITY(CORE):
   def get_C(self,x,Q2,target='p'):
     unpol=self.conf['_pdf'].get_f(x,Q2)
     pol=self.conf['_ppdf'].get_f(x,Q2)
-    C=self.get_prefactor(x,target)*(unpol - pol)
+    C=self.get_collinear(x,target)*(unpol - pol)
     if target=='n': C=self.p2n(C)
     return C
 
