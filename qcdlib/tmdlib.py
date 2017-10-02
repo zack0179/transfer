@@ -8,6 +8,7 @@ from external.CJLIB.CJ import CJ
 from external.LSSLIB.LSS import LSS
 from external.DSSLIB.DSS import DSS
 from aux import AUX
+from scipy.special import gamma
 
 class CORE:
 
@@ -47,14 +48,20 @@ class CORE:
     km[6] = s
     return km
 
-  def get_shape(self,x,p):
-    return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
+  def beta(self,a,b):
+    return gamma(a)*gamma(b)/gamma(a+b)
 
-  def get_prefactor(self,x,hadron):
+  def get_shape(self,x,p):
+    if self.conf['shape']==0:
+       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
+    elif self.conf['shape']==1:
+       norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
+       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
+
+  def get_collinear(self,x,hadron):
     N=np.zeros(11)
     for i in range(11): 
       N[i]=self.get_shape(x,self.shape[hadron][i])
-      #return self.norm[hadron]*N
     return N
 
   def get_gauss(self,kT2,hadron):
@@ -181,8 +188,8 @@ class COLLINS(CORE):
     self.widths0['k+ unfav'] =0.11
 
     self.shape={}
-    self.shape['pi+']=np.zeros((11,5))
-    self.shape['k+']=np.zeros((11,5))
+    self.shape['pi+']=np.zeros((11,5))+0.1
+    self.shape['k+']=np.zeros((11,5))+0.1
     
     self.widths={}
     self.widths['pi+']=np.ones(11)
@@ -222,7 +229,7 @@ class COLLINS(CORE):
 
   def get_C(self,z,Q2,hadron='pi+'):
     #ff=self.conf['_ff'].get_f(z,Q2,hadron)
-    C=self.get_prefactor(z,hadron)#*ff
+    C=self.get_collinear(z,hadron)#*ff
     #print hadron,self.shape[hadron]
     C[0]=0 # glue is not supported
     return C
@@ -236,67 +243,6 @@ class SIVERS(CORE):
     self.setup()
 
   def set_default_params(self):
-
-    self.shape={}
-    self.shape['p']=np.zeros((11,5))
-    self.shape['p'][1]=[0.4,0.35,2.6,0,0]
-    self.shape['p'][3]=[-0.97,0.44,0.9,0,0]
-
-    self.widths0={}
-    self.widths0['valence']=0.143
-    self.widths0['sea']=0.143
-
-    self.widths={}
-    self.widths['p']=np.ones(11)
-
-    self.M={}
-    self.M['p']=0.19**0.5
-    self.M['n']=0.19**0.5
-
-    self.K={}
-    self.norm={}
-
-  def get_norm(self,hadron):
-    return -np.sqrt(np.exp(1)/2)/(self.aux.M*self.M[hadron])*self.widths[hadron]**2/self.conf['pdf'].widths[hadron]
-
-  def get_K(self,hadron):
-    return 2*self.aux.M/self.widths[hadron]
-
-  def setup(self):
-    for i in range(11):
-      if i==1 or i==3:
-        self.widths['p'][i]=self.widths0['valence']
-      else:
-        self.widths['p'][i]=self.widths0['sea']
-    self.shape['n']=self.p2n(self.shape['p'])
-    self.widths['n']=self.p2n(self.widths['p'])
-    for hadron in ['p','n']:
-      self.norm[hadron]=self.get_norm(hadron)
-      self.K[hadron]=self.get_K(hadron)
-
-  def get_C(self,x,Q2,target='p'):
-    #unpol=self.conf['_pdf'].get_f(x,Q2)
-    C=self.get_prefactor(x,target)#*unpol
-    if target=='n': C=self.p2n(C)
-    return C
-
-class TRANSVERSITY(CORE):
-
-  def __init__(self,conf):
-    self.aux=conf['aux']
-    self.conf=conf
-    self.set_default_params()
-    self.setup()
-
-  def set_default_params(self):
-
-    self.K={}
-    self.K['p']=np.ones(11)
-    self.K['n']=np.ones(11)
-
-    self.norm={}
-    self.norm['p']=np.ones(11)
-    self.norm['n']=np.ones(11)
 
     self.shape={}
     self.shape['p']=np.zeros((11,5))
@@ -320,9 +266,43 @@ class TRANSVERSITY(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
 
   def get_C(self,x,Q2,target='p'):
-    #unpol=self.conf['_pdf'].get_f(x,Q2)
-    #pol=self.conf['_ppdf'].get_f(x,Q2)
-    C=self.get_prefactor(x,target)#*(unpol+pol)/2
+    C=self.get_collinear(x,target)
+    if target=='n': C=self.p2n(C)
+    return C
+
+class TRANSVERSITY(CORE):
+
+  def __init__(self,conf):
+    self.aux=conf['aux']
+    self.conf=conf
+    self.set_default_params()
+    self.setup()
+
+  def set_default_params(self):
+
+    self.shape={}
+    self.shape['p']=np.zeros((11,5))
+    self.shape['p'][1]=[0.46,1.11,3.64,0,0]
+    self.shape['p'][3]=[-1,1.11,3.64,0,0]
+
+    self.widths0={}
+    self.widths0['valence']=0.26
+    self.widths0['sea']=0.26
+
+    self.widths={}
+    self.widths['p']=np.ones(11)
+
+  def setup(self):
+    for i in range(11):
+      if i==1 or i==3:
+        self.widths['p'][i]=self.widths0['valence']
+      else:
+        self.widths['p'][i]=self.widths0['sea']
+    self.shape['n']=self.p2n(self.shape['p'])
+    self.widths['n']=self.p2n(self.widths['p'])
+
+  def get_C(self,x,Q2,target='p'):
+    C=self.get_collinear(x,target)
     if target=='n': C=self.p2n(C)
     return C
 
@@ -413,7 +393,7 @@ class BOERMULDERS(CORE):
 
   def get_C(self,x,Q2,target='p'):
     unpol=self.conf['_pdf'].get_f(x,Q2)
-    C=self.get_prefactor(x,target)*unpol
+    C=self.get_collinear(x,target)*unpol
     if target=='n': C=self.p2n(C)
     return C
 
@@ -469,7 +449,7 @@ class PRETZELOSITY(CORE):
   def get_C(self,x,Q2,target='p'):
     unpol=self.conf['_pdf'].get_f(x,Q2)
     pol=self.conf['_ppdf'].get_f(x,Q2)
-    C=self.get_prefactor(x,target)*(unpol - pol)
+    C=self.get_collinear(x,target)*(unpol - pol)
     if target=='n': C=self.p2n(C)
     return C
 

@@ -25,6 +25,8 @@
 | 2012  | [link][?]    | proton   | k-     | AUTsivers  | hermes     | PT         |
 | 2013  | [link][?]    | proton   | k-     | AUTsivers  | hermes     | x          |
 | 2014  | [link][?]    | proton   | k-     | AUTsivers  | hermes     | z          |
+| 2015  | [link][?]    | neutron  | pi+    | AUTsivers  | jlab       | x          |
+| 2016  | [link][?]    | neutron  | pi-    | AUTsivers  | jlab       | x          |
 | 2017  | [link][?]    | proton   | k0     | AUTsivers  | compass    | PT         |
 | 2018  | [link][?]    | proton   | k0     | AUTsivers  | compass    | x          |
 | 2019  | [link][?]    | proton   | k0     | AUTsivers  | compass    | z          |
@@ -48,8 +50,18 @@
 | 2037  | [link][?]    | deuteron | k-     | AUTsivers  | compass    | z          |
 | 2038  | [link][?]    | neutron  | k+     | AUTsivers  | jlab       | x          |
 | 2039  | [link][?]    | neutron  | k-     | AUTsivers  | jlab       | x          |
-| 2015  | [link][?]    | neutron  | pi+    | AUTsivers  | jlab       | x          |
-| 2016  | [link][?]    | neutron  | pi-    | AUTsivers  | jlab       | x          |
+| 2500  | [link][?]    | neutron  | pi+    | AUTsivers  | solid      | x          |
+| 2501  | [link][?]    | neutron  | pi-    | AUTsivers  | solid      | x          |
+| 2502  | [link][?]    | proton   | pi+    | AUTsivers  | solid      | x          |
+| 2503  | [link][?]    | proton   | pi-    | AUTsivers  | solid      | x          |
+| 2504  | [link][?]    | proton   | pi+    | AUTsivers  | clas12     | x          |
+| 2505  | [link][?]    | proton   | pi-    | AUTsivers  | clas12     | x          |
+| 2506  | [link][?]    | neutron  | pi+    | AUTsivers  | sbs        | x          |
+| 2507  | [link][?]    | neutron  | pi-    | AUTsivers  | sbs        | x          |
+| 2508  | [link][?]    | neutron  | pi+    | AUTsivers  | solid stat | x          |
+| 2509  | [link][?]    | neutron  | pi-    | AUTsivers  | solid stat | x          |
+| 2510  | [link][?]    | proton   | pi+    | AUTsivers  | solid stat | x          |
+| 2511  | [link][?]    | proton   | pi-    | AUTsivers  | solid stat | x          |
 | 3000  | [link][?]    | proton   | pi+    | AUTcollins | hermes     | x          |
 | 3003  | [link][?]    | proton   | pi+    | AUTcollins | hermes     | z          |
 | 3026  | [link][?]    | proton   | pi+    | AUTcollins | hermes     | pt         |

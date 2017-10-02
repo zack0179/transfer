@@ -30,6 +30,11 @@ class MOMENTS:
     N,a,b,c,d=params
     return N*(self.beta(1+a,b+1)+c*self.beta(1+0.5+a,b+1)+d*self.beta(1+1+a,b+1))
 
+  def get_flav(self,flav):
+    shape=self.conf['transversity'].shape['p']
+    if flav=='u': return self.get_moment(shape[1])
+    if flav=='d': return self.get_moment(shape[3])
+
   def get_gT(self):
     shape=self.conf['transversity'].shape['p']
     mom_u=self.get_moment(shape[1])

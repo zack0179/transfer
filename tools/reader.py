@@ -12,8 +12,9 @@ class _READER:
   def apply_cuts(self,tab,k):
     if 'filters' in self.conf['datasets'][self.reaction]:
       filters=self.conf['datasets'][self.reaction]['filters']
-      for f in filters:
-        tab=tab.query(f)
+      for i in filters:
+        if k in filters[i]['idx']:
+          tab=tab.query(filters[i]['filter'])
     return tab
 
   def load_data_sets(self,reaction):

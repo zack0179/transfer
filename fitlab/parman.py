@@ -114,26 +114,38 @@ class PARMAN:
     self.conf['sivers'].shape['p'][1][0]=self.conf['params']['sivers']['u N']['value']
     self.conf['sivers'].shape['p'][1][1]=self.conf['params']['sivers']['u a']['value']
     self.conf['sivers'].shape['p'][1][2]=self.conf['params']['sivers']['u b']['value']
-
-    self.conf['sivers'].shape['p'][2][0]=self.conf['params']['sivers']['ub N']['value']
-    self.conf['sivers'].shape['p'][2][1]=self.conf['params']['sivers']['ub a']['value']
-    self.conf['sivers'].shape['p'][2][2]=self.conf['params']['sivers']['ub b']['value']
+    self.conf['sivers'].shape['p'][1][3]=self.conf['params']['sivers']['u c']['value']
+    self.conf['sivers'].shape['p'][1][4]=self.conf['params']['sivers']['u d']['value']
 
     self.conf['sivers'].shape['p'][3][0]=self.conf['params']['sivers']['d N']['value']
     self.conf['sivers'].shape['p'][3][1]=self.conf['params']['sivers']['d a']['value']
     self.conf['sivers'].shape['p'][3][2]=self.conf['params']['sivers']['d b']['value']
-
-    self.conf['sivers'].shape['p'][4][0]=self.conf['params']['sivers']['db N']['value']
-    self.conf['sivers'].shape['p'][4][1]=self.conf['params']['sivers']['db a']['value']
-    self.conf['sivers'].shape['p'][4][2]=self.conf['params']['sivers']['db b']['value']
+    self.conf['sivers'].shape['p'][3][3]=self.conf['params']['sivers']['d c']['value']
+    self.conf['sivers'].shape['p'][3][4]=self.conf['params']['sivers']['d d']['value']
 
     self.conf['sivers'].shape['p'][5][0]=self.conf['params']['sivers']['s N']['value']
     self.conf['sivers'].shape['p'][5][1]=self.conf['params']['sivers']['s a']['value']
     self.conf['sivers'].shape['p'][5][2]=self.conf['params']['sivers']['s b']['value']
+    self.conf['sivers'].shape['p'][5][3]=self.conf['params']['sivers']['s c']['value']
+    self.conf['sivers'].shape['p'][5][4]=self.conf['params']['sivers']['s d']['value']
 
-    self.conf['sivers'].shape['p'][6][0]=self.conf['params']['sivers']['sb N']['value']
-    self.conf['sivers'].shape['p'][6][1]=self.conf['params']['sivers']['sb a']['value']
-    self.conf['sivers'].shape['p'][6][2]=self.conf['params']['sivers']['sb b']['value']
+    self.conf['sivers'].shape['p'][2][0]=self.conf['params']['sivers']['s N']['value']
+    self.conf['sivers'].shape['p'][2][1]=self.conf['params']['sivers']['s a']['value']
+    self.conf['sivers'].shape['p'][2][2]=self.conf['params']['sivers']['s b']['value']
+    self.conf['sivers'].shape['p'][2][3]=self.conf['params']['sivers']['s c']['value']
+    self.conf['sivers'].shape['p'][2][4]=self.conf['params']['sivers']['s d']['value']
+
+    self.conf['sivers'].shape['p'][4][0]=self.conf['params']['sivers']['s N']['value']
+    self.conf['sivers'].shape['p'][4][1]=self.conf['params']['sivers']['s a']['value']
+    self.conf['sivers'].shape['p'][4][2]=self.conf['params']['sivers']['s b']['value']
+    self.conf['sivers'].shape['p'][4][3]=self.conf['params']['sivers']['s c']['value']
+    self.conf['sivers'].shape['p'][4][4]=self.conf['params']['sivers']['s d']['value']
+
+    self.conf['sivers'].shape['p'][6][0]=self.conf['params']['sivers']['s N']['value']
+    self.conf['sivers'].shape['p'][6][1]=self.conf['params']['sivers']['s a']['value']
+    self.conf['sivers'].shape['p'][6][2]=self.conf['params']['sivers']['s b']['value']
+    self.conf['sivers'].shape['p'][6][3]=self.conf['params']['sivers']['s c']['value']
+    self.conf['sivers'].shape['p'][6][4]=self.conf['params']['sivers']['s d']['value']
 
     self.conf['sivers'].setup() 
 

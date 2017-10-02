@@ -1,9 +1,18 @@
 conf={}
 
 ############################################################################
+conf['method']='cov'
+conf['kappa']=1.1
+conf['tol']=10e-10
+conf['num points'] = 30#self.npar*3
+conf['burn size']  = 10
+conf['sample size']= 10000
+
+
+############################################################################
 # resouce allocation
 
-conf['ncpus']=2
+conf['ncpus']=1
 
 ############################################################################
 # maxlike setup
@@ -37,14 +46,14 @@ conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.1592050064479331172
 conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.39782079427820671302e-01>>,'fixed':True,'min':0,'max':1}
 
 conf['params']['collins']={}
-conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    1.93372540999113828875e-01>>,'fixed':False,'min':1e-5,'max':1}
-conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    1.07590924544594623846e-01>>,'fixed':False,'min':1e-5,'max':2}
-conf['params']['collins']['pi+ u N']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':False,'min':0,'max':20}
-conf['params']['collins']['pi+ u a']  = {'value':<<   -7.33096174422596114084e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['collins']['pi+ u b']  = {'value':<<    3.29752949129968619957e+00>> ,'fixed':False,'min':1e-5,'max':10}
-conf['params']['collins']['pi+ d N']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':False,'min':-20,'max':0}
-conf['params']['collins']['pi+ d a']  = {'value':<<   -9.96416889048547194108e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['collins']['pi+ d b']  = {'value':<<    1.31137258641561249561e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    7.59388019559753546517e-02>>,'fixed':False,'min':1e-5,'max':1}
+conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    8.15831057772213208423e-01>>,'fixed':False,'min':1e-5,'max':2}
+conf['params']['collins']['pi+ u N']  = {'value':<<    1.52970943108292317447e+02>> ,'fixed':False,'min':0,'max':1000}
+conf['params']['collins']['pi+ u a']  = {'value':<<    1.28690432826353795548e+00>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['pi+ u b']  = {'value':<<    6.92967114331308575714e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['collins']['pi+ d N']  = {'value':<<   -5.11750333892882736109e+00>> ,'fixed':False,'min':-1000,'max':0}
+conf['params']['collins']['pi+ d a']  = {'value':<<    3.49685422635008125170e-01>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['pi+ d b']  = {'value':<<    7.45083369660145322655e+00>> ,'fixed':False,'min':1e-5,'max':10}
 
 conf['params']['collins']['pi+ u c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ d c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
@@ -54,7 +63,7 @@ conf['params']['collins']['pi+ d d']  = {'value':<<    0.00000000000000000000e+0
 
 conf['params']['collins']['widths0 k+ fav']     = {'value':<<    1.79134333518971178290e-01>>,'fixed':True,'min':1e-5,'max':1}
 conf['params']['collins']['widths0 k+ unfav']   = {'value':<<    2.51796371609382285683e-01>>,'fixed':True,'min':1e-5,'max':2}
-conf['params']['collins']['k+ u N']  = {'value':<<    2.49420253053134821641e+00>> ,'fixed':True,'min':-5,'max':20}
+conf['params']['collins']['k+ u N']  = {'value':<<    4.94202530531348216414e-01>> ,'fixed':True,'min':-5,'max':20}
 conf['params']['collins']['k+ u a']  = {'value':<<   -9.46328421494753158072e-02>> ,'fixed':True,'min':-1,'max':5}
 conf['params']['collins']['k+ u b']  = {'value':<<    1.00000000000000008180e-05>> ,'fixed':True,'min':1e-5,'max':10}
 conf['params']['collins']['k+ d N']  = {'value':<<   -4.57665726638101233448e-02>> ,'fixed':True,'min':-10,'max':20}
