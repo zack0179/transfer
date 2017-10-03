@@ -126,12 +126,12 @@ if __name__=='__main__':
   msg+=" 3: mcsamp-nest"
   msg+=" 4: mcsamp-imc"
   msg+=" 5: mcsamp-analysis"
+  msg+=" 6: mcsamp-simulation"
   ap.add_argument('-t','--task',type=int,default=0,help=msg)
   ap.add_argument('-i','--runid',type=int,default=0,help=msg)
-  #ap.add_argument('-o','--outdir',type=str,default='.',help="output directory (default: %(default)s)")
-  #ap.add_argument('-x','--ignoresnap',action='store_true',help='do not load snapshot file')
   ap.add_argument('-f','--file',type=str,default='',help=" path to nest file")
-  #ap.add_argument('-q','--snapshot',type=str,default='.',help=" path to snapshot file")
+  ap.add_argument('-l','--list',nargs='+',help=" list of numbers e.g.: 123 234 345 ",default=[])
+  ap.add_argument('-r','--reaction',type=str,help=" e.g.: sidis, sia ",default='sidis')
   args = ap.parse_args()
   
   conf=load_config(args.config)
@@ -144,5 +144,6 @@ if __name__=='__main__':
   elif args.task==3: MCSAMP(conf).run_nest()
   elif args.task==4: MCSAMP(conf).run_imc()
   elif args.task==5: MCSAMP(conf).analysis()
+  elif args.task==6: MCSAMP(conf).simulation()
 
 

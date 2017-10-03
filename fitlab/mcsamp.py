@@ -5,6 +5,7 @@ from tools.tools import load,save,checkdir,load_config
 from tools.bar import BAR
 from nest import NEST
 from imc import IMC
+import pandas as pd
 
 class MCSAMP:
 
@@ -139,30 +140,26 @@ class MCSAMP:
       RAW={'THY':THY,'RES':RES}
       save(RAW,'%s/raw%d'%(outputdir,i))
 
-  def sivers_simulation(self):
+  def simulation(self):
     resman=self.conf['resman']
     inputfile=self.conf['args'].config
     nestfile=self.conf['args'].file
+    List=[int(idx) for idx in self.conf['args'].list]
+    reaction=self.conf['args'].reaction
+    
     nest=load(nestfile)
     par=nest['samples'][0]
     resman.get_residuals(par)
 
-    for k in self.conf['datasets']: 
-      if k=='sidis': 
-        for kk in self.conf['datasets'][k]['xlsx']: 
-          resman.sidisres.tabs[kk]['value']=resman.sidisres.tabs[kk]['thy']
-          tab=pd.DataFrame(resman.sidisres.tabs[kk])
-          writer = pd.ExcelWriter(self.conf['datasets'][k]['xlsx'][kk])
-          tab.to_excel(writer,'Sheet1')
-          writer.save()
-
-
-
-
-
-
-
-
-
+    if reaction=='sidis':
+      for k in List:
+        npts=resman.sidisres.tabs[k]['value'].size
+        resman.sidisres.tabs[k]['value']=resman.sidisres.tabs[k]['thy']+np.random.randn(npts)*resman.sidisres.tabs[k]['alpha']
+        tab=pd.DataFrame(resman.sidisres.tabs[k])
+        writer = pd.ExcelWriter(self.conf['datasets'][reaction]['xlsx'][k])
+        tab.to_excel(writer,'Sheet1')
+        writer.save()
+    else:
+      raise ValueError('reaction not supported for simulation. revise MCSAMP.simulation @ mcsamp.py')
 
 
