@@ -135,7 +135,7 @@ class ELLIPSE:
       """
       print '\nfixing cov'
       npoints=self.N
-      expected_vol = np.exp(-iteration / float(npoints) )
+      expected_vol = np.exp(-self.iteration / float(npoints) )
       pointvol= expected_vol / npoints 
       targetprod = (npoints * pointvol / self.vol_prefactor(self.ndim))**2
       return make_eigvals_positive(cov, targetprod)
@@ -145,8 +145,8 @@ class ELLIPSE:
     if self.is_positive_semi_definite(cov): 
       return cov
     else:
-      #return self.fix_cov1(samples,cov)
-      return self.fix_cov2(samples,cov)
+      return self.fix_cov1(samples,cov)
+      #return self.fix_cov2(samples,cov)
 
       print 
       print 'cov is singular'
