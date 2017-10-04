@@ -6,6 +6,8 @@ from tools.bar import BAR
 from nest import NEST
 from imc import IMC
 import pandas as pd
+import itertools as it
+import json
 
 class MCSAMP:
 
@@ -161,5 +163,50 @@ class MCSAMP:
         writer.save()
     else:
       raise ValueError('reaction not supported for simulation. revise MCSAMP.simulation @ mcsamp.py')
+
+  def simulation2(self):
+    resman=self.conf['resman']
+    inputfile=self.conf['args'].config
+    nestfile=self.conf['args'].file
+    
+    nest=load(nestfile)
+    par=nest['samples'][0]
+    resman.conf['parman'].set_new_params(par)
+
+    data={}
+    data['model']="WW+Gaussian"
+    data['particle']="pi+"
+    data['target']="p"
+    data['varialves']=["Fuu"]
+    data['axis']=[]
+    data['axis'].append({ "name": "a", "bins":  40, "min":  0.025, "max":   0.995, "scale":"arb" ,"description":"Bjorken x"})
+    data['axis'].append({ "name": "b", "bins":  40, "min":  0.95,  "max":    20.0, "scale":"arb", "description":"Q^2"},)
+    data['axis'].append({ "name": "c", "bins":  40, "min":  0.025, "max":   0.995, "scale":"lin", "description":"hadron frac. energy z"},)
+    data['axis'].append({ "name": "d", "bins":  40, "min":  0.00,  "max":    2.00, "scale":"lin", "description":"transverse momentum PT"})
+
+    Tab=json.dumps(data)
+    Tab=["#!"+Tab]
+
+    X =np.linspace(data['axis'][0]['min'],data['axis'][0]['max'],data['axis'][0]['bins'])
+    Q2=np.linspace(data['axis'][1]['min'],data['axis'][1]['max'],data['axis'][1]['bins'])
+    Z =np.linspace(data['axis'][2]['min'],data['axis'][2]['max'],data['axis'][2]['bins'])
+    PT =np.linspace(data['axis'][3]['min'],data['axis'][3]['max'],data['axis'][3]['bins'])
+
+    I=range(X.size)
+    print 
+    bar=BAR('generating json file',X.size**4)
+    for item in it.product(I,I,I,I):
+      iX,iQ2,iZ,iPT=item
+      Fuu=resman.sidisres.stfuncs.get_FX(1,X[iX],Z[iZ],Q2[iQ2],PT[iPT],data['target'],data['particle'])
+      row='%d '*4+' %f'
+      row=row%(iX,iQ2,iZ,iPT,Fuu)
+      Tab.append(row)
+      bar.next()
+    bar.finish()
+    print '\nsaving...'
+    Tab=[row+'\n' for row in Tab]
+    f = open("eva-stf.json",'w')
+    f.writelines(Tab)
+    f.close()
 
 
