@@ -137,7 +137,7 @@ class ELLIPSE:
       npoints=self.N
       expected_vol = np.exp(-self.iteration / float(npoints) )
       pointvol= expected_vol / npoints 
-      targetprod = (npoints * pointvol / self.vol_prefactor(self.ndim))**2
+      targetprod = (npoints * pointvol / self.vol_prefactor(self.dim))**2
       return make_eigvals_positive(cov, targetprod)
 
   def get_cov(self,samples):
