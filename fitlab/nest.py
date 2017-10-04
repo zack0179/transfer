@@ -145,8 +145,8 @@ class ELLIPSE:
     if self.is_positive_semi_definite(cov): 
       return cov
     else:
-      return self.fix_cov1(samples,cov)
-      #return self.fix_cov2(samples,cov)
+      #return self.fix_cov1(samples,cov)
+      return self.fix_cov2(samples,cov)
 
       print 
       print 'cov is singular'
@@ -194,7 +194,8 @@ class NEST:
       self.samples_nll=[]
       self.logz=[]
       self.cnt=0 # counter
-      self.attempts=None
+      self.attempts1=None
+      self.attempts2=None
       self.set_active_sets(self.N)
     else:
       self.active_p=conf['nestout']['active p']
@@ -205,7 +206,8 @@ class NEST:
       self.samples_nll=[-np.log(l) for l in self.samples_l]
       self.logz=conf['nestout']['logz']
       self.cnt=len(self.samples_l) # counter
-      self.attempts=None
+      self.attempts1=None
+      self.attempts2=None
 
     self.status='ready'
 
@@ -216,13 +218,14 @@ class NEST:
     return self.pmin + u*self.dp    
   
   def gen_par_flat(self,nll,verb=False):
-    self.attempts=0
+    self.attempts1=0
+    self.attempts2=0
     pmin=np.amin(self.active_p,axis=0)
     pmax=np.amax(self.active_p,axis=0)
     dp=pmax-pmin
     self.Vk=np.prod(dp)
     while 1:
-      self.attempts+=1
+      self.attempts2+=1
       u=uniform(0,1,self.dim)
       p=pmin + u*dp
       _nll = self.get_nll(p)
@@ -278,53 +281,22 @@ class NEST:
     return q,_nll
 
   def gen_par_cov(self,nll,p0=None,verb=False):
-    self.attempts=0
-    #print 'building ellipse'
+    self.attempts1=0
+    self.attempts2=0
     ellipse=ELLIPSE(self.active_p,self.conf['kappa'],self.cnt,self.conf['sample size'])
-    #print 'got ellips'
     self.Vk=ellipse.V
-    #pmin=np.amin(self.active_p,axis=0)
-    #pmax=np.amax(self.active_p,axis=0)
-    #dp=pmax-pmin
-    #out=0
-    #failed=False
-    #if ellipse.det<=0: failed=False
     cnt=0
-    #print 'start loop'
     while 1:
-      self.attempts+=1
-      if verb: print 'cov attempt',self.attempts
-      if ellipse.status()==False: ellipse.gen_new_samples()
+      if ellipse.status()==False: 
+        ellipse.gen_new_samples()
       p=ellipse.get_sample().real
       if np.any(np.isnan(p)):
         raise ValueError('parameters are nan')
-      
-      #if self.attempts<1000:
-      #  p=ellipse.get_sample().real
-      #  self.msg='normal'
-      #elif len(self.samples_p)>cnt:
-      #  print 
-      #  print '-----------'
-      #  cnt+=1
-      #  q=[p_ for p_ in self.active_p]
-      #  for i in range(cnt): q.append(self.samples_p[-i])
-      #  ellipse=ELLIPSE(q,self.conf['kappa'],self.conf['sample size'])
-      #  self.attemps=0
-      #  self.msg='increasing active p',cnt
-      #  continue
-      #if out<1000 and failed==False:
-      #  p=ellipse.get_sample().real
-      #else:
-      #  u=uniform(0,1,self.dim)
-      #  p=pmin + u*dp
-
-      #print self.attempts
-      # check limits
+      self.attempts1+=1
       if any([x<0 for x in p-self.pmin]) or any([x<0 for x in self.pmax-p]): continue
-      #print 'get nll'
+      self.attempts2+=1
       _nll = self.get_nll(p)
       if _nll<nll: break
-    #print 'out>>>'
     return p,_nll
 
   # nested sampling routines
@@ -382,8 +354,8 @@ class NEST:
       rel = std/mean
       nllmax=np.amax(self.active_nll)
       nllmin=np.amin(self.active_nll)
-      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  nll_min=%.3e nll_max=%0.3e  attemps=%10d  Vk/V0=%0.3e  %s  '
-      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,nllmin,nllmax,self.attempts,self.Vk/self.V0,self.msg)
+      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  nll_min=%.3e nll_max=%0.3e  attemps1=%10d  attemps2=%10d Vk/V0=%0.3e  %s  '
+      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,nllmin,nllmax,self.attempts1,self.attempts2,self.Vk/self.V0,self.msg)
       lprint(msg)
       # stopping criterion
       if 'itmax' in self.conf and self.cnt==self.conf['itmax']: 
