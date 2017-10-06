@@ -2,7 +2,7 @@ conf={}
 
 ############################################################################
 conf['method']='cov'
-conf['kappa']=1.0
+conf['kappa']=1.1
 conf['tol']=10e-10
 conf['num points'] = 19*3
 conf['burn size']  = 100
@@ -45,7 +45,7 @@ conf['params']['transversity']['u b']  = {'value':<<    9.48389907916761920603e-
 conf['params']['transversity']['d N']  = {'value':<<   -1.01603769646785080383e-01>> ,'fixed':False,'min':-20,'max':20}
 conf['params']['transversity']['d a']  = {'value':<<    1.39468988368021129531e-01>> ,'fixed':False,'min':-1,'max':5}
 conf['params']['transversity']['d b']  = {'value':<<    3.90127320887096118440e-01>> ,'fixed':False,'min':1e-5,'max':20}
-conf['params']['transversity']['s N']  = {'value':<<    1.89982378181352135060e-02>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['transversity']['s N']  = {'value':<<    0.0>> ,'fixed':False,'min':-10,'max':10}
 conf['params']['transversity']['s a']  = {'value':<<   -4.77330518076467313904e-01>> ,'fixed':False,'min':-1,'max':5}
 conf['params']['transversity']['s b']  = {'value':<<    1.18698546242516389526e+00>> ,'fixed':False,'min':1e-5,'max':10}
 
@@ -105,7 +105,7 @@ conf['datasets']['sidis']={}
 
 conf['datasets']['sidis']['filters']={}
 conf['datasets']['sidis']['filters'][0]={}
-conf['datasets']['sidis']['filters'][0]['idx']=[1000,1001,1004,1005,1002,1003,1006,1007]
+conf['datasets']['sidis']['filters'][0]['idx']=[4001,4000,4002,4004,4003,4005,3027,3025,3010,3012,3005,3013,3026,3000,3003,3016,3004,3018]
 conf['datasets']['sidis']['filters'][0]['filter']="z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9"
 
 conf['datasets']['sidis']['norm']={}
@@ -160,6 +160,22 @@ conf["datasets"]["sidis"]["xlsx"][3018]="../database/sidis/expdata/3018.xlsx"  #
 
 
 for k in conf['datasets']['sidis']['xlsx']: conf['datasets']['sidis']['norm'][k]={'value':1,'fixed':True,'min':0,'max':1} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
