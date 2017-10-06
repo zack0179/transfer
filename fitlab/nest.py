@@ -89,7 +89,7 @@ class ELLIPSE:
       if self.is_positive_semi_definite(cov): break
     return cov
 
-  def vol_prefactor(n):
+  def vol_prefactor(self,n):
       """Volume constant for an n-dimensional sphere:
       for n even:      (2pi)^(n    /2) / (2 * 4 * ... * n)
       for n odd :  2 * (2pi)^((n-1)/2) / (1 * 3 * ... * n)
@@ -98,13 +98,13 @@ class ELLIPSE:
           f = 1.
           i = 2
           while i <= n:
-              f *= (2. / i * math.pi)
+              f *= (2. / i * np.pi)
               i += 2
       else:
           f = 2.
           i = 3
           while i <= n:
-              f *= (2. / i * math.pi)
+              f *= (2. / i * np.pi)
               i += 2
       return f
 
@@ -138,15 +138,15 @@ class ELLIPSE:
       expected_vol = np.exp(-self.iteration / float(npoints) )
       pointvol= expected_vol / npoints 
       targetprod = (npoints * pointvol / self.vol_prefactor(self.dim))**2
-      return make_eigvals_positive(cov, targetprod)
+      return self.make_eigvals_positive(cov, targetprod)
 
   def get_cov(self,samples):
     cov=np.cov(np.transpose(samples))
     if self.is_positive_semi_definite(cov): 
       return cov
     else:
-      #return self.fix_cov1(samples,cov)
-      return self.fix_cov2(samples,cov)
+      return self.fix_cov1(samples,cov)
+      #return self.fix_cov2(samples,cov)
 
       print 
       print 'cov is singular'
@@ -222,12 +222,23 @@ class NEST:
     self.attempts2=0
     pmin=np.amin(self.active_p,axis=0)
     pmax=np.amax(self.active_p,axis=0)
-    dp=pmax-pmin
+    dp=(pmax-pmin)
     self.Vk=np.prod(dp)
+    dp=(pmax-pmin)*self.conf['kappa']
+    pmid=0.5*(pmin+pmax)
+    pmin=pmid-dp/2
     while 1:
       self.attempts2+=1
+
+      if self.attempts2>1000:
+        pmin=np.amin(self.active_p,axis=0)
+        pmax=np.amax(self.active_p,axis=0)
+        dp=(pmax-pmin)
+        self.conf['kappa']=1
+
       u=uniform(0,1,self.dim)
       p=pmin + u*dp
+      if any([x<0 for x in p-self.pmin]) or any([x<0 for x in self.pmax-p]): continue
       _nll = self.get_nll(p)
       if _nll<nll: break
     return p,_nll 
@@ -318,10 +329,11 @@ class NEST:
     self.samples_x.append(self.samples_x[-1]*self.factor)  
     self.cnt+=1
   
-    if self.cnt<self.conf['burn size']:
-      _p,_nll=self.gen_par_flat(nll)
-    else:
-      _p,_nll=self.gen_par_cov(nll,p)
+    _p,_nll=self.gen_par_flat(nll)
+    #if self.cnt<self.conf['burn size']:
+    #  _p,_nll=self.gen_par_flat(nll)
+    #else:
+    #  _p,_nll=self.gen_par_cov(nll,p)
   
     self.active_nll.append(_nll)
     self.active_p.append(_p)
