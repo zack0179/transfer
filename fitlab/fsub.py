@@ -24,7 +24,7 @@ def gen_xml(conf):
   xml.append('%s'%conf['cmd'])
   xml.append(']]>')
   xml.append('</Command>')
-  xml.append('<Memory space="10050" unit="MB"/>')
+  xml.append('<Memory space="6050" unit="MB"/>')
   xml.append('<Stdout dest="%s/out/%s.out"/>'%(conf['path'],conf['name']))
   xml.append('<Stderr dest="%s/err/%s.err"/>'%(conf['path'],conf['name']))
   xml.append('</Job>')
@@ -51,17 +51,24 @@ def send_job(conf):
 
 if __name__=='__main__':
 
-  for itrans in range(1):
-    for irun in range(10):
-      conf={}
-      conf['path']='/lustre/volatile/JAM/nsato/tmdpheno/fitpack'
-      conf['cpu']  = 1
-      conf['time'] = 8
-      conf['name'] = 'trans%d-%d'%(itrans,irun)
-      conf['cmd']  = './resman.py -t 3 -i %d inputs/transversity/transversity-%d.py'%(irun,itrans)
-      send_job(conf)
+  # itrans == 0: Nab, pions only
+  # itrans == 1: Nab, pions+kaons
+  itrans=0
 
+  conf={}
+  conf['path']='/lustre/volatile/JAM/nsato/tmdpheno/fitpack'
+  conf['cpu']  = 1
+  conf['time'] = 24
 
+  for irun in range(10):
 
+    conf['name'] = 'trans%d-%d'%(itrans,irun)
+    conf['cmd']  = './resman.py -t 3 -i %d inputs/transversity/transversity-%d.py'%(irun,itrans)
+    send_job(conf)
 
+  #for irun in range(10):
+
+  #  conf['name'] = 'transl%d-%d'%(itrans,irun)
+  #  conf['cmd']  = './resman.py -t 3 -i %d inputs/transversity/transversity-lattice-%d.py'%(irun,itrans)
+  #  send_job(conf)
 
