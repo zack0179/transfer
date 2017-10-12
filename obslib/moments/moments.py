@@ -34,6 +34,8 @@ class MOMENTS:
     shape=self.conf['transversity'].shape['p']
     if flav=='u': return self.get_moment(shape[1])
     if flav=='d': return self.get_moment(shape[3])
+    if flav=='uv': return self.get_moment(shape[1])-self.get_moment(shape[2])
+    if flav=='dv': return self.get_moment(shape[3])-self.get_moment(shape[4])
 
   def get_gT(self):
     shape=self.conf['transversity'].shape['p']
