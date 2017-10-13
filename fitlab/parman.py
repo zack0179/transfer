@@ -193,26 +193,31 @@ class PARMAN:
     self.conf['transversity'].setup() 
 
   def set_boermulders_params(self):
+    ''' Currently we're using the symmetric sea approximation 
+    where below, all sea quark parameters are set based on the 
+    value of the s quark parameters. 
+    '''
+
     self.conf['boermulders'].widths0['valence']=self.conf['params']['boermulders']['widths0 valence']['value']
     self.conf['boermulders'].widths0['sea']=self.conf['params']['boermulders']['widths0 sea']['value']
     self.conf['boermulders'].shape['p'][1][0]=self.conf['params']['boermulders']['u N']['value']
     self.conf['boermulders'].shape['p'][1][1]=self.conf['params']['boermulders']['u a']['value']
     self.conf['boermulders'].shape['p'][1][2]=self.conf['params']['boermulders']['u b']['value']
-    self.conf['boermulders'].shape['p'][2][0]=self.conf['params']['boermulders']['ub N']['value']
-    self.conf['boermulders'].shape['p'][2][1]=self.conf['params']['boermulders']['ub a']['value']
-    self.conf['boermulders'].shape['p'][2][2]=self.conf['params']['boermulders']['ub b']['value']
     self.conf['boermulders'].shape['p'][3][0]=self.conf['params']['boermulders']['d N']['value']
     self.conf['boermulders'].shape['p'][3][1]=self.conf['params']['boermulders']['d a']['value']
     self.conf['boermulders'].shape['p'][3][2]=self.conf['params']['boermulders']['d b']['value']
-    self.conf['boermulders'].shape['p'][4][0]=self.conf['params']['boermulders']['db N']['value']
-    self.conf['boermulders'].shape['p'][4][1]=self.conf['params']['boermulders']['db a']['value']
-    self.conf['boermulders'].shape['p'][4][2]=self.conf['params']['boermulders']['db b']['value']
+    self.conf['boermulders'].shape['p'][4][0]=self.conf['params']['boermulders']['s N']['value']
+    self.conf['boermulders'].shape['p'][4][1]=self.conf['params']['boermulders']['s a']['value']
+    self.conf['boermulders'].shape['p'][4][2]=self.conf['params']['boermulders']['s b']['value']
     self.conf['boermulders'].shape['p'][5][0]=self.conf['params']['boermulders']['s N']['value']
     self.conf['boermulders'].shape['p'][5][1]=self.conf['params']['boermulders']['s a']['value']
     self.conf['boermulders'].shape['p'][5][2]=self.conf['params']['boermulders']['s b']['value']
-    self.conf['boermulders'].shape['p'][6][0]=self.conf['params']['boermulders']['sb N']['value']
-    self.conf['boermulders'].shape['p'][6][1]=self.conf['params']['boermulders']['sb a']['value']
-    self.conf['boermulders'].shape['p'][6][2]=self.conf['params']['boermulders']['sb b']['value']
+    self.conf['boermulders'].shape['p'][6][0]=self.conf['params']['boermulders']['s N']['value']
+    self.conf['boermulders'].shape['p'][6][1]=self.conf['params']['boermulders']['s a']['value']
+    self.conf['boermulders'].shape['p'][6][2]=self.conf['params']['boermulders']['s b']['value']
+    self.conf['boermulders'].shape['p'][2][0]=self.conf['params']['boermulders']['s N']['value']
+    self.conf['boermulders'].shape['p'][2][1]=self.conf['params']['boermulders']['s a']['value']
+    self.conf['boermulders'].shape['p'][2][2]=self.conf['params']['boermulders']['s b']['value']
     self.conf['boermulders'].setup() 
 
   def set_collins_params(self):
