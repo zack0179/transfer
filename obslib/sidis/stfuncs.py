@@ -146,6 +146,7 @@ if __name__=='__main__':
   conf['path2DSS']='../../external/DSSLIB'
 
   conf['order']='LO'
+  conf['shape'] = 0
   conf['aux']  =AUX()
   conf['_pdf'] =CJ(conf)
   conf['_ppdf']=LSS(conf)
@@ -175,11 +176,11 @@ if __name__=='__main__':
   hangle=math.pi/2
   target='p'
   hadron='pi+' 
-  for i in range(1,22): print i,stfuncs.get_FX(i,x,z,Q2,mu2,pT,target,hadron)
-  print stfuncs.dcs(x,Q2,mu2,y,z,pT,sangle,hangle,target,hadron)
-  print stfuncs.unpolarizedCS(x,Q2,mu2,y,z,pT,sangle,hangle,target,hadron)
+  for i in range(1,22): print i,stfuncs.get_FX(i,x,z,Q2,pT,target,hadron)
+  print stfuncs.dcs(x,Q2,y,z,pT,sangle,hangle,target,hadron)
+  print stfuncs.unpolarizedCS(x,Q2,y,z,pT,sangle,hangle,target,hadron)
 #  for j in range(1,36): plt.plot([j*math.pi/18] , [stfuncs.unpolarizedCS(x,Q2,mu2,y,z,pT,sangle,j*math.pi/18,target,hadron)], 'ro')
-  for j in range(1,36): plt.plot([j*math.pi/18] , [stfuncs.dcs(x,Q2,mu2,y,z,pT,sangle,j*math.pi/18,target,hadron)], 'ro')
+  for j in range(1,36): plt.plot([j*math.pi/18] , [stfuncs.dcs(x,Q2,y,z,pT,sangle,j*math.pi/18,target,hadron)], 'ro')
 
   plt.xlabel('Hadronic Angle (rad)')
   plt.ylabel('Full Cross Section')

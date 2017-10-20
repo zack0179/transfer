@@ -179,7 +179,7 @@ class ML:
     self.dchi2=0
     self.t0 = time.time()
     self.cnt=0
-    fit=leastsq(self.get_residuals,guess,full_output = 1, ftol=1e-2)#,ftol=1e-2)#,factor=0.1)#,ftol=1e-2)
+    fit=leastsq(self.get_residuals,guess,full_output = 1, ftol=1e-6)#,ftol=1e-2)#,factor=0.1)#,ftol=1e-2)
     #res=self.get_residuals(fit[0],delay=True)
 
     self.gen_output()
