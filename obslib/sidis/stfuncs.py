@@ -115,7 +115,7 @@ class STFUNCS:
     p4=y*math.sqrt(1.0-y)/(1.0-y+y**2/2)
     SL=math.cos(sangle)
     ST=math.sin(sangle)
-    helicity=1.0/2
+    helicity=1.0
     factor=coupling**2/(x*y*Q2)*(1-y+y**2)
     csleading=factor*(self.get_FX(1,x,z,Q2,pT,target,hadron)+math.cos(2*hangle)*p1*self.get_FX(7,x,z,Q2,pT,target,hadron)+SL*math.sin(2*hangle)*p1*self.get_FX(10,x,z,Q2,pT,target,hadron)+helicity*SL*p2*self.get_FX(3,x,z,Q2,pT,target,hadron)+helicity*ST*math.cos(hangle-sangle)*p2*self.get_FX(9,x,z,Q2,pT,target,hadron)+ST*math.sin(hangle-sangle)*self.get_FX(5,x,z,Q2,pT,target,hadron)+ST*math.sin(hangle+sangle)*p1*self.get_FX(4,x,z,Q2,pT,target,hadron)+ST*math.sin(3*hangle-sangle)*p1*self.get_FX(8,x,z,Q2,pT,target,hadron))
 
@@ -132,7 +132,7 @@ class STFUNCS:
     p4=y*math.sqrt(1.0-y)/(1.0-y+y**2/2)
     SL=math.cos(sangle)
     ST=math.sin(sangle)
-    helicity=1.0/2
+    helicity=1.0
     factor=coupling**2/(x*y*Q2)*(1-y+y**2)
     cs = factor*(self.get_FX(1,x,z,Q2,pT,target,hadron)+math.cos(2*hangle)*p1*self.get_FX(7,x,z,Q2,pT,target,hadron)+math.cos(hangle)*p3*(self.get_FX(16,x,z,Q2,pT,target,hadron)+self.get_FX(17,x,z,Q2,pT,target,hadron)))
     
