@@ -127,6 +127,7 @@ if __name__=='__main__':
   msg+=" 4: mcsamp-imc"
   msg+=" 5: mcsamp-analysis"
   msg+=" 6: mcsamp-simulation"
+  msg+=" 7: mcsamp-simulation2"
   ap.add_argument('-t','--task',type=int,default=0,help=msg)
   ap.add_argument('-i','--runid',type=int,default=0,help=msg)
   ap.add_argument('-f','--file',type=str,default='',help=" path to nest file")
@@ -145,5 +146,6 @@ if __name__=='__main__':
   elif args.task==4: MCSAMP(conf).run_imc()
   elif args.task==5: MCSAMP(conf).analysis()
   elif args.task==6: MCSAMP(conf).simulation()
+  elif args.task==7: MCSAMP(conf).simulation2()
 
 
