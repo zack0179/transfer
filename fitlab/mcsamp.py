@@ -187,10 +187,12 @@ class MCSAMP:
     Tab=json.dumps(data)
     Tab=["#!"+Tab]
 
-    X =np.linspace(data['axis'][0]['min'],data['axis'][0]['max'],data['axis'][0]['bins'])
-    Q2=np.linspace(data['axis'][1]['min'],data['axis'][1]['max'],data['axis'][1]['bins'])
-    Z =np.linspace(data['axis'][2]['min'],data['axis'][2]['max'],data['axis'][2]['bins'])
-    PT =np.linspace(data['axis'][3]['min'],data['axis'][3]['max'],data['axis'][3]['bins'])
+    bin_center = lambda xmin,xmax,n: np.array([xmin + (2*i+1)*(xmax-xmin)/(2*n) for i in range(n)])
+
+    X =bin_center(data['axis'][0]['min'],data['axis'][0]['max'],data['axis'][0]['bins'])
+    Q2=bin_center(data['axis'][1]['min'],data['axis'][1]['max'],data['axis'][1]['bins'])
+    Z =bin_center(data['axis'][2]['min'],data['axis'][2]['max'],data['axis'][2]['bins'])
+    PT=bin_center(data['axis'][3]['min'],data['axis'][3]['max'],data['axis'][3]['bins'])
 
     I=range(X.size)
     print 
@@ -198,8 +200,8 @@ class MCSAMP:
     for item in it.product(I,I,I,I):
       iX,iQ2,iZ,iPT=item
       Fuu=resman.sidisres.stfuncs.get_FX(1,X[iX],Z[iZ],Q2[iQ2],PT[iPT],data['target'],data['particle'])
-      row='%d '*4+' %f'
-      row=row%(iX,iQ2,iZ,iPT,Fuu)
+      row='%d '*4+' %f %f %f %f %f '
+      row=row%(iX,iQ2,iZ,iPT,Fuu,X[iX],Z[iZ],Q2[iQ2],PT[iPT])
       Tab.append(row)
       bar.next()
     bar.finish()
