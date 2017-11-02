@@ -65,6 +65,7 @@ class STFUNCS:
     self.D[19]={'k1':'transversity','k2':'collins'}
     self.D[20]={'k1':'sivers','k2':'ff'}
     self.D[21]={'k1':'pretzelosity','k2':'collins'}
+    self.D[22] ={'k1':'pdf','k2':'ff'}
 
   def get_K(self,i,x,Q2,z,pT,wq,k1,k2,target,hadron):
     if   i==1: return x
@@ -88,6 +89,7 @@ class STFUNCS:
     elif i==19: return 4*x*z**2*self.Mh[hadron]/math.sqrt(Q2)*self.conf[k1].widths[target]*(-pT**2+wq)/wq**2
     elif i==20: return -2*self.aux.M**3/math.sqrt(Q2)*x*self.conf[k1].widths[target]/wq**2
     elif i==21: return -8*self.aux.M**2*self.Mh[hadron]/math.sqrt(Q2)*x*z**2*pT**2/wq**2
+    elif i==22: return 2*x*z**2*pT**2/Q2*self.conf[k1].widths[target]**2/wq**2
 
   def get_wq(self,z,k1,k2,target,hadron):
     return z**2*np.abs(self.conf[k1].widths[target]) + np.abs(self.conf[k2].widths[hadron])
