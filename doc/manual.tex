@@ -103,7 +103,7 @@
 \newcommand{\transversity}{{\color{gray} \ensuremath{h_1^q}}}
 \newcommand{\sivers}{{\color{brown} \ensuremath{f^{\perp(1)q}_{1T}}}}
 \newcommand{\boermulders}{{\color{purple} \ensuremath{h^{\perp(1)q}_1 }}}
-\newcommand{\pretzelosity}{{\color{violet} \ensuremath{h^{\perp(1)q}_{1T} }}}
+\newcommand{\pretzelosity}{{\color{violet} \ensuremath{h^{\perp(2)q}_{1T} }}}
 \newcommand{\collins}{{\color{orange} \ensuremath{H^{\perp(1)q}_{1} }}}
 \newcommand{\gww}{{\color{magenta} \ensuremath{g^{\perp q}_{1T}}}}
 \newcommand{\hww}{{\color{cyan}\ensuremath{h^{\perp q}_{1L}}}}
@@ -125,7 +125,7 @@
 The differential cross section is given by 
 
 \begin{align}
-\frac{d\sigma}{dx ~ dy ~ d\Psi ~ dz ~ d\phi_h ~ d\Phperp^2} = 
+\frac{d\sigma}{dx ~ dy ~ d\phi_S ~ dz ~ d\phi_h ~ d\Phperp^2} = 
 \frac{\alpha^2}{xyQ^2}\frac{y^2}{2(1-\varepsilon)}\left(1+\frac{\gamma^2}{2x} \right) 
 \sum_{i=1}^{18} F_i(x,z,Q^2,\Phperp^2) \beta_i 
 \end{align}
@@ -156,7 +156,6 @@ $F_{18}$ & $F_{LT}^{\cos(2\phi_h-\phi_S)}$   & $|\vec{S}_\perp|\lambda_e \sqrt{2
 \end{table}
 
 \begin{itemize}
-\item {\color{red} TODO: what is $\Psi$?}
 \item {\color{red} TODO: explicit expression for $|S_{\perp}|$}
 \item {\color{red} TODO: explicit expression for $\varepsilon$}
 \end{itemize}
@@ -191,7 +190,7 @@ ${\cal F}_q$ & pol. PDF     & $1$                           & $\ppdf$         \\
 ${\cal F}_q$ & Transversity & $1$                           & $\transversity$ \\\hline
 ${\cal F}_q$ & Sivers       & $\frac{2M^2}{\omega_q}$       & $\sivers$       \\\hline
 ${\cal F}_q$ & Boer-Mulders & $\frac{2M^2}{\omega_q}$       & $\boermulders$  \\\hline
-${\cal F}_q$ & Pretzelosity & $\frac{2M^2}{\omega_q}$       & $\pretzelosity$ \\\hline
+${\cal F}_q$ & Pretzelosity & $\frac{2M^4}{\omega_q^2}$       & $\pretzelosity$ \\\hline
 ${\cal F}_q$ & Worm Gear    & $1$                           & $\gww$          \\\hline
 ${\cal F}_q$ & Worm Gear    & $1$                           & $\hww$          \\\hline
 \hline
@@ -214,7 +213,7 @@ $F_4$    & $F_{UT}^{\sin(\phi_h+\phi_S)}$      & $\frac{2 x z \Phperp  m_h}{w_q}
 $F_5$    & $F_{UT,T}^{\sin(\phi_h-\phi_S)}$    & $-\frac{2xzM \Phperp}{w_q}$                                                                 & $\sivers$       & $\ff$           \\\hline
 $F_6$    & $F_{UT,L}^{\sin(\phi_h-\phi_S)}$    & $0$                                                                                         &                 & \\\hline
 $F_7$    & $F_{UU}^{\cos(2\phi_h)}$            & $\frac{4 x z^2 M \Phperp^2 m_h}{w_q^2} $                                                    & $\boermulders$  & $\collins $     \\\hline
-$F_8$    & $F_{UT}^{\sin(3\phi_h-\phi_S)}$     & $\frac{2 x z^3 \Phperp^3 m_h \avk}{w_q^3} $                                                 & $\pretzelosity$ & $\collins $     \\\hline
+$F_8$    & $F_{UT}^{\sin(3\phi_h-\phi_S)}$     & $\frac{2 x z^3 \Phperp^3 m_h M^2}{w_q^3} $                                                 & $\pretzelosity$ & $\collins $     \\\hline
 $F_9$    & $F_{LT}^{\cos(\phi_h -\phi_S)}$     & $ \frac{2xzM\Phperp}{w_q} $                                                                 & $\gww$          & $\ff$           \\\hline
 $F_{10}$ & $F_{UL}^{\sin(2\phi_h)}$            & $ \frac{4 xz^2M \Phperp^2 m_h}{w_q^2} $                                                     & $\hww$          & $\collins $     \\\hline
 $F_{11}$ & $F_{LT}^{\cos\phi_S}$               & $-\frac{2M}{Q} x\frac{z^2\avk \left[\Phperp^2+ \avp\right] + \avpperp^2}{ w_q^2}$           & $\gww$          & $\ff$           \\\hline
