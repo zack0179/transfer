@@ -145,18 +145,18 @@ class RESIDUALS(_RESIDUALS):
     elif obs == 'AUUcos2':      
 
       if target == 'proton':
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'p', hadron)
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
       
       elif target == 'neutron':
 
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'n', hadron)
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
       
       elif target == 'deuteron':
 
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron)\
-                + self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'p', hadron)\
+                + self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'n', hadron)
 
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)\
                 + self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
