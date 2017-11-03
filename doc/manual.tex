@@ -16,6 +16,8 @@
 \usepackage{rotating}
 \usepackage{hhline,multirow,tabularx}
 \usepackage{bm}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithm
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 
 % math macros 
 \newcommand{\T}[1]{\boldsymbol{#1}_{\text{T}}}
@@ -103,7 +105,7 @@
 \newcommand{\transversity}{{\color{gray} \ensuremath{h_1^q}}}
 \newcommand{\sivers}{{\color{brown} \ensuremath{f^{\perp(1)q}_{1T}}}}
 \newcommand{\boermulders}{{\color{purple} \ensuremath{h^{\perp(1)q}_1 }}}
-\newcommand{\pretzelosity}{{\color{violet} \ensuremath{h^{\perp(1)q}_{1T} }}}
+\newcommand{\pretzelosity}{{\color{violet} \ensuremath{h^{\perp(2)q}_{1T} }}}
 \newcommand{\collins}{{\color{orange} \ensuremath{H^{\perp(1)q}_{1} }}}
 \newcommand{\gww}{{\color{magenta} \ensuremath{g^{\perp q}_{1T}}}}
 \newcommand{\hww}{{\color{cyan}\ensuremath{h^{\perp q}_{1L}}}}
@@ -125,7 +127,7 @@
 The differential cross section is given by 
 
 \begin{align}
-\frac{d\sigma}{dx ~ dy ~ d\psi ~ dz ~ d\phi_h ~ d\Phperp^2} = 
+\frac{d\sigma}{dx ~ dy ~ d\phi_S ~ dz ~ d\phi_h ~ d\Phperp^2} = 
 \frac{\alpha^2}{xyQ^2}\frac{y^2}{2(1-\varepsilon)}\left(1+\frac{\gamma^2}{2x} \right) 
 \sum_{i=1}^{18} F_i(x,z,Q^2,\Phperp^2) \beta_i 
 \label{e.xsec}
@@ -157,7 +159,6 @@ $F_{18}$ & $F_{LT}^{\cos(2\phi_h-\phi_S)}$   & $|\vec{S}_\perp|\lambda_e \sqrt{2
 \end{table}
 
 \begin{itemize}
-\item {\color{red} TODO: what is $\Psi$?}
 \item {\color{red} TODO: explicit expression for $|S_{\perp}|$}
 \item {\color{red} TODO: explicit expression for $\varepsilon$}
 \end{itemize}
@@ -192,7 +193,7 @@ ${\cal F}_q$ & pol. PDF     & $1$                           & $\ppdf$         \\
 ${\cal F}_q$ & Transversity & $1$                           & $\transversity$ \\\hline
 ${\cal F}_q$ & Sivers       & $\frac{2M^2}{\omega_q}$       & $\sivers$       \\\hline
 ${\cal F}_q$ & Boer-Mulders & $\frac{2M^2}{\omega_q}$       & $\boermulders$  \\\hline
-${\cal F}_q$ & Pretzelosity & $\frac{2M^2}{\omega_q}$       & $\pretzelosity$ \\\hline
+${\cal F}_q$ & Pretzelosity & $\frac{2M^4}{\omega_q^2}$       & $\pretzelosity$ \\\hline
 ${\cal F}_q$ & Worm Gear    & $1$                           & $\gww$          \\\hline
 ${\cal F}_q$ & Worm Gear    & $1$                           & $\hww$          \\\hline
 \hline
@@ -215,7 +216,7 @@ $F_4$    & $F_{UT}^{\sin(\phi_h+\phi_S)}$      & $\frac{2 x z \Phperp  m_h}{w_q}
 $F_5$    & $F_{UT,T}^{\sin(\phi_h-\phi_S)}$    & $-\frac{2xzM \Phperp}{w_q}$                                                                 & $\sivers$       & $\ff$           \\\hline
 $F_6$    & $F_{UT,L}^{\sin(\phi_h-\phi_S)}$    & $0$                                                                                         &                 & \\\hline
 $F_7$    & $F_{UU}^{\cos(2\phi_h)}$            & $\frac{4 x z^2 M \Phperp^2 m_h}{w_q^2} $                                                    & $\boermulders$  & $\collins $     \\\hline
-$F_8$    & $F_{UT}^{\sin(3\phi_h-\phi_S)}$     & $\frac{2 x z^3 \Phperp^3 m_h \avk}{w_q^3} $                                                 & $\pretzelosity$ & $\collins $     \\\hline
+$F_8$    & $F_{UT}^{\sin(3\phi_h-\phi_S)}$     & $\frac{2 x z^3 \Phperp^3 m_h M^2}{w_q^3} $                                                 & $\pretzelosity$ & $\collins $     \\\hline
 $F_9$    & $F_{LT}^{\cos(\phi_h -\phi_S)}$     & $ \frac{2xzM\Phperp}{w_q} $                                                                 & $\gww$          & $\ff$           \\\hline
 $F_{10}$ & $F_{UL}^{\sin(2\phi_h)}$            & $ \frac{4 xz^2M \Phperp^2 m_h}{w_q^2} $                                                     & $\hww$          & $\collins $     \\\hline
 $F_{11}$ & $F_{LT}^{\cos\phi_S}$               & $-\frac{2M}{Q} x\frac{z^2\avk \left[\Phperp^2+ \avp\right] + \avpperp^2}{ w_q^2}$           & $\gww$          & $\ff$           \\\hline
@@ -392,31 +393,31 @@ where $E$ is the incoming electron beam energy and $M$ is the target
 nucleon mass. 
 
 The SIDIS cross section in \eref{xsec} is defined in terms of
-$x,y,\psi,z,\phi_h,P_h^T$. In order to generate the final state 
-momenta, one needs to generate samples of  $x,y,\psi,z,\phi_h,P_h^T$
+$x,y,z,\phi_h,\phi_S,P_h^T$. In order to generate the final state 
+momenta, one needs to generate samples of  $x,y,z,\phi_h,\phi_S,P_h^T$
 that are distributed according to \eref{xsec} and covert each sample
 into the final state momenta $l',P_h$. Notice that $P_X$ is fixed by
 momentum conservation. 
 
-$\phi_h$ and $P_h^T$ in \eref{xsec} are defined in the Breit frame. To
+$\phi_h,\phi_S$ and $P_h^T$ in \eref{xsec} are defined in the Breit frame. To
 transform the vectors into such frame we need to perform a rotation
 $R$ followed by a Lorentz boost $B$. The rotation can be done by using the
 Euler–Rodrigues formula by rotating $\vec{q}$  around the vector 
-$\vec{u}=(\vec{q}/|\vec{q}|)\times(-\hat{e}_z)$ 
-by an angle $\alpha=\arccos(-(\vec{q}/|\vec{q}|)\cdot \hat{e}_z)$ with 
+$\vec{u}=\vec{q}\times(-\hat{e}_z)$ 
+by an angle $\alpha=\arccos(\vec{q}\cdot \hat{e}_z|\vec{q}|))$ with 
 $\hat{e}_z=(0,0,1)$. The rotation of a any vector $\vec{x}$ is given by 
 $$
 R(\vec{x})=\vec{x}+2a(\vec{w}\times\vec{x})+2(\vec{w}\times(\vec{w}\times\vec{x}))
 $$
-where $a=\cos(\alpha/2)$ and $\vec{w}=\sin(\alpha/2)\vec{u}$. The
+where $a=\cos(\alpha/2)$ and $\vec{w}=\sin(\alpha/2)\vec{u}/|\vec{u}|$. The
 boost $B$ is along the $z$-axis such that $B(R(q))=(0,0,0,-Q)$ and it
 given by 
 %
 \begin{align}
 B=\frac{1}{Q}
 \begin{pmatrix} 
-q_R^3 & q_R^0 \\
-q_R^0 & q_R^3 
+-q_R^3 & q_R^0 \\
+q_R^0 & -q_R^3 
 \end{pmatrix}
 \end{align}
 %
@@ -428,7 +429,7 @@ The generation of a phase space point proceeds with following
 steps:
 
 \begin{enumerate}
-\item Generate $E'\in[0,E]$, $\cos(\theta)\in[-1,1]$ and 
+\item Generate $x\in[1/(2ME),1]$, $Q2\in[1,2xME]$ and 
 $\psi \in [0,2\pi]$ using uniform distributions and compute 
 outgoing lepton momentum
 %
@@ -437,6 +438,7 @@ l'=E'\left(1,\sin(\theta)\cos(\phi),\sin(\theta)\sin(\phi),\cos(\theta)\right)
 \, .
 \end{align}
 %
+where $E'=E-Q^2/(2xM)$ and $\cos(\theta)=1-Q^2/(2 E E')$.
 In addition compute $q=l-l'$.
 \item Generate $z\in[M_h/q^0,1]$ using uniform distribution 
 and compute the energy of the outgoing hadron $P_h^0=zq^0$
@@ -452,28 +454,68 @@ P_h=\left(P_h^0,
      P_{h}^T\sin(\phi),
      {\rm sign}~\sqrt{|\vec{P}_h|^2-(P_h^T)^2}\right)
 \end{align}
-\item Rotate and boost all the 4-vectors $l,P,l',P_h$ as explained above
+\item Rotate and boost all the 4-vectors $l,P,l',P_h,S$ as explained above
 and proceed to compute the phase space parameters that enters in \eref{xsec}
 \begin{align}
 x&=\frac{Q^2}{2P\cdot q}\\
 y&=\frac{P\cdot q}{P\cdot l}\\
 z&=\frac{P\cdot P_h}{P\cdot q}\\
 \phi_h&=\pi-\arccos((\vec{l}\times\vec{l'})\cdot (\vec{P_h}\times\vec{q}))\\
+\phi_S&=\frac{\pi}{2}-\arccos((\vec{l}\times\vec{l'})\cdot S)\\
 P_h^T &=\sqrt{(P_h^x)^2+(P_h^z)^2}
 \end{align}
-
 \end{enumerate}
 
+The flat sampler outlined above can generate events for arbitrary
+small $x,Q^2,z$ values. However, the analytic expressions for the 
+SIDIS cross section in \eref{xsec} are only valid for $Q^2>1{~\rm GeV^2}$
+to stay in the deep inelastic regime, $z>0.2$ to generate events 
+in the current fragmentation region. The range of $x$ probed by the 
+generator will depend on the beam energy $E$ and for fixed target 
+experiments such as the Jefferson Lab 12 GeV the smallest value 
+at $Q^2=1{~\rm GeV^2}$ is still in the domain of applicability 
+of \eref{xsec}. The sampler can be embedded within a simple while loop 
+that generate events and exit whenever the phase space parameters 
+are within the desired range. 
+
+{\color{red} 
+Issues:
+
+$\bullet$ The flat sampler does not produce flat $\phi_h$ and $\phi_S$ 
+
+$\bullet$ Maybe we can to do uniform sampling on $\phi_h$ and $\phi_S$
+and constrain azymuthal angles for $l'$ and $p_h$
+
+}
  
-
-
-
-
-
-
-
-
-
+%Having defined the flat sampler, we proceed to discuss the sampling 
+%algorithms. 
+%
+%\subsection{Rejection Sampling}
+%This is the simplest of the sampling algorithms. First compute the
+%larges attainable value of the cross section within the phase space
+%which occurs at  $Q^2_0=1{~\rm GeV^2}$, $x=Q^2_0/(2ME)$, $z=0.2$ and
+%$P_h^T=0$. Let's denote a given phase space point as 
+%$\Omega_i=(x_i,Q_i^2,z_i,(\phi_{h})_i,(P_{h}^T)_i)$. The rejection
+%sampling proceed as 
+%
+%\begin{algorithm}
+%  \caption{Rejection sampling}\label{rejection-sampling}
+%  \begin{algorithmic}[1]
+%%    \Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
+%      \State EVENTS = empty list
+%      \While{$r\not=0$}\Comment{We have the answer if r is 0}
+%        \State $a\gets b$
+%        \State $b\gets r$
+%        \State $r\gets a\bmod b$
+%      \EndWhile\label{euclidendwhile}
+%      \For{\texttt{<some condition>}}
+%        \State \texttt{<do stuff>}
+%      \EndFor
+%      \State \textbf{return} $b$\Comment{The gcd is b}
+%%    \EndProcedure
+%  \end{algorithmic}
+%\end{algorithm}
 
 
 

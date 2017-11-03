@@ -8,7 +8,7 @@ from external.CJLIB.CJ import CJ
 from external.LSSLIB.LSS import LSS
 from external.DSSLIB.DSS import DSS
 from aux import AUX
-from scipy.special import gamma
+from scipy.special import gamma, psi
 
 class CORE:
 
@@ -57,6 +57,9 @@ class CORE:
     elif self.conf['shape']==1:
        norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
+    elif self.conf['shape']==2:
+       norm=self.beta(1+p[1],1+p[2])+p[3]*self.beta(1+p[1]+1,1+p[2])+p[4]*self.beta(1+p[1],1+p[2])*(psi(p[1]+p[2]+2)-psi(p[1]+1))
+       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*np.log(1/x))/norm
 
   def get_collinear(self,x,hadron):
     N=np.zeros(11)
