@@ -125,9 +125,10 @@
 The differential cross section is given by 
 
 \begin{align}
-\frac{d\sigma}{dx ~ dy ~ d\Psi ~ dz ~ d\phi_h ~ d\Phperp^2} = 
+\frac{d\sigma}{dx ~ dy ~ d\psi ~ dz ~ d\phi_h ~ d\Phperp^2} = 
 \frac{\alpha^2}{xyQ^2}\frac{y^2}{2(1-\varepsilon)}\left(1+\frac{\gamma^2}{2x} \right) 
 \sum_{i=1}^{18} F_i(x,z,Q^2,\Phperp^2) \beta_i 
+\label{e.xsec}
 \end{align}
 
 \begin{table}[h!]
@@ -366,5 +367,114 @@ repositories, proceed to do it.
 \item {\color{red} TODO: plot the x or z dependece}
 \item {\color{red} TODO: plot the $k_{\perp}$ or $P_{\perp}$ dependece}
 \end{itemize}
+
+
+
+\newpage
+\section{Monte Carlo Event Generator (MCEG)}
+
+In this section we present details of how to construct an MCEG using
+the analytic expression for the SIDIS cross sections given in
+\eref{xsec}. The goal is to generate events for the reaction 
+$$l+P\to l'+P_h+P_X$$
+in the laboratory frame where $l$ and $l'$ are the momenta of the
+incoming and outgoing leptons respectively, $P$ is the target
+momentum, $P_h$ is the momentum of the observed hadron and $P_X$ is
+unobserved system. In this frame, the initial momenta are given by  
+%
+\begin{align}
+l&=(E,0,0,E)\notag\\
+P&=(M,0,0,0)
+\; ,
+\end{align}
+%
+where $E$ is the incoming electron beam energy and $M$ is the target
+nucleon mass. 
+
+The SIDIS cross section in \eref{xsec} is defined in terms of
+$x,y,\psi,z,\phi_h,P_h^T$. In order to generate the final state 
+momenta, one needs to generate samples of  $x,y,\psi,z,\phi_h,P_h^T$
+that are distributed according to \eref{xsec} and covert each sample
+into the final state momenta $l',P_h$. Notice that $P_X$ is fixed by
+momentum conservation. 
+
+$\phi_h$ and $P_h^T$ in \eref{xsec} are defined in the Breit frame. To
+transform the vectors into such frame we need to perform a rotation
+$R$ followed by a Lorentz boost $B$. The rotation can be done by using the
+Euler–Rodrigues formula by rotating $\vec{q}$  around the vector 
+$\vec{u}=(\vec{q}/|\vec{q}|)\times(-\hat{e}_z)$ 
+by an angle $\alpha=\arccos(-(\vec{q}/|\vec{q}|)\cdot \hat{e}_z)$ with 
+$\hat{e}_z=(0,0,1)$. The rotation of a any vector $\vec{x}$ is given by 
+$$
+R(\vec{x})=\vec{x}+2a(\vec{w}\times\vec{x})+2(\vec{w}\times(\vec{w}\times\vec{x}))
+$$
+where $a=\cos(\alpha/2)$ and $\vec{w}=\sin(\alpha/2)\vec{u}$. The
+boost $B$ is along the $z$-axis such that $B(R(q))=(0,0,0,-Q)$ and it
+given by 
+%
+\begin{align}
+B=\frac{1}{Q}
+\begin{pmatrix} 
+q_R^3 & q_R^0 \\
+q_R^0 & q_R^3 
+\end{pmatrix}
+\end{align}
+%
+where $q_R=R(q)$.
+
+We shall proceed to define a ``flat'' generator of the
+phase space needed to be used in a given generic sampling algorithm.  
+The generation of a phase space point proceeds with following 
+steps:
+
+\begin{enumerate}
+\item Generate $E'\in[0,E]$, $\cos(\theta)\in[-1,1]$ and 
+$\psi \in [0,2\pi]$ using uniform distributions and compute 
+outgoing lepton momentum
+%
+\begin{align}
+l'=E'\left(1,\sin(\theta)\cos(\phi),\sin(\theta)\sin(\phi),\cos(\theta)\right)
+\, .
+\end{align}
+%
+In addition compute $q=l-l'$.
+\item Generate $z\in[M_h/q^0,1]$ using uniform distribution 
+and compute the energy of the outgoing hadron $P_h^0=zq^0$
+and the norm of outgoing hadron's 3-vector
+$|\vec{P}_h|=\sqrt{P_h^0-M_h^2}$.
+\item Generate $P_{h}^T\in[0,|\vec{P}_h|]$ and $\phi\in[0,2\pi]$
+using uniform distributions and a random ${\rm sign} \in\{1,-1\}$
+in order to generate outgoing hadron's momentum
+%
+\begin{align}
+P_h=\left(P_h^0,
+     P_{h}^T\cos(\phi),
+     P_{h}^T\sin(\phi),
+     {\rm sign}~\sqrt{|\vec{P}_h|^2-(P_h^T)^2}\right)
+\end{align}
+\item Rotate and boost all the 4-vectors $l,P,l',P_h$ as explained above
+and proceed to compute the phase space parameters that enters in \eref{xsec}
+\begin{align}
+x&=\frac{Q^2}{2P\cdot q}\\
+y&=\frac{P\cdot q}{P\cdot l}\\
+z&=\frac{P\cdot P_h}{P\cdot q}\\
+\phi_h&=\pi-\arccos((\vec{l}\times\vec{l'})\cdot (\vec{P_h}\times\vec{q}))\\
+P_h^T &=\sqrt{(P_h^x)^2+(P_h^z)^2}
+\end{align}
+
+\end{enumerate}
+
+ 
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
