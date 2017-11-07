@@ -6,11 +6,28 @@ from tools.tools import load_config
 from qcdlib.aux import AUX
 from tools.tools import load_config
 import pylab as py
+import external.CJLIB.CJ
+import external.DSSLIB.DSS
+import external.LSSLIB.LSS
+import qcdlib.tmdlib
+import qcdlib.aux
+import qcdlib.alphaS
+import obslib.dis.stfuncs
+import obslib.sidis.stfuncs
+import obslib.sidis.residuals
+import obslib.sidis.reader
+from fitlab.parman import PARMAN
+
 
 class MCEG:
 
   def __init__(self,conf):
     self.conf=conf
+    conf['aux']=qcdlib.aux.AUX()
+    self.setup_tmds()
+    conf['parman']=PARMAN(conf)
+    self.setup_dis()
+    self.setup_sidis()
   
   def dot4(self,A,B):
     return np.einsum('i,i,i',A,B,[1,-1,-1,-1])
@@ -251,6 +268,36 @@ class MCEG:
 
     return x,y,z,Q2,phi_h,phi_S,phT,lini,lfin,P,ph
 
+  def setup_dis(self):
+    conf=self.conf
+    conf['alphaSmode']='backward'
+    conf['Q20']=1
+    #conf['order']='NLO'
+    conf['order']='LO'
+    conf['alphaS']=qcdlib.alphaS.ALPHAS(conf)
+    conf['pdf-NLO']=external.CJLIB.CJ.CJ(conf)
+    conf['dis stfuncs']=obslib.dis.stfuncs.STFUNCS(conf)
+
+  def setup_tmds(self):
+    conf=self.conf
+    conf['order']='LO'
+    conf['_pdf'] =external.CJLIB.CJ.CJ(conf)
+    conf['_ppdf']=external.LSSLIB.LSS.LSS(conf)
+    conf['_ff']  =external.DSSLIB.DSS.DSS(conf)
+    conf['pdf']  =qcdlib.tmdlib.PDF(conf)
+    conf['ppdf'] =qcdlib.tmdlib.PPDF(conf)
+    conf['ff']   =qcdlib.tmdlib.FF(conf)
+    conf['transversity']=qcdlib.tmdlib.TRANSVERSITY(conf)
+    conf['sivers']      =qcdlib.tmdlib.SIVERS(conf)
+    conf['boermulders'] =qcdlib.tmdlib.BOERMULDERS(conf)
+    conf['pretzelosity']=qcdlib.tmdlib.PRETZELOSITY(conf)
+    conf['wormgearg']   =qcdlib.tmdlib.WORMGEARG(conf)
+    conf['wormgearh']   =qcdlib.tmdlib.WORMGEARH(conf)
+    conf['collins']     =qcdlib.tmdlib.COLLINS(conf)
+
+  def setup_sidis(self):
+    self.sidis =obslib.sidis.stfuncs.STFUNCS(self.conf)
+
   def test(self):
     data={}
     data['x']=[]
@@ -285,12 +332,24 @@ class MCEG:
     py.tight_layout()
     py.savefig('plot.pdf')
 
+  def test2(self):
+
+    for i in range(100):
+      try:
+        x,y,z,Q2,phi_h,phi_S,pT,lini,lfin,P,ph = self._gen_event()
+      except:
+        continue
+
+      F=self.sidis.get_FX(1,x,z,Q2,pT,'p','pi+')
+      print x,y,z,Q2,phi_h,phi_S,pT,F
+      
+
 if __name__=='__main__':
 
   conf=load_config('input.py')
   conf['aux']=AUX()
   mceg=MCEG(conf)
-  mceg.test()
+  mceg.test2()
 
 
 
