@@ -17,7 +17,7 @@ def flat_sample(bounds, size=1):
 def phase_space_volume(bounds):
     volume = 1.0
     for dimension in bounds:
-        volume *= bounds[1]-bounds[0]
+        volume *= dimension[1]-dimension[0]
     return volume 
 
 def monte_carlo_integrate(pdf, bounds, n_samples):
