@@ -266,7 +266,12 @@ class MCEG:
     # compute phT
     phT=np.linalg.norm(ph_breit[1:3])
 
-    return x,y,z,Q2,phi_h,phi_S,phT,lini,lfin,P,ph
+    # compute spin projections
+    gamma=2*M*x/np.sqrt(Q2)
+    Sperp=np.linalg.norm(S_breit[1:3])
+    Spar=self.dot4(S_breit,q_breit)/self.dot4(P_breit,q_breit)*M/np.sqrt(1+gamma**2) 
+
+    return x,y,z,Q2,phi_h,phi_S,phT,Sperp,Spar,lini,lfin,P,ph
 
   def setup_dis(self):
     conf=self.conf
@@ -309,7 +314,7 @@ class MCEG:
     data['phT']=[]
     for i in range(1000):
       try:
-        x,y,z,Q2,phi_h,phi_S,phT,lini,lfin,P,ph = self._gen_event()
+        x,y,z,Q2,phi_h,phi_S,phT,Sperp,Spar,lini,lfin,P,ph = self._gen_event()
       except:
         continue
       #if x>1: continue 
@@ -336,7 +341,7 @@ class MCEG:
 
     for i in range(100):
       try:
-        x,y,z,Q2,phi_h,phi_S,pT,lini,lfin,P,ph = self._gen_event()
+        x,y,z,Q2,phi_h,phi_S,pT,Sperp,Spar,lini,lfin,P,ph = self._gen_event()
       except:
         continue
 
