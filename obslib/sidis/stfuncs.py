@@ -78,17 +78,17 @@ class STFUNCS:
     elif i==8: return 2*x*z**3*pT**3*self.Mh[hadron]*self.conf[k1].widths[target]/wq**3
     elif i==9: return 2*x*z*self.aux.M*pT/wq
     elif i==10:return 4*x*z**2*self.aux.M*pT**2*self.Mh[hadron]/wq**2
-    elif i==11: return -2*self.aux.M/math.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2+self.conf[k2].widths[hadron])+self.conf[k2].widths[hadron]**2)/wq**2
-    elif i==12: return -2*x*z*pT*self.conf[k1].widths[target]/(math.sqrt(Q2)*wq)
-    elif i==13: return -2*x*z**2*pT**2*self.aux.M*self.conf[k1].widths[target]/(math.sqrt(Q2)*wq**2)
-    elif i==14: return -8*self.aux.M**3/math.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2-z**2*self.conf[k1].widths[target])+self.conf[k2].widths[hadron]**2)/wq**3
+    elif i==11: return -2*self.aux.M/np.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2+self.conf[k2].widths[hadron])+self.conf[k2].widths[hadron]**2)/wq**2
+    elif i==12: return -2*x*z*pT*self.conf[k1].widths[target]/(np.sqrt(Q2)*wq)
+    elif i==13: return -2*x*z**2*pT**2*self.aux.M*self.conf[k1].widths[target]/(np.sqrt(Q2)*wq**2)
+    elif i==14: return -8*self.aux.M**3/np.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2-z**2*self.conf[k1].widths[target])+self.conf[k2].widths[hadron]**2)/wq**3
     elif i==15: return 0
-    elif i==16: return -8*self.aux.M*z*pT*self.Mh[hadron]/math.sqrt(Q2)*x*(self.conf[k2].widths[hadron]**2+z**2*self.conf[k1].widths[target]*(pT**2-z**2*self.conf[k1].widths[target]))/wq**3
-    elif i==17: return -2*self.aux.M/math.sqrt(Q2)*x*(z*pT/self.aux.M)*self.conf[k1].widths[target]/wq
-    elif i==18: return -2*self.aux.M/math.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2+self.conf[k2].widths[hadron])+self.conf[k2].widths[hadron]**2)/wq**2
-    elif i==19: return 4*x*z**2*self.Mh[hadron]/math.sqrt(Q2)*self.conf[k1].widths[target]*(-pT**2+wq)/wq**2
-    elif i==20: return -2*self.aux.M**3/math.sqrt(Q2)*x*self.conf[k1].widths[target]/wq**2
-    elif i==21: return -8*self.aux.M**2*self.Mh[hadron]/math.sqrt(Q2)*x*z**2*pT**2/wq**2
+    elif i==16: return -8*self.aux.M*z*pT*self.Mh[hadron]/np.sqrt(Q2)*x*(self.conf[k2].widths[hadron]**2+z**2*self.conf[k1].widths[target]*(pT**2-z**2*self.conf[k1].widths[target]))/wq**3
+    elif i==17: return -2*self.aux.M/np.sqrt(Q2)*x*(z*pT/self.aux.M)*self.conf[k1].widths[target]/wq
+    elif i==18: return -2*self.aux.M/np.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2+self.conf[k2].widths[hadron])+self.conf[k2].widths[hadron]**2)/wq**2
+    elif i==19: return 4*x*z**2*self.Mh[hadron]/np.sqrt(Q2)*self.conf[k1].widths[target]*(-pT**2+wq)/wq**2
+    elif i==20: return -2*self.aux.M**3/np.sqrt(Q2)*x*self.conf[k1].widths[target]/wq**2
+    elif i==21: return -8*self.aux.M**2*self.Mh[hadron]/np.sqrt(Q2)*x*z**2*pT**2/wq**2
     elif i==22: return 2*x*z**2*pT**2/Q2*self.conf[k1].widths[target]**2/wq**2
 
   def get_wq(self,z,k1,k2,target,hadron):
@@ -146,24 +146,24 @@ class STFUNCS:
     eps=(1-y-0.25*gamma**2*y**2)/(1-y+0.5*y**2+0.25*gamma**2*y**2)
 
     beta=np.zeros(19)
-    beta[1] =1
-    beta[2] =eps
-    beta[3] =np.sqrt(2*eps*(1+eps))*np.cos(phi_h)
-    beta[4] =eps*np.cos(2*phi_h)
-    beta[5] =le    * np.sqrt(2*eps*(1-eps))*np.sin(phi_h)
-    beta[6] =Spar  * np.sqrt(2*eps*(1+eps))*np.sin(phi_h)
-    beta[7] =Spar  * eps * np.sin(2*phi_h)
-    beta[8] =Spar  * le * np.sqrt(1-eps**2)
-    beta[9] =Spar  * le * np.sqrt(2*eps*(1-eps))*np.cos(phi_h)
-    beta[10]=Sperp * np.sin(phi_h-phi_S)
-    beta[11]=Sperp * eps * np.sin(phi_h-phi_S)
-    beta[12]=Sperp * eps * np.sin(phi_h+phi_S)
-    beta[13]=Sperp * eps * np.sin(3*phi_h-phi_S)
-    beta[14]=Sperp * np.sqrt(2*eps*(1+eps))*np.sin(phi_S)
-    beta[15]=Sperp * np.sqrt(2*eps*(1+eps))*np.sin(2*phi_h-phi_S)
-    beta[16]=Sperp * le * np.sqrt(1-eps**2) * np.cos(phi_h-phi_S)
-    beta[17]=Sperp * le * np.sqrt(2*eps*(1-eps)) * np.cos(phi_S)
-    beta[18]=Sperp * le * np.sqrt(2*eps*(1-eps)) * np.cos(2*phi_h-phi_S)
+    beta[1]  =1
+    beta[2]  =eps
+    beta[3]  =Spar  * le * np.sqrt(1-eps**2)
+    beta[4]  =Sperp * eps * np.sin(phi_h+phi_S)
+    beta[5]  =Sperp * np.sin(phi_h-phi_S)
+    beta[6]  =Sperp * eps * np.sin(phi_h-phi_S)
+    beta[7]  =eps*np.cos(2*phi_h)
+    beta[8]  =Sperp * eps * np.sin(3*phi_h-phi_S)
+    beta[9]  =Sperp * le * np.sqrt(1-eps**2) * np.cos(phi_h-phi_S)
+    beta[10] =Spar  * eps * np.sin(2*phi_h)
+    beta[11] =Sperp * le * np.sqrt(2*eps*(1-eps)) * np.cos(phi_S)
+    beta[12] =Spar  * le * np.sqrt(2*eps*(1-eps))*np.cos(phi_h)
+    beta[13] =Sperp * le * np.sqrt(2*eps*(1-eps)) * np.cos(2*phi_h-phi_S)
+    beta[14] =Spar  * np.sqrt(2*eps*(1+eps))*np.sin(phi_h)
+    beta[15] =le    * np.sqrt(2*eps*(1-eps))*np.sin(phi_h)
+    beta[16] =np.sqrt(2*eps*(1+eps))*np.cos(phi_h)
+    beta[17] =Sperp * np.sqrt(2*eps*(1+eps))*np.sin(phi_S)
+    beta[18] =Sperp * np.sqrt(2*eps*(1+eps))*np.sin(2*phi_h-phi_S)
 
     F=np.zeros(19)
     for i in range(1,16): F[i]=self.get_FX(i,x,z,Q2,pT,target,hadron)
@@ -171,7 +171,7 @@ class STFUNCS:
     F[17]=self.get_FX(18,x,z,Q2,pT,target,hadron)+self.get_FX(19,x,z,Q2,pT,target,hadron)
     F[18]=self.get_FX(20,x,z,Q2,pT,target,hadron)+self.get_FX(21,x,z,Q2,pT,target,hadron)
 
-    return (alfa**2/x/y/Q2) * (y*2/2/(1-eps)) * np.sum(beta*F)
+    return (alfa2/x/y/Q2) * (y*2/2/(1-eps)) * np.sum(beta*F)
 
 
 if __name__=='__main__':
