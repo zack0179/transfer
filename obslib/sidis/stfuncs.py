@@ -140,6 +140,40 @@ class STFUNCS:
     
     return cs/(2*0.938*11.0*x)
 
+  def get_xsec(self,x,z,y,Q2,pT,phi_h,phi_S,Sperp,Spar,le,target,hadron):
+    alfa2=self.aux.alfa**2
+    gamma=2*self.aux.M*x/np.sqrt(Q2)
+    eps=(1-y-0.25*gamma**2*y**2)/(1-y+0.5*y**2+0.25*gamma**2*y**2)
+
+    beta=np.zeros(19)
+    beta[1] =1
+    beta[2] =eps
+    beta[3] =np.sqrt(2*eps*(1+eps))*np.cos(phi_h)
+    beta[4] =eps*np.cos(2*phi_h)
+    beta[5] =le    * np.sqrt(2*eps*(1-eps))*np.sin(phi_h)
+    beta[6] =Spar  * np.sqrt(2*eps*(1+eps))*np.sin(phi_h)
+    beta[7] =Spar  * eps * np.sin(2*phi_h)
+    beta[8] =Spar  * le * np.sqrt(1-eps**2)
+    beta[9] =Spar  * le * np.sqrt(2*eps*(1-eps))*np.cos(phi_h)
+    beta[10]=Sperp * np.sin(phi_h-phi_S)
+    beta[11]=Sperp * eps * np.sin(phi_h-phi_S)
+    beta[12]=Sperp * eps * np.sin(phi_h+phi_S)
+    beta[13]=Sperp * eps * np.sin(3*phi_h-phi_S)
+    beta[14]=Sperp * np.sqrt(2*eps*(1+eps))*np.sin(phi_S)
+    beta[15]=Sperp * np.sqrt(2*eps*(1+eps))*np.sin(2*phi_h-phi_S)
+    beta[16]=Sperp * le * np.sqrt(1-eps**2) * np.cos(phi_h-phi_S)
+    beta[17]=Sperp * le * np.sqrt(2*eps*(1-eps)) * np.cos(phi_S)
+    beta[18]=Sperp * le * np.sqrt(2*eps*(1-eps)) * np.cos(2*phi_h-phi_S)
+
+    F=np.zeros(19)
+    for i in range(1,16): F[i]=self.get_FX(i,x,z,Q2,pT,target,hadron)
+    F[16]=self.get_FX(16,x,z,Q2,pT,target,hadron)+self.get_FX(17,x,z,Q2,pT,target,hadron)
+    F[17]=self.get_FX(18,x,z,Q2,pT,target,hadron)+self.get_FX(19,x,z,Q2,pT,target,hadron)
+    F[18]=self.get_FX(20,x,z,Q2,pT,target,hadron)+self.get_FX(21,x,z,Q2,pT,target,hadron)
+
+    return (alfa**2/x/y/Q2) * (y*2/2/(1-eps)) * np.sum(beta*F)
+
+
 if __name__=='__main__':
 
   conf={}
