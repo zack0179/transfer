@@ -171,7 +171,7 @@ class STFUNCS:
     F[17]=self.get_FX(18,x,z,Q2,pT,target,hadron)+self.get_FX(19,x,z,Q2,pT,target,hadron)
     F[18]=self.get_FX(20,x,z,Q2,pT,target,hadron)+self.get_FX(21,x,z,Q2,pT,target,hadron)
 
-    prefactor=(alfa2/x/y/Q2) * (y*2/2/(1-eps))
+    prefactor=(alfa2/x/y/Q2) * (y**2/2/(1-eps))
     xsec= prefactor* np.sum(beta*F)
 
     if xsec<0:
