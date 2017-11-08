@@ -165,7 +165,7 @@ class MCEG:
 
     return x,y,z,Q2,phi_h,phi_S,phT,lini,lfin,P,ph
 
-  def _gen_event(self):
+  def _gen_event(self,R):
 
     E=self.conf['Ebeam']
     M=self.conf['aux'].M
@@ -180,12 +180,12 @@ class MCEG:
 
     # step 1
   
-    x=np.random.uniform(1/(2*M*E),1)
-    Q2=np.random.uniform(1,2*M*x*E)
+    x=1/(2*M*E)+R[0]*(1-1/(2*M*E))
+    Q2=1 + R[1]*(2*M*x*E-1)
 
     Efin=E-Q2/(2*M*x)
     cos_theta=1-Q2/(2*E*Efin)
-    phi=np.random.uniform(0,2*np.pi)
+    phi=0+R[2]*(2*np.pi-0)
 
     sin_theta=np.sqrt(1-cos_theta**2)
     cos_phi = np.cos(phi)
@@ -200,14 +200,14 @@ class MCEG:
     q=lini-lfin
 
     # step 2
-    z=np.random.uniform(Mh/q[0],1)
+    z=Mh/q[0] + R[3]*(1-Mh/q[0])
     Eh=z*q[0]
     ph_mom3=np.sqrt(Eh**2-Mh**2)
 
     # step 3
-    ph_perp=np.random.uniform(0,ph_mom3)
-    sign=np.random.choice([-1,1])
-    phi=np.random.uniform(0,2*np.pi)
+    ph_perp=0 + R[4]*(ph_mom3-0)
+    sign=int(-1+R[5]*2)
+    phi=0+R[6]*(2*np.pi) 
 
     ph_z=np.sqrt(ph_mom3**2-ph_perp**2)*sign
 
@@ -316,7 +316,8 @@ class MCEG:
     data['phT']=[]
     for i in range(1000):
       try:
-        x,y,z,Q2,phi_h,phi_S,phT,Sperp,Spar,lini,lfin,P,ph = self._gen_event()
+        R=np.random.rand(7)
+        x,y,z,Q2,phi_h,phi_S,phT,Sperp,Spar,lini,lfin,P,ph = self._gen_event(R)
       except:
         continue
       #if x>1: continue 
@@ -343,7 +344,8 @@ class MCEG:
 
     for i in range(100):
       try:
-        x,y,z,Q2,phi_h,phi_S,pT,Sperp,Spar,lini,lfin,P,ph = self._gen_event()
+        R=np.random.rand(7)
+        x,y,z,Q2,phi_h,phi_S,pT,Sperp,Spar,lini,lfin,P,ph = self._gen_event(R)
       except:
         continue
 
