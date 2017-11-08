@@ -3,7 +3,7 @@ import sys,os
 #sys.path.insert(1,'../') 
 import numpy as np
 import time
-from scipy.integrate import quad
+from scipy.integrate import quad,fixed_quad
 from external.CJLIB.CJ import CJ
 from external.LSSLIB.LSS import LSS
 from external.DSSLIB.DSS import DSS
@@ -494,7 +494,9 @@ class WORMGEARG(CORE):
     return self.conf['_ppdf'].get_f(x,Q2)[i]
  
   def get_C(self,x,Q2,target='p'):
-    C = np.array([x*quad(lambda y: self.pol(i,x,Q2,target)/y,x,1)[0] for i in range(11)])
+    #C = np.array([x*quad(lambda y: self.pol(i,x,Q2,target)/y,x,1)[0] for i in range(11)])
+    #C = np.array([x*fixed_quad(np.vectorize(lambda y: self.pol(i,x,Q2,target)/y),x,1)[0] for i in range(11)])
+    C=np.zeros(11)
     C[0]=0 # glue is not supported!!!  
     if target=='n': C=self.p2n(C)
     return C
@@ -531,7 +533,10 @@ class WORMGEARH(CORE):
     return self.conf['transversity'].get_C(x,Q2,target)[i]
 
   def get_C(self,x,Q2,target='p'):
-    C = np.array([x*quad(lambda y: self.trans(i,x,Q2,target)/y,x,1)[0] for i in range(11)])
+    #C = np.array([x*quad(lambda y: self.trans(i,x,Q2,target)/y,x,1)[0] for i in range(11)])
+    #C = np.array([x*fixed_quad(np.vectorize(lambda y: self.trans(i,x,Q2,target)/y),x,1)[0] for i in range(11)])
+    C=np.zeros(11)
+    C[0]=0 # glue is not supported!!!  
     if target=='n': C=self.p2n(C)
     return C
 
