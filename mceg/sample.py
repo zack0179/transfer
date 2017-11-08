@@ -5,10 +5,6 @@ import matplotlib.pyplot as plt
 
 def flat_sample(bounds, size=1):
 
-    if bounds[0].shape is not (1,2):
-        samples = np.random.uniform(size=size)*(bounds[1]-bounds[0]) + bounds[0]
-        return samples 
-
     samples = np.zeros((size,len(bounds)), dtype=np.float32)    
     for index, dimension in enumerate(bounds):
         samples[:,index] = np.random.uniform(size=size)*(dimension[1]-dimension[0]) + dimension[0]
@@ -36,7 +32,7 @@ class BaseSampler(object):
         pass
 
     def sample(self, pdf, bounds, n_samples):
-        pass
+        return np.zeros(size=(n_samples,1))
 
 class AcceptRejectSampler(BaseSampler):
     ''' Basic implementation of sampling, 
@@ -56,10 +52,6 @@ class AcceptRejectSampler(BaseSampler):
         while(sample_index < n_samples):
             x = flat_sample(bounds,size=1)
             weight = pdf(x)/max
-            
-            print(x)
-            print(type(weight))
-            print(weight)
 
             # this is the basic accept reject rule 
             if weight > np.random.uniform(size=1):
@@ -69,27 +61,30 @@ class AcceptRejectSampler(BaseSampler):
         return samples
 
 
-
 # function for testing 
 def gauss(pars, x):
     return pars[0]*np.exp(-0.5*(x-pars[1])**2/pars[2]**2)
 
 def gauss2(pars, x):
-    return gauss(pars[:3], x[0])*gauss(pars[3:],x[1])
+    return gauss(pars[:3], x[0,0])*gauss(pars[3:],x[0,1])
+
+def gauss_linear(pars, x):
+    return gauss(pars[:3], x[0,0])*x[0,1]
 
 if __name__ == '__main__':
 
     sampler = AcceptRejectSampler()
     
-#    pars = np.array([1.0, 0.0, 1.0, 1.0, 0.0, 1.0])
-#    bounds = np.array([[-1, 1],[-1, 1]])
-    pars = np.array([1.0, 0.0, 1.0])    
-    bounds = np.array([-3, 3])
+    pars = np.array([10.0, 0.0, 0.5, 1.0, 0.0, 0.5])
+    bounds = np.array([[-5, 5],[-15, 15]])
+#    pars = np.array([1.0, 0.0, 1.0])    
+#    bounds = np.array([[-3, 3],])
 
     def pdf(x):
-        return gauss(pars, x)
+        return gauss_linear(pars, x)
 
-    samples = sampler.sample(pdf, bounds, 1000)
+    samples = sampler.sample(pdf, bounds, 50000)
 
-    plt.hist(samples, bins=20)
+    plt.hist2d(samples[:,0], samples[:,1], bins=40)
     plt.savefig('samples.pdf', dpi=400)
+
