@@ -161,17 +161,29 @@ class STFUNCS:
     beta[13] =Sperp * le * np.sqrt(2*eps*(1-eps)) * np.cos(2*phi_h-phi_S)
     beta[14] =Spar  * np.sqrt(2*eps*(1+eps))*np.sin(phi_h)
     beta[15] =le    * np.sqrt(2*eps*(1-eps))*np.sin(phi_h)
-    beta[16] =np.sqrt(2*eps*(1+eps))*np.cos(phi_h)
+    beta[16] = np.sqrt(2*eps*(1+eps))*np.cos(phi_h)
     beta[17] =Sperp * np.sqrt(2*eps*(1+eps))*np.sin(phi_S)
     beta[18] =Sperp * np.sqrt(2*eps*(1+eps))*np.sin(2*phi_h-phi_S)
 
     F=np.zeros(19)
-    for i in range(1,16): F[i]=self.get_FX(i,x,z,Q2,pT,target,hadron)
-    F[16]=self.get_FX(16,x,z,Q2,pT,target,hadron)+self.get_FX(17,x,z,Q2,pT,target,hadron)
-    F[17]=self.get_FX(18,x,z,Q2,pT,target,hadron)+self.get_FX(19,x,z,Q2,pT,target,hadron)
-    F[18]=self.get_FX(20,x,z,Q2,pT,target,hadron)+self.get_FX(21,x,z,Q2,pT,target,hadron)
+    for i in range(1,8): F[i]=self.get_FX(i,x,z,Q2,pT,target,hadron)
+    #F[16]=self.get_FX(16,x,z,Q2,pT,target,hadron)+self.get_FX(17,x,z,Q2,pT,target,hadron)
+    #F[17]=self.get_FX(18,x,z,Q2,pT,target,hadron)+self.get_FX(19,x,z,Q2,pT,target,hadron)
+    #F[18]=self.get_FX(20,x,z,Q2,pT,target,hadron)+self.get_FX(21,x,z,Q2,pT,target,hadron)
 
-    return (alfa2/x/y/Q2) * (y*2/2/(1-eps)) * np.sum(beta*F)
+    prefactor=(alfa2/x/y/Q2) * (y*2/2/(1-eps))
+    xsec= prefactor* np.sum(beta*F)
+
+    if xsec<0:
+      print '\nerr: unphysical xsec\n' 
+      print 'xsec      = %10.2e'%(xsec)
+      print 'prefactor = %10.2e'%(prefactor)
+      for i in range(1,19):
+        print '%s i=%2d beta=%10.2e F=%10.2e tot=%10.2e'%('->',i,beta[i],F[i],beta[i]*F[i])
+      sys.exit()
+
+
+    return xsec
 
 
 if __name__=='__main__':

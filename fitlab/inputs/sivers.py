@@ -22,7 +22,7 @@ conf['path2DSS']='../external/DSSLIB'
 
 ############################################################################
 # params
-conf['shape']=1
+conf['shape']=0
 
 conf['params']={}
 
@@ -37,26 +37,45 @@ conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.3126615959719650783
 conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.85599049505402902138e-01>>,'fixed':True,'min':0,'max':1}
 
 conf['params']['sivers']={}
-conf['params']['sivers']['widths0 valence'] = {'value':<<    1.00000000000000008180e-05>>,'fixed':False,'min':1e-5,'max':2}
+conf['params']['sivers']['widths0 valence'] = {'value':<<    1.71752283955595969056e-01>>,'fixed':False,'min':1e-5,'max':2}
 conf['params']['sivers']['widths0 sea']     = {'value':<<    3.88407094276222220053e-01>>,'fixed':True,'min':1e-5,'max':2}
-conf['params']['sivers']['u N']  = {'value':<<   -1.54726098255125954495e-01>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['sivers']['u a']  = {'value':<<   -3.08910485381969301955e-01>> ,'fixed':False,'min':-1,'max':10}
-conf['params']['sivers']['u b']  = {'value':<<    2.18372887816582483822e+00>> ,'fixed':False,'min':1e-5,'max':10}
-conf['params']['sivers']['d N']  = {'value':<<    1.40832938370451965504e-01>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['sivers']['d a']  = {'value':<<    8.59560573255508941770e-02>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['sivers']['d b']  = {'value':<<    4.10880279237404710813e+00>> ,'fixed':False,'min':1e-5,'max':20}
 
-conf['params']['sivers']['s N']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['sivers']['s a']  = {'value':<<    1.29166014285342356516e-03>> ,'fixed':True,'min':-1,'max':5}
-conf['params']['sivers']['s b']  = {'value':<<    1.65373612389350554963e-01>> ,'fixed':True,'min':1e-5,'max':10}
+conf['params']['sivers']['u N']   = {'value':<<   -1.06964420662401457629e-01>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['sivers']['u a']   = {'value':<<   -3.71857935680925677513e-01>> ,'fixed':False,'min':-1,'max':10}
+conf['params']['sivers']['u b']   = {'value':<<    2.53179596970077014362e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['sivers']['u c']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['u d']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-conf['params']['sivers']['u c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['sivers']['d c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['sivers']['s c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['d N']   = {'value':<<    4.19401634234150555436e-01>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['sivers']['d a']   = {'value':<<    6.28509971743174550296e-02>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['sivers']['d b']   = {'value':<<    4.50917852114222483806e+00>> ,'fixed':False,'min':1e-5,'max':20}
+conf['params']['sivers']['d c']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['d d']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-conf['params']['sivers']['u d']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['sivers']['d d']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['sivers']['s d']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['s N']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['s a']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-1,'max':5}
+conf['params']['sivers']['s b']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':1e-5,'max':10}
+conf['params']['sivers']['s c']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['s d']   = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+
+conf['params']['sivers']['ub N']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['ub a']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-1,'max':5}
+conf['params']['sivers']['ub b']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':1e-5,'max':10}
+conf['params']['sivers']['ub c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['ub d']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+
+conf['params']['sivers']['db N']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['db a']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-1,'max':5}
+conf['params']['sivers']['db b']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':1e-5,'max':10}
+conf['params']['sivers']['db c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['db d']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+
+conf['params']['sivers']['sb N']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['sb a']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-1,'max':5}
+conf['params']['sivers']['sb b']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':1e-5,'max':10}
+conf['params']['sivers']['sb c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['sivers']['sb d']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+
 
 ############################################################################
 # set data sets

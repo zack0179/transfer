@@ -18,7 +18,6 @@ import obslib.sidis.residuals
 import obslib.sidis.reader
 from fitlab.parman import PARMAN
 
-
 class MCEG:
 
   def __init__(self,conf):
@@ -170,8 +169,11 @@ class MCEG:
 
     E=self.conf['Ebeam']
     M=self.conf['aux'].M
-    Mh=self.conf['aux'].Mpi
     S=self.conf['S']
+    if  'pi' in self.conf['hadron']: Mh=self.conf['aux'].Mpi
+    elif 'k' in self.conf['hadron']: Mh=self.conf['aux'].Mk
+    else:
+      raise ValueError('hadron not supported')
 
     lini=np.array([E,0,0,E])
     P=np.array([M,0,0,0])
@@ -303,7 +305,7 @@ class MCEG:
   def setup_sidis(self):
     self.sidis =obslib.sidis.stfuncs.STFUNCS(self.conf)
 
-  def test(self):
+  def test1(self):
     data={}
     data['x']=[]
     data['y']=[]
@@ -345,13 +347,16 @@ class MCEG:
       except:
         continue
 
-      F=self.sidis.get_FX(1,x,z,Q2,pT,'p','pi+')
-      print x,y,z,Q2,phi_h,phi_S,pT,F
-      
+      le=self.conf['le']
+      target=self.conf['target']
+      hadron=self.conf['hadron']
+      xsec=self.sidis.get_xsec(x,z,y,Q2,pT,phi_h,phi_S,Sperp,Spar,le,target,hadron)
+      print xsec
 
 if __name__=='__main__':
 
   conf=load_config('input.py')
+
   conf['aux']=AUX()
   mceg=MCEG(conf)
   mceg.test2()

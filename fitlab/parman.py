@@ -40,11 +40,12 @@ class PARMAN:
           self.par.append(self.conf['params'][k][kk]['value'])
           self.order.append([1,k,kk])
 
-    for k in self.conf['datasets']:
-      for kk in self.conf['datasets'][k]['norm']:
-        if self.conf['datasets'][k]['norm'][kk]['fixed']==False:
-          self.par.append(self.conf['datasets'][k]['norm'][kk]['value'])
-          self.order.append([2,k,kk])
+    if 'datasets' in self.conf:
+      for k in self.conf['datasets']:
+        for kk in self.conf['datasets'][k]['norm']:
+          if self.conf['datasets'][k]['norm'][kk]['fixed']==False:
+            self.par.append(self.conf['datasets'][k]['norm'][kk]['value'])
+            self.order.append([2,k,kk])
         
   def set_new_params(self,parnew,initial=False):
     self.shifts=0
@@ -93,6 +94,7 @@ class PARMAN:
     if 'transversity' in semaphore and semaphore['transversity']==1:  self.set_transversity_params()
     if 'collins' in semaphore and semaphore['collins']==1:  self.set_collins_params()
     if 'boermulders' in semaphore and semaphore['boermulders']==1:  self.set_boermulders_params()
+    if 'pretzelosity' in semaphore and semaphore['pretzelosity']==1:  self.set_pretzelosity_params()
 
   def set_pdf_params(self):
     self.conf['pdf'].widths0['valence']=self.conf['params']['pdf']['widths0 valence']['value']
@@ -219,6 +221,34 @@ class PARMAN:
     self.conf['boermulders'].shape['p'][2][1]=self.conf['params']['boermulders']['s a']['value']
     self.conf['boermulders'].shape['p'][2][2]=self.conf['params']['boermulders']['s b']['value']
     self.conf['boermulders'].setup() 
+
+  def set_pretzelosity_params(self):
+    ''' Currently we're using the symmetric sea approximation 
+    where below, all sea quark parameters are set based on the 
+    value of the s quark parameters. 
+    '''
+
+    self.conf['pretzelosity'].widths0['valence']=self.conf['params']['pretzelosity']['widths0 valence']['value']
+    self.conf['pretzelosity'].widths0['sea']=self.conf['params']['pretzelosity']['widths0 sea']['value']
+    self.conf['pretzelosity'].shape['p'][1][0]=self.conf['params']['pretzelosity']['u N']['value']
+    self.conf['pretzelosity'].shape['p'][1][1]=self.conf['params']['pretzelosity']['u a']['value']
+    self.conf['pretzelosity'].shape['p'][1][2]=self.conf['params']['pretzelosity']['u b']['value']
+    self.conf['pretzelosity'].shape['p'][3][0]=self.conf['params']['pretzelosity']['d N']['value']
+    self.conf['pretzelosity'].shape['p'][3][1]=self.conf['params']['pretzelosity']['d a']['value']
+    self.conf['pretzelosity'].shape['p'][3][2]=self.conf['params']['pretzelosity']['d b']['value']
+    self.conf['pretzelosity'].shape['p'][4][0]=self.conf['params']['pretzelosity']['s N']['value']
+    self.conf['pretzelosity'].shape['p'][4][1]=self.conf['params']['pretzelosity']['s a']['value']
+    self.conf['pretzelosity'].shape['p'][4][2]=self.conf['params']['pretzelosity']['s b']['value']
+    self.conf['pretzelosity'].shape['p'][5][0]=self.conf['params']['pretzelosity']['s N']['value']
+    self.conf['pretzelosity'].shape['p'][5][1]=self.conf['params']['pretzelosity']['s a']['value']
+    self.conf['pretzelosity'].shape['p'][5][2]=self.conf['params']['pretzelosity']['s b']['value']
+    self.conf['pretzelosity'].shape['p'][6][0]=self.conf['params']['pretzelosity']['s N']['value']
+    self.conf['pretzelosity'].shape['p'][6][1]=self.conf['params']['pretzelosity']['s a']['value']
+    self.conf['pretzelosity'].shape['p'][6][2]=self.conf['params']['pretzelosity']['s b']['value']
+    self.conf['pretzelosity'].shape['p'][2][0]=self.conf['params']['pretzelosity']['s N']['value']
+    self.conf['pretzelosity'].shape['p'][2][1]=self.conf['params']['pretzelosity']['s a']['value']
+    self.conf['pretzelosity'].shape['p'][2][2]=self.conf['params']['pretzelosity']['s b']['value']
+    self.conf['pretzelosity'].setup() 
 
   def set_collins_params(self):
 

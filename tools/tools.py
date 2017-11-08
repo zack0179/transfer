@@ -33,7 +33,8 @@ def isnumeric(value):
 
 def load_config(fname):
   L=open(fname).readlines()
-  for l in L: exec l.replace('<<','').replace('>>','')
+  for l in L: 
+    exec l.replace('<<','').replace('>>','')
   return conf   
 
 def lprint(msg):
