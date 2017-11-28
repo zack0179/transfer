@@ -166,9 +166,9 @@ class RESIDUALS(_RESIDUALS):
 
     elif obs == 'A_pretzelosity':
 
-      if col=='compass':  factor= 1.00
-      if col=='hermes':  factor= 2*(1-y)/(1+(1-y)**2)
-      if col=='jlab':  factor= 2*(1-y)/(1+(1-y)**2)
+#      if col=='compass':  coeff= 1.00
+#      if col=='hermes':  coeff= 2*(1-y)/(1+(1-y)**2)
+#      if col=='jlab':  coeff= 2*(1-y)/(1+(1-y)**2)
 
       if target == 'proton':
         FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)
@@ -187,7 +187,8 @@ class RESIDUALS(_RESIDUALS):
         FUU     = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)\
                 + self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
 
-      thy = factor*FUTsin3/FUU
+      coeff= 2*(1-y)/(1+(1-y)**2)
+      thy = coeff*FUTsin3/FUU
 
     else:
       print 'ERR: exp=%d obs=%s and target=%s not implemented'%(k,obs,target)

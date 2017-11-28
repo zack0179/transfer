@@ -52,16 +52,16 @@ conf['params']={}
 #conf['params']['ff']['widths0 k+ unfav'] = {'value':<<    1.85494582991636902669e-01>>,'fixed':True,'min':1e-5,'max':1}
 
 conf['params']['pretzelosity']={}
-conf['params']['pretzelosity']['widths0 valence'] = {'value':<<    3.22216799254860797319e-02>>,'fixed':False,'min':1e-5,'max':1}
+conf['params']['pretzelosity']['widths0 valence'] = {'value':<<    6.62401853528338246946e-04>>,'fixed':False,'min':1e-5,'max':1}
 conf['params']['pretzelosity']['widths0 sea']     = {'value':<<    9.86199935641373093276e-02>>,'fixed':False,'min':1e-5,'max':1}
 
 #----------------------------------------------------------------------------------------
-conf['params']['pretzelosity']['u N']  = {'value':<<   -6.71172498176741161302e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['pretzelosity']['u a']  = {'value':<<    8.29276759350683345673e-01>> ,'fixed':False,'min':1e-5,'max':5}
-conf['params']['pretzelosity']['u b']  = {'value':<<    2.43091714345857212720e+00>> ,'fixed':False,'min':1e-5,'max':10}
-conf['params']['pretzelosity']['d N']  = {'value':<<   -9.45680872815807305187e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['pretzelosity']['d a']  = {'value':<<    1.00000000000655120402e-05>> ,'fixed':False,'min':1e-5,'max':5}
-conf['params']['pretzelosity']['d b']  = {'value':<<    9.94419955182777570712e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['pretzelosity']['u N']  = {'value':<<   -7.89516312009176512987e+00>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['pretzelosity']['u a']  = {'value':<<    1.00000000000655120402e-05>> ,'fixed':False,'min':1e-5,'max':5}
+conf['params']['pretzelosity']['u b']  = {'value':<<    8.27556924946045135982e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['pretzelosity']['d N']  = {'value':<<    1.22233637848631082612e+00>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['pretzelosity']['d a']  = {'value':<<    6.25072397407901325650e-01>> ,'fixed':False,'min':1e-5,'max':5}
+conf['params']['pretzelosity']['d b']  = {'value':<<    7.84363081824918584317e+00>> ,'fixed':False,'min':1e-5,'max':10}
 conf['params']['pretzelosity']['s N']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['pretzelosity']['s a']  = {'value':<<    5.53070929403782773903e-01>> ,'fixed':True,'min':1e-5,'max':5}
 conf['params']['pretzelosity']['s b']  = {'value':<<    2.39050712257790154425e+00>> ,'fixed':True,'min':1e-5,'max':10}
@@ -86,14 +86,14 @@ conf['params']['pretzelosity']['s c']  = {'value':<<    0.00000000000000000000e+
 conf['params']['pretzelosity']['s d']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
 conf['params']['collins']={}
-conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    4.65703147832129404904e-02>>,'fixed':False,'min':1e-5,'max':1}
-conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    1.17982731455612666061e-01>>,'fixed':False,'min':1e-5,'max':2}
-conf['params']['collins']['pi+ u N']  = {'value':<<    1.99837367355193507024e+01>> ,'fixed':False,'min':0,'max':20}
-conf['params']['collins']['pi+ u a']  = {'value':<<    2.35600529079732057269e+00>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['collins']['pi+ u b']  = {'value':<<    8.80196529764313773114e+00>> ,'fixed':False,'min':-1,'max':10}
-conf['params']['collins']['pi+ d N']  = {'value':<<   -2.10595810960850116089e-01>> ,'fixed':False,'min':-20,'max':0}
-conf['params']['collins']['pi+ d a']  = {'value':<<   -2.52076239027619219968e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['collins']['pi+ d b']  = {'value':<<    3.93132979672411497774e+00>> ,'fixed':False,'min':-1,'max':10}
+conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    6.45892468420083964986e-02>>,'fixed':False,'min':1e-5,'max':1}
+conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    2.76949627510227891491e-01>>,'fixed':False,'min':1e-5,'max':2}
+conf['params']['collins']['pi+ u N']  = {'value':<<    1.03513362588519619578e+01>> ,'fixed':False,'min':0,'max':20}
+conf['params']['collins']['pi+ u a']  = {'value':<<   -1.00000000000000000000e+00>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['pi+ u b']  = {'value':<<    6.34082800762176290732e+00>> ,'fixed':False,'min':-1,'max':10}
+conf['params']['collins']['pi+ d N']  = {'value':<<   -3.00532308880009058072e+00>> ,'fixed':False,'min':-20,'max':0}
+conf['params']['collins']['pi+ d a']  = {'value':<<    7.84653168853393534476e-01>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['pi+ d b']  = {'value':<<    2.16067172676201169068e+00>> ,'fixed':False,'min':-1,'max':10}
 conf['params']['collins']['pi+ u c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ d c']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ u d']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
@@ -125,35 +125,29 @@ conf['datasets']['sidis']['norm']={}
 
 conf['datasets']['sidis']['filters']={}
 conf['datasets']['sidis']['filters'][0]={}
-conf['datasets']['sidis']['filters'][0]['idx']=[8000, 8001]
+conf['datasets']['sidis']['filters'][0]['idx']=[8001]
 conf['datasets']['sidis']['filters'][0]['filter']='z > 0.2 and x > 0.023 and x < 0.6 and y > 0.2 and y < 0.85 and Q2 > 1.00'
 conf['datasets']['sidis']['filters'][1]={}
-conf['datasets']['sidis']['filters'][1]['idx']=[8002, 8003, 8004, 8005, 8006, 8007, 8008, 8009, 8010]
+conf['datasets']['sidis']['filters'][1]['idx']=[8005, 8006, 8007]
 conf['datasets']['sidis']['filters'][1]['filter']='z > 0.2 and x > 0.023 and x < 0.6 and y > 0.2 and y < 0.85 and Q2 > 1.00'
 
 # integrated datasets 
-conf['datasets']['sidis']['xlsx'][8000]='../database/sidis/expdata/8000.xlsx' # | neutron | pi- | A_pretzelosity | jlab
+#conf['datasets']['sidis']['xlsx'][8000]='../database/sidis/expdata/8000.xlsx' # | neutron | pi- | A_pretzelosity | jlab
 conf['datasets']['sidis']['xlsx'][8001]='../database/sidis/expdata/8001.xlsx' # | neutron | pi+ | A_pretzelosity | jlab
-conf['datasets']['sidis']['xlsx'][8002]='../database/sidis/expdata/8002.xlsx' # | proton | pi- | A_pretzelosity | hermes
-conf['datasets']['sidis']['xlsx'][8003]='../database/sidis/expdata/8003.xlsx' # | proton | pi- | A_pretzelosity | hermes
-conf['datasets']['sidis']['xlsx'][8004]='../database/sidis/expdata/8004.xlsx' # | proton | pi- | A_pretzelosity | hermes
+#conf['datasets']['sidis']['xlsx'][8002]='../database/sidis/expdata/8002.xlsx' # | proton | pi- | A_pretzelosity | hermes
+#conf['datasets']['sidis']['xlsx'][8003]='../database/sidis/expdata/8003.xlsx' # | proton | pi- | A_pretzelosity | hermes
+#conf['datasets']['sidis']['xlsx'][8004]='../database/sidis/expdata/8004.xlsx' # | proton | pi- | A_pretzelosity | hermes
 conf['datasets']['sidis']['xlsx'][8005]='../database/sidis/expdata/8005.xlsx' # | proton | pi+ | A_pretzelosity | hermes
 conf['datasets']['sidis']['xlsx'][8006]='../database/sidis/expdata/8006.xlsx' # | proton | pi+ | A_pretzelosity | hermes
 conf['datasets']['sidis']['xlsx'][8007]='../database/sidis/expdata/8007.xlsx' # | proton | pi+ | A_pretzelosity | hermes
-conf['datasets']['sidis']['xlsx'][8008]='../database/sidis/expdata/8008.xlsx' # | proton | pi0 | A_pretzelosity | hermes
-conf['datasets']['sidis']['xlsx'][8009]='../database/sidis/expdata/8009.xlsx' # | proton | pi0 | A_pretzelosity | hermes
-conf['datasets']['sidis']['xlsx'][8010]='../database/sidis/expdata/8010.xlsx' # | proton | pi0 | A_pretzelosity | hermes
 
 
 # integrated datasets normalization 
-conf['datasets']['sidis']['norm'][8000]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
+#conf['datasets']['sidis']['norm'][8000]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
 conf['datasets']['sidis']['norm'][8001]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
-conf['datasets']['sidis']['norm'][8002]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
-conf['datasets']['sidis']['norm'][8003]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
-conf['datasets']['sidis']['norm'][8004]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
+#conf['datasets']['sidis']['norm'][8002]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
+#conf['datasets']['sidis']['norm'][8003]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
+#conf['datasets']['sidis']['norm'][8004]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
 conf['datasets']['sidis']['norm'][8005]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
 conf['datasets']['sidis']['norm'][8006]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
 conf['datasets']['sidis']['norm'][8007]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
-conf['datasets']['sidis']['norm'][8008]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
-conf['datasets']['sidis']['norm'][8009]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
-conf['datasets']['sidis']['norm'][8010]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
