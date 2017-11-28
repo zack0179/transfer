@@ -125,10 +125,11 @@ conf['datasets']['sidis']['norm']={}
 
 conf['datasets']['sidis']['filters']={}
 conf['datasets']['sidis']['filters'][0]={}
-conf['datasets']['sidis']['filters'][0]['idx']=[8000, 8001, 8002, 8003, 8004, 8005, 8006, 8007, 8008, 8009, 8010]
-#conf['datasets']['sidis']['filters'][0]['filter']='z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9'
+conf['datasets']['sidis']['filters'][0]['idx']=[8000, 8001]
 conf['datasets']['sidis']['filters'][0]['filter']='z > 0.2 and x > 0.023 and x < 0.6 and y > 0.2 and y < 0.85 and Q2 > 1.00'
-
+conf['datasets']['sidis']['filters'][1]={}
+conf['datasets']['sidis']['filters'][1]['idx']=[8002, 8003, 8004, 8005, 8006, 8007, 8008, 8009, 8010]
+conf['datasets']['sidis']['filters'][1]['filter']='z > 0.2 and x > 0.023 and x < 0.6 and y > 0.2 and y < 0.85 and Q2 > 1.00'
 
 # integrated datasets 
 conf['datasets']['sidis']['xlsx'][8000]='../database/sidis/expdata/8000.xlsx' # | neutron | pi- | A_pretzelosity | jlab
