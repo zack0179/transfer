@@ -145,18 +145,18 @@ class RESIDUALS(_RESIDUALS):
     elif obs == 'AUUcos2':      
 
       if target == 'proton':
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'p', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron)
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
       
       elif target == 'neutron':
 
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'n', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron)
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
       
       elif target == 'deuteron':
 
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'p', hadron)\
-                + self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'n', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron)\
+                + self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron)
 
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)\
                 + self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
@@ -164,11 +164,35 @@ class RESIDUALS(_RESIDUALS):
       epsilon = (1-y)/(1-y+0.5*y**2)
       thy = (epsilon)*FUUcos2/FUU
 
+    elif obs == 'A_pretzelosity':
+
+      if col=='compass':  factor= 1.00
+      if col=='hermes':  factor= 2*(1-y)/(1+(1-y)**2)
+      if col=='jlab':  factor= 2*(1-y)/(1+(1-y)**2)
+
+      if target == 'proton':
+        FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)
+        FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
+
+      elif target == 'neutron':
+
+        FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
+        FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
+
+      elif target == 'deuteron':
+
+        FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)\
+                + self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
+
+        FUU     = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)\
+                + self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
+
+      thy = factor*FUTsin3/FUU
+
     else:
       print 'ERR: exp=%d obs=%s and target=%s not implemented'%(k,obs,target)
       sys.exit()
-
-
+  
     return k,i,thy
 
   def gen_report(self,verb=1,level=1):
