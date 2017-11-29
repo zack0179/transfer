@@ -372,18 +372,18 @@ class BOERMULDERS(CORE):
     self.widths={}
     self.widths['p']=np.ones(11)
 
-    self.M={}
-    self.M['p']=0.1**0.5
-    self.M['n']=0.1**0.5
+#    self.M={}
+#    self.M['p']=0.1**0.5
+#    self.M['n']=0.1**0.5
 
     self.K={}
-    self.norm={}
+#    self.norm={}
 
-  def get_norm(self,hadron):
-    return -np.sqrt(np.exp(1)/2)\
-          /(self.aux.M*self.M[hadron])\
-          *self.widths[hadron]**2/\
-          self.conf['pdf'].widths[hadron]
+#  def get_norm(self,hadron):
+#    return -np.sqrt(np.exp(1)/2)\
+#          /(self.aux.M*self.M[hadron])\
+#          *self.widths[hadron]**2/\
+#          self.conf['pdf'].widths[hadron]
 
   def get_K(self,hadron):
     return 2*self.aux.M2/self.widths[hadron]
@@ -397,12 +397,11 @@ class BOERMULDERS(CORE):
     self.shape['n']=self.p2n(self.shape['p'])
     self.widths['n']=self.p2n(self.widths['p'])
     for hadron in ['p','n']:
-      self.norm[hadron]=self.get_norm(hadron)
+#      self.norm[hadron]=self.get_norm(hadron)
       self.K[hadron]=self.get_K(hadron)
 
   def get_C(self,x,Q2,target='p'):
-    unpol=self.conf['_pdf'].get_f(x,Q2)
-    C=self.get_collinear(x,target)*unpol
+    C=self.get_collinear(x,target)
     if target=='n': C=self.p2n(C)
     return C
 
