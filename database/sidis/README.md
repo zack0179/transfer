@@ -10,6 +10,8 @@
 | 1005  | [link][?]    | deuteron | pi-    | M_Hermes   | hermes     | -          |
 | 1006  | [link][?]    | deuteron | k+     | M_Hermes   | hermes     | -          |
 | 1007  | [link][?]    | deuteron | k-     | M_Hermes   | hermes     | -          |
+| 1008  | [link][http://inspirehep.net/record/1624692]    | deuteron | h+     | M_Compass   | compass     | -          |
+| 1009  | [link][http://inspirehep.net/record/1624692]    | deuteron | h-     | M_Compass  | compass     | -          |
 | 2000  | [link][?]    | proton   | pi+    | AUTsivers  | hermes     | PT         |
 | 2001  | [link][?]    | proton   | pi+    | AUTsivers  | hermes     | x          |
 | 2002  | [link][?]    | proton   | pi+    | AUTsivers  | hermes     | z          |
@@ -109,6 +111,9 @@
 | 4010  | [link][?]    | deuteron | k-     | AUTcollins | compass    | pt         |
 | 3001  | [link][?]    | neutron  | pi-    | AUTcollins | jlab       | x          |
 | 3002  | [link][?]    | neutron  | pi+    | AUTcollins | jlab       | x          |
+| 9000  | [link][?]    | proton   | pi+    | ALL        | clas       | PT         |
+| 9001  | [link][?]    | proton   | pi-    | ALL        | clas       | PT         |
+| 9002  | [link][?]    | proton   | pi0    | ALL        | clas       | PT         |
 
 
 [?]: http://inspirehep.net/
