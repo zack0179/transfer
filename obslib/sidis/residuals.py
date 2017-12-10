@@ -190,6 +190,15 @@ class RESIDUALS(_RESIDUALS):
       coeff= 2*(1-y)/(1+(1-y)**2)
       thy = coeff*FUTsin3/FUU
 
+    elif obs == 'ALL':
+
+      if target == 'proton':
+        FLL = self.stfuncs.get_FX(3, x, z, Q2, pT, 'p', hadron)
+        FUU = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
+
+      coeff= 1.00
+      thy = coeff*FLL/FUU
+
     else:
       print 'ERR: exp=%d obs=%s and target=%s not implemented'%(k,obs,target)
       sys.exit()
