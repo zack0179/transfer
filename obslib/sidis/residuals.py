@@ -196,7 +196,7 @@ class RESIDUALS(_RESIDUALS):
         FLL = self.stfuncs.get_FX(3, x, z, Q2, pT, 'p', hadron)
         FUU = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
 
-      coeff= 1.00
+      coeff= 2*(1-y)/(1+(1-y)**2)
       thy = coeff*FLL/FUU
 
     else:
