@@ -44,8 +44,8 @@ conf['params']['ppdf']['widths0 valence']  = {'value':<<    5.902886711028413335
 conf['params']['ppdf']['widths0 sea']      = {'value':<<    6.27510853614136498990e-01>>,'fixed':False,'min':1e-5,'max':1}
 
 conf['params']['ff']={}
-conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.15122136046579115476e-01>>,'fixed':False,'min':1e-5,'max':1}
-conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.36806885749796047769e-01>>,'fixed':False,'min':1e-5,'max':1}
+conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    3.64814880351840509221e-01>>,'fixed':False,'min':1e-5,'max':1}
+conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    2.81490086148013296530e-01>>,'fixed':False,'min':1e-5,'max':1}
 conf['params']['ff']['widths0 k+ fav']   = {'value':<<    1.32408177485670908169e-01>>,'fixed':False,'min':1e-5,'max':1}
 conf['params']['ff']['widths0 k+ unfav'] = {'value':<<    1.85494582991636902669e-01>>,'fixed':False,'min':1e-5,'max':1}
 
@@ -69,5 +69,5 @@ conf['datasets']['sidis']['xlsx'][9001]='../database/sidis/expdata/9001.xlsx' # 
 
 
 # integrated datasets normalization 
-conf['datasets']['sidis']['norm'][8000]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
-conf['datasets']['sidis']['norm'][8001]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
+conf['datasets']['sidis']['norm'][9000]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
+conf['datasets']['sidis']['norm'][9001]={'value':<<    1.00000000000000000000e+00>>,'fixed':True,'min':-2,'max':2}
