@@ -67,6 +67,7 @@ class STFUNCS:
     self.D[21]={'k1':'pretzelosity','k2':'collins'}
     self.D[22] ={'k1':'pdf','k2':'ff'}
 
+
   def get_K(self,i,x,Q2,z,pT,wq,k1,k2,target,hadron):
     if   i==1: return x
     elif i==2: return 0

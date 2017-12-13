@@ -33,6 +33,26 @@ class RESIDUALS(_RESIDUALS):
     self.dis_stfuncs=conf['dis stfuncs']
     self.setup()
 
+  def get_IFUU(self,FUU,x,zh,Q2,pT,hadron):
+    Q=np.sqrt(Q2)
+    M=self.conf['aux'].M
+    M2=self.conf['aux'].M**2
+    if 'pi' in hadron: Mh=self.conf['aux'].Mpi
+    if 'k' in hadron:  Mh=self.conf['aux'].Mk
+    MhT=np.sqrt(Mh**2+pT**2)
+    xn=2*x/(1+np.sqrt(1+4*x**2*M2/Q2))
+    yp=0.5*np.log(Q2/xn**2/M2)
+    yh=np.log( Q*zh*(Q2-xn**2*M2)/(2*xn**2*M2*MhT)\
+              -Q/(xn*M)*np.sqrt(zh**2*(Q2-xn**2*M2)**2/(4*xn**2*M2*MhT**2)-1) )
+    dy=yp-yh
+    R=1-np.exp(-self.conf['aux'].alpha*dy)
+    #S=self.conf['aux'].N*np.exp(-dy**2/self.conf['aux'].beta/x)
+    #S=np.exp(-dy**2/self.conf['aux'].beta/x)
+    #print '1 ',R*FUU,'  2:',(1-R)*S
+    #print FUU ,self.conf['aux'].N*np.exp(-self.conf['aux'].alpha*x*dy**2)
+
+    return FUU#*self.conf['aux'].N  #*np.exp(-self.conf['aux'].alpha*x*dy**2) )
+
   def _get_theory(self,entry):
     k,i=entry
     x =self.tabs[k]['x'][i]
@@ -48,6 +68,7 @@ class RESIDUALS(_RESIDUALS):
     if obs=='M_Hermes' and target=='proton': 
 
       FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
+      FUU=self.get_IFUU(FUU,x,z,Q2,pT,hadron)
       F2 =self.dis_stfuncs.get_F2(x,Q2,'p')
       thy = 2*np.pi*pT*FUU/F2
 
@@ -55,8 +76,10 @@ class RESIDUALS(_RESIDUALS):
 
       FUU = self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)\
            +self.stfuncs.get_FX(1,x,z,Q2,pT,'n',hadron)
+      FUU=self.get_IFUU(FUU,x,z,Q2,pT,hadron)
       F2  = self.dis_stfuncs.get_F2(x,Q2,'p')\
            +self.dis_stfuncs.get_F2(x,Q2,'n')
+
       thy = 2*np.pi*pT*FUU/F2
 
     elif obs=='AUTcollins':
@@ -171,6 +194,8 @@ class RESIDUALS(_RESIDUALS):
 
     return k,i,thy
 
+
+
   def gen_report(self,verb=1,level=1):
     """
     verb = 0: Do not print on screen. Only return list of strings
@@ -209,6 +234,9 @@ class RESIDUALS(_RESIDUALS):
       msg+='z=%10.3e  '
       msg+='pT=%10.3e  '
       msg+='Q2=%10.3e  '
+      msg+='yh=%10.3e  '
+      msg+='yp=%10.3e  '
+      msg+='dy=%10.3e  '
       msg+='exp=%10.3e  ' 
       msg+='alpha=%10.3e  ' 
       msg+='thy=%10.3e  ' 
@@ -230,12 +258,16 @@ class RESIDUALS(_RESIDUALS):
           rres=self.tabs[k]['r-residuals'][i]
           col=self.tabs[k]['col'][i]
           shift=self.tabs[k]['shift'][i]
+          yh=self.tabs[k]['yh'][i]
+          yp=self.tabs[k]['yp'][i]
+          dy=self.tabs[k]['dy'][i]
           if res<0: chi2=-res**2
           else: chi2=res**2
-          L.append(msg%(col,obs,x,z,pT,Q2,exp,alpha,thy,shift,chi2))
+          L.append(msg%(col,obs,x,z,pT,Q2,yh,yp,dy,exp,alpha,thy,shift,chi2))
 
     if verb==0:
       return L
     elif verb==1:
       for l in L: print l
+      return L
 
