@@ -9,7 +9,43 @@ class READER(_READER):
   def __init__(self,conf):
     self.conf=conf
 
+  def get_X(self,tab):
+    cols=tab.columns.values
+    if any([c=='X' for c in cols])==False:
+      if any([c=='W2' for c in cols]):
+        tab['X']=pd.Series(tab['Q2']/(tab['W2']-self.aux.M2+tab['Q2']),index=tab.index)
+      elif any([c=='W' for c in cols]):
+        tab['X']=pd.Series(tab['Q2']/(tab['W']**2-self.aux.M2+tab['Q2']),index=tab.index)
+      else:
+        print 'cannot retrive X values'
+        sys.exit()
+    return tab
+
+  def get_rap(self,tab,k):
+    Q2=tab['Q2']
+    pT=tab['pT']
+    x=tab['x']
+    zh=tab['z']
+    Q=Q2**0.5
+    hadron=tab['hadron'][0]
+    M=self.conf['aux'].M
+    M2=self.conf['aux'].M**2
+    if 'pi' in hadron: Mh=self.conf['aux'].Mpi
+    if 'k' in hadron:  Mh=self.conf['aux'].Mk
+    MhT=np.sqrt(Mh**2+pT**2)
+    xn=2*x/(1+np.sqrt(1+4*x**2*M2/Q2))
+    yp=0.5*np.log(Q2/xn**2/M2)
+    yh=np.log( Q*zh*(Q2-xn**2*M2)/(2*xn**2*M2*MhT)\
+              -Q/(xn*M)*np.sqrt(zh**2*(Q2-xn**2*M2)**2/(4*xn**2*M2*MhT**2)-1) )
+    dy=yp-yh
+
+    tab['yh']=pd.Series(yh,index=tab.index)
+    tab['yp']=pd.Series(yp,index=tab.index)
+    tab['dy']=pd.Series(yp-yh,index=tab.index)
+    return tab
+
   def modify_table(self,tab,k):
+    tab=self.get_rap(tab,k)   
     tab=self.apply_cuts(tab,k)
     return tab
 

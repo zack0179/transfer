@@ -42,16 +42,40 @@ class RESIDUALS(_RESIDUALS):
     MhT=np.sqrt(Mh**2+pT**2)
     xn=2*x/(1+np.sqrt(1+4*x**2*M2/Q2))
     yp=0.5*np.log(Q2/xn**2/M2)
-    yh=np.log( Q*zh*(Q2-xn**2*M2)/(2*xn**2*M2*MhT)\
-              -Q/(xn*M)*np.sqrt(zh**2*(Q2-xn**2*M2)**2/(4*xn**2*M2*MhT**2)-1) )
+    yh=np.log( Q*zh*(Q2-xn**2*M2)/(2*xn**2*M2*MhT) - Q/(xn*M)*np.sqrt(zh**2*(Q2-xn**2*M2)**2/(4*xn**2*M2*MhT**2)-1) )
     dy=yp-yh
-    R=1-np.exp(-self.conf['aux'].alpha*dy)
+    #R=1-np.exp(-self.conf['aux'].alpha*dy)
     #S=self.conf['aux'].N*np.exp(-dy**2/self.conf['aux'].beta/x)
     #S=np.exp(-dy**2/self.conf['aux'].beta/x)
     #print '1 ',R*FUU,'  2:',(1-R)*S
     #print FUU ,self.conf['aux'].N*np.exp(-self.conf['aux'].alpha*x*dy**2)
 
-    return FUU#*self.conf['aux'].N  #*np.exp(-self.conf['aux'].alpha*x*dy**2) )
+    #soft=(1+self.conf['aux'].N*np.exp(-self.conf['aux'].alpha*x*dy**2) )
+    #print soft
+    #823.03  torino
+    #764
+    #691
+
+  
+    if len(self.conf['aux'].soft.keys())==0:
+      return FUU 
+    else:
+      p=[]
+      p.append(self.conf['aux'].soft['p0'])
+      p.append(self.conf['aux'].soft['p1'])
+      p.append(self.conf['aux'].soft['p2'])
+      p.append(self.conf['aux'].soft['p3'])
+      p.append(self.conf['aux'].soft['p4'])
+      p.append(self.conf['aux'].soft['p5'])
+      p.append(self.conf['aux'].soft['p6'])
+      p.append(self.conf['aux'].soft['p7'])
+      p.append(self.conf['aux'].soft['p8'])
+      p.append(self.conf['aux'].soft['p9'])
+      p.append(self.conf['aux'].soft['p10'])
+      p.append(self.conf['aux'].soft['p11'])
+      p.append(self.conf['aux'].soft['p12'])
+      dy=yh+2
+      return FUU*(1+np.sum([p[i]*dy**(i+1) for i in range(len(p))])) #( p[0]*dy + p[1]*(dy/(1-yh))#**p[1]#
 
   def _get_theory(self,entry):
     k,i=entry

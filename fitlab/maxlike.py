@@ -180,6 +180,26 @@ class ML:
     self.t0 = time.time()
     self.cnt=0
     fit=leastsq(self.get_residuals,guess,full_output = 1, ftol=1e-6)#,ftol=1e-2)#,factor=0.1)#,ftol=1e-2)
-    #res=self.get_residuals(fit[0],delay=True)
+    res=self.get_residuals(fit[0])#,delay=True)
 
     self.gen_output()
+
+  def analysis(self):
+    self.gen_report()
+
+  def gen_report(self):
+    inputfile=self.conf['args'].config
+    outdir='outputs/'+inputfile.split('/')[-1].replace('.py','')
+    checkdir(outdir)
+    par=self.conf['parman'].par
+    self.t0 = time.time()
+    self.cnt=0
+    self.chi2tot=1e1000
+    self.dchi2=0
+    self.t0 = time.time()
+    self.cnt=0
+    self.get_residuals(par)
+    report=self.conf['resman'].gen_report(verb=1,level=1)
+    #save(report,'%s/report-ML'%outdir)
+
+

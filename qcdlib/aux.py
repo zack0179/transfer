@@ -20,6 +20,9 @@ class AUX:
     self.TF=0.5
     self.euler=fp.euler 
 
+    # soft factors
+    self.soft={}
+
   def set_masses(self):
 
     self.me   = 0.000511

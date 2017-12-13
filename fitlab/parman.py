@@ -334,9 +334,8 @@ class PARMAN:
     self.conf['collins'].setup() 
 
   def set_soft_params(self):
-    self.conf['aux'].alpha=self.conf['params']['soft']['alpha']['value']
-    self.conf['aux'].beta=self.conf['params']['soft']['beta']['value']
-    self.conf['aux'].N=self.conf['params']['soft']['N']['value']
+    for k in self.conf['params']['soft']:
+      self.conf['aux'].soft[k]=self.conf['params']['soft'][k]['value']
 
 if __name__=='__main__':
 

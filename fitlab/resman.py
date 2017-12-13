@@ -75,6 +75,7 @@ class RESMAN:
     conf['sidis tabs']      =obslib.sidis.reader.READER(conf).load_data_sets('sidis')
     conf['sidis stfuncs']   =obslib.sidis.stfuncs.STFUNCS(conf)
     self.sidisres=obslib.sidis.residuals.RESIDUALS(conf)
+    conf['sidisres']=self.sidisres
     res,rres,nres=self.sidisres.get_residuals()
     self.npts+=res.size
 
@@ -147,5 +148,6 @@ if __name__=='__main__':
   elif args.task==5: MCSAMP(conf).analysis()
   elif args.task==6: MCSAMP(conf).simulation()
   elif args.task==7: MCSAMP(conf).simulation2()
+  elif args.task==8: ML(conf).analysis()
 
 
