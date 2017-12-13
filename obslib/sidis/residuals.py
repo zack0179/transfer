@@ -189,9 +189,9 @@ class RESIDUALS(_RESIDUALS):
 
     elif obs == 'A_pretzelosity':
 
-#      if col=='compass':  coeff= 1.00
-#      if col=='hermes':  coeff= 2*(1-y)/(1+(1-y)**2)
-#      if col=='jlab':  coeff= 2*(1-y)/(1+(1-y)**2)
+      #      if col=='compass':  coeff= 1.00
+      #      if col=='hermes':  coeff= 2*(1-y)/(1+(1-y)**2)
+      #      if col=='jlab':  coeff= 2*(1-y)/(1+(1-y)**2)
 
       if target == 'proton':
         FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)
@@ -227,8 +227,6 @@ class RESIDUALS(_RESIDUALS):
       sys.exit()
   
     return k,i,thy
-
-
 
   def gen_report(self,verb=1,level=1):
     """
