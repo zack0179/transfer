@@ -33,7 +33,7 @@ class RESIDUALS(_RESIDUALS):
     self.dis_stfuncs=conf['dis stfuncs']
     self.setup()
 
-  def get_IFUU(self,FUU,x,zh,Q2,pT,hadron):
+  def get_IFUU(self,FUU,x,zh,Q2,pT,target,hadron):
     Q=np.sqrt(Q2)
     M=self.conf['aux'].M
     M2=self.conf['aux'].M**2
@@ -44,38 +44,34 @@ class RESIDUALS(_RESIDUALS):
     yp=0.5*np.log(Q2/xn**2/M2)
     yh=np.log( Q*zh*(Q2-xn**2*M2)/(2*xn**2*M2*MhT) - Q/(xn*M)*np.sqrt(zh**2*(Q2-xn**2*M2)**2/(4*xn**2*M2*MhT**2)-1) )
     dy=yp-yh
-    #R=1-np.exp(-self.conf['aux'].alpha*dy)
-    #S=self.conf['aux'].N*np.exp(-dy**2/self.conf['aux'].beta/x)
-    #S=np.exp(-dy**2/self.conf['aux'].beta/x)
-    #print '1 ',R*FUU,'  2:',(1-R)*S
-    #print FUU ,self.conf['aux'].N*np.exp(-self.conf['aux'].alpha*x*dy**2)
-
-    #soft=(1+self.conf['aux'].N*np.exp(-self.conf['aux'].alpha*x*dy**2) )
-    #print soft
-    #823.03  torino
-    #764
-    #691
-
-  
+    
     if len(self.conf['aux'].soft.keys())==0:
+
       return FUU 
+
     else:
-      p=[]
-      p.append(self.conf['aux'].soft['p0'])
-      p.append(self.conf['aux'].soft['p1'])
-      p.append(self.conf['aux'].soft['p2'])
-      p.append(self.conf['aux'].soft['p3'])
-      p.append(self.conf['aux'].soft['p4'])
-      p.append(self.conf['aux'].soft['p5'])
-      p.append(self.conf['aux'].soft['p6'])
-      p.append(self.conf['aux'].soft['p7'])
-      p.append(self.conf['aux'].soft['p8'])
-      p.append(self.conf['aux'].soft['p9'])
-      p.append(self.conf['aux'].soft['p10'])
-      p.append(self.conf['aux'].soft['p11'])
-      p.append(self.conf['aux'].soft['p12'])
-      dy=yh+2
-      return FUU*(1+np.sum([p[i]*dy**(i+1) for i in range(len(p))])) #( p[0]*dy + p[1]*(dy/(1-yh))#**p[1]#
+      p0=self.conf['aux'].soft['p0']
+      p1=self.conf['aux'].soft['p1']
+
+      z0=xn*MhT*M/(Q2-xn**2*M2)*(np.exp(p0)+np.exp(-p0))
+
+      if target=='proton':
+        FUUcut=self.stfuncs.get_FX(1,x,z0,Q2,pT,'p',hadron)
+      elif target=='deuteron':
+        FUUcut=self.stfuncs.get_FX(1,x,z0,Q2,pT,'p',hadron) + self.stfuncs.get_FX(1,x,z0,Q2,pT,'n',hadron)
+
+      R=(1+np.tanh(p1*(dy-p0)))/2
+
+      W2=M2+Q2*(1-x)/x
+      J0=Q2*MhT*M*2*np.sinh(p0)/(W2+Q2)**3
+      J=Q2*MhT*M*2*np.sinh(dy)/(W2+Q2)**3
+
+      return FUU * R + (1-R)*FUUcut*J0/J
+
+
+
+      #dy=yh+2
+      #return FUU*(1+np.sum([p[i]*dy**(i+1) for i in range(len(p))])) #( p[0]*dy + p[1]*(dy/(1-yh))#**p[1]#
 
   def _get_theory(self,entry):
     k,i=entry
@@ -92,7 +88,7 @@ class RESIDUALS(_RESIDUALS):
     if obs=='M_Hermes' and target=='proton': 
 
       FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
-      FUU=self.get_IFUU(FUU,x,z,Q2,pT,hadron)
+      FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
       F2 =self.dis_stfuncs.get_F2(x,Q2,'p')
       thy = 2*np.pi*pT*FUU/F2
 
@@ -100,7 +96,9 @@ class RESIDUALS(_RESIDUALS):
 
       FUU = self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)\
            +self.stfuncs.get_FX(1,x,z,Q2,pT,'n',hadron)
-      FUU=self.get_IFUU(FUU,x,z,Q2,pT,hadron)
+
+      FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
+
       F2  = self.dis_stfuncs.get_F2(x,Q2,'p')\
            +self.dis_stfuncs.get_F2(x,Q2,'n')
 

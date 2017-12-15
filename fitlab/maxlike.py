@@ -4,6 +4,7 @@ import numpy as np
 from tools.tools import load,save,checkdir,load_config
 import time
 from scipy.optimize import leastsq,minimize
+import copy
 
 class ML:
 
@@ -159,7 +160,7 @@ class ML:
     res = minimize(self.get_chi2,guess, bounds=bounds,method='TNC')
     res=self.get_residuals(res.x,delay=True)
 
-  def run_leastsq(self):
+  def run_leastsq(self,gen_output=True):
 
     guess=self.conf['parman'].par
     order=self.conf['parman'].order
@@ -181,8 +182,8 @@ class ML:
     self.cnt=0
     fit=leastsq(self.get_residuals,guess,full_output = 1, ftol=1e-6)#,ftol=1e-2)#,factor=0.1)#,ftol=1e-2)
     res=self.get_residuals(fit[0])#,delay=True)
-
-    self.gen_output()
+    if gen_output: self.gen_output()
+    return fit[0]
 
   def analysis(self):
     self.gen_report()
@@ -202,4 +203,15 @@ class ML:
     report=self.conf['resman'].gen_report(verb=1,level=1)
     #save(report,'%s/report-ML'%outdir)
 
+  def rap_fits(self):
+    checkdir('maxlike')
+    dy=[1.5,2.0,2.5,3.0,3.5]
+    PAR={}
+    for _dy in dy:
+      print '#'*10
+      self.conf['datasets']['sidis']['filters'][0]['filter']="z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9 and dy>%f"%_dy
+      self.conf['resman'].setup()
+      par=self.run_leastsq(gen_output=False)
+      PAR[_dy]=par
+    save(PAR,'maxlike/rap_fits.dat')
 

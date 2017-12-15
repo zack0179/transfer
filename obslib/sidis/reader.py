@@ -9,16 +9,9 @@ class READER(_READER):
   def __init__(self,conf):
     self.conf=conf
 
-  def get_X(self,tab):
+  def get_W2(self,tab,k):
     cols=tab.columns.values
-    if any([c=='X' for c in cols])==False:
-      if any([c=='W2' for c in cols]):
-        tab['X']=pd.Series(tab['Q2']/(tab['W2']-self.aux.M2+tab['Q2']),index=tab.index)
-      elif any([c=='W' for c in cols]):
-        tab['X']=pd.Series(tab['Q2']/(tab['W']**2-self.aux.M2+tab['Q2']),index=tab.index)
-      else:
-        print 'cannot retrive X values'
-        sys.exit()
+    tab['W2']=pd.Series(self.conf['aux'].M**2 + tab['Q2']/tab['x'] - tab['Q2'] ,index=tab.index)
     return tab
 
   def get_rap(self,tab,k):
@@ -45,6 +38,7 @@ class READER(_READER):
     return tab
 
   def modify_table(self,tab,k):
+    tab=self.get_W2(tab,k)
     tab=self.get_rap(tab,k)   
     tab=self.apply_cuts(tab,k)
     return tab
