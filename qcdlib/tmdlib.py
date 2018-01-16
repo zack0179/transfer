@@ -373,18 +373,12 @@ class BOERMULDERS(CORE):
     self.widths={}
     self.widths['p']=np.ones(11)
 
-#    self.M={}
-#    self.M['p']=0.1**0.5
-#    self.M['n']=0.1**0.5
+    #self.M={}
+    #self.M['p']=0.1**0.5
+    #self.M['n']=0.1**0.5
 
     self.K={}
-#    self.norm={}
-
-#  def get_norm(self,hadron):
-#    return -np.sqrt(np.exp(1)/2)\
-#          /(self.aux.M*self.M[hadron])\
-#          *self.widths[hadron]**2/\
-#          self.conf['pdf'].widths[hadron]
+    #self.norm={}
 
   def get_K(self,hadron):
     return 2*self.aux.M2/self.widths[hadron]
@@ -398,7 +392,7 @@ class BOERMULDERS(CORE):
     self.shape['n']=self.p2n(self.shape['p'])
     self.widths['n']=self.p2n(self.widths['p'])
     for hadron in ['p','n']:
-#      self.norm[hadron]=self.get_norm(hadron)
+      #self.norm[hadron]=self.get_norm(hadron)
       self.K[hadron]=self.get_K(hadron)
 
   def get_C(self,x,Q2,target='p'):
@@ -428,17 +422,12 @@ class PRETZELOSITY(CORE):
     self.widths={}
     self.widths['p']=np.ones(11)
 
-#    self.M={}
-#    self.M['p']=self.aux.M
-#    self.M['n']=self.aux.M
+    #self.M={}
+    #self.M['p']=self.aux.M
+    #self.M['n']=self.aux.M
 
     self.K={}
-#    self.norm={}
-
-#  def get_norm(self,hadron):
-#    widthPr = (self.widths[hadron]*self.M[hadron]**2)\
-#              /(self.widths[hadron]+self.M[hadron]**2)
-#    return np.exp(1)/(2*self.M[hadron])*(widthPr**2/self.widths[hadron])
+    #self.norm={}
 
   def get_K(self,hadron):
     return 2*self.aux.M2**2/self.widths[hadron]**2
@@ -452,7 +441,6 @@ class PRETZELOSITY(CORE):
     self.shape['n']=self.p2n(self.shape['p'])
     self.widths['n']=self.p2n(self.widths['p'])
     for hadron in ['p','n']:
-#      self.norm[hadron]=self.get_norm(hadron)
       self.K[hadron]=self.get_K(hadron)
 
   def get_C(self,x,Q2,target='p'):
