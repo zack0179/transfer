@@ -65,7 +65,7 @@ class PARMAN:
           self.shifts+=1
 
     if initial:
-      for k in semaphore: semaphore[k]=1
+      for k in self.conf['params']: semaphore[k]=1
 
     self.propagate_params(semaphore)
 
@@ -95,6 +95,7 @@ class PARMAN:
     if 'collins' in semaphore and semaphore['collins']==1:  self.set_collins_params()
     if 'boermulders' in semaphore and semaphore['boermulders']==1:  self.set_boermulders_params()
     if 'pretzelosity' in semaphore and semaphore['pretzelosity']==1:  self.set_pretzelosity_params()
+    if 'soft' in semaphore and semaphore['soft']==1: self.set_soft_params()
 
   def set_pdf_params(self):
     self.conf['pdf'].widths0['valence']=self.conf['params']['pdf']['widths0 valence']['value']
@@ -331,6 +332,10 @@ class PARMAN:
     self.conf['collins'].shape['k+'][6][4]=self.conf['params']['collins']['k+ sb d']['value']
 
     self.conf['collins'].setup() 
+
+  def set_soft_params(self):
+    for k in self.conf['params']['soft']:
+      self.conf['aux'].soft[k]=self.conf['params']['soft'][k]['value']
 
 if __name__=='__main__':
 

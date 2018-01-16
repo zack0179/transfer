@@ -34,13 +34,17 @@ class RESMAN:
     conf['aux']=qcdlib.aux.AUX()
     self.setup_tmds()
     conf['parman']=PARMAN(conf)
-    conf['moments']=obslib.moments.moments.MOMENTS(conf)
-    if 'sidis' in conf['datasets']:
+    self.setup()
+
+  def setup(self):
+
+    self.conf['moments']=obslib.moments.moments.MOMENTS(self.conf)
+    if 'sidis' in self.conf['datasets']:
       self.setup_dis()
       self.setup_sidis()
-    if 'sia' in conf['datasets']:
+    if 'sia' in self.conf['datasets']:
       self.setup_sia()
-    if 'moments' in conf['datasets']:
+    if 'moments' in self.conf['datasets']:
       self.setup_moments()
 
   def setup_dis(self):
@@ -75,6 +79,7 @@ class RESMAN:
     conf['sidis tabs']      =obslib.sidis.reader.READER(conf).load_data_sets('sidis')
     conf['sidis stfuncs']   =obslib.sidis.stfuncs.STFUNCS(conf)
     self.sidisres=obslib.sidis.residuals.RESIDUALS(conf)
+    conf['sidisres']=self.sidisres
     res,rres,nres=self.sidisres.get_residuals()
     self.npts+=res.size
 
@@ -147,5 +152,7 @@ if __name__=='__main__':
   elif args.task==5: MCSAMP(conf).analysis()
   elif args.task==6: MCSAMP(conf).simulation()
   elif args.task==7: MCSAMP(conf).simulation2()
+  elif args.task==8: ML(conf).analysis()
+  elif args.task==9: ML(conf).rap_fits()
 
 

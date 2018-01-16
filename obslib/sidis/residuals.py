@@ -33,6 +33,46 @@ class RESIDUALS(_RESIDUALS):
     self.dis_stfuncs=conf['dis stfuncs']
     self.setup()
 
+  def get_IFUU(self,FUU,x,zh,Q2,pT,target,hadron):
+    Q=np.sqrt(Q2)
+    M=self.conf['aux'].M
+    M2=self.conf['aux'].M**2
+    if 'pi' in hadron: Mh=self.conf['aux'].Mpi
+    if 'k' in hadron:  Mh=self.conf['aux'].Mk
+    MhT=np.sqrt(Mh**2+pT**2)
+    xn=2*x/(1+np.sqrt(1+4*x**2*M2/Q2))
+    yp=0.5*np.log(Q2/xn**2/M2)
+    yh=np.log( Q*zh*(Q2-xn**2*M2)/(2*xn**2*M2*MhT) - Q/(xn*M)*np.sqrt(zh**2*(Q2-xn**2*M2)**2/(4*xn**2*M2*MhT**2)-1) )
+    dy=yp-yh
+    
+    if len(self.conf['aux'].soft.keys())==0:
+
+      return FUU 
+
+    else:
+      p0=self.conf['aux'].soft['p0']
+      p1=self.conf['aux'].soft['p1']
+
+      z0=xn*MhT*M/(Q2-xn**2*M2)*(np.exp(p0)+np.exp(-p0))
+
+      if target=='proton':
+        FUUcut=self.stfuncs.get_FX(1,x,z0,Q2,pT,'p',hadron)
+      elif target=='deuteron':
+        FUUcut=self.stfuncs.get_FX(1,x,z0,Q2,pT,'p',hadron) + self.stfuncs.get_FX(1,x,z0,Q2,pT,'n',hadron)
+
+      R=(1+np.tanh(p1*(dy-p0)))/2
+
+      W2=M2+Q2*(1-x)/x
+      J0=Q2*MhT*M*2*np.sinh(p0)/(W2+Q2)**3
+      J=Q2*MhT*M*2*np.sinh(dy)/(W2+Q2)**3
+
+      return FUU * R + (1-R)*FUUcut*J0/J
+
+
+
+      #dy=yh+2
+      #return FUU*(1+np.sum([p[i]*dy**(i+1) for i in range(len(p))])) #( p[0]*dy + p[1]*(dy/(1-yh))#**p[1]#
+
   def _get_theory(self,entry):
     k,i=entry
     x =self.tabs[k]['x'][i]
@@ -55,6 +95,7 @@ class RESIDUALS(_RESIDUALS):
     elif obs=='M_Hermes' and target=='proton': 
 
       FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
+      FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
       F2 =self.dis_stfuncs.get_F2(x,Q2,'p')
       thy = 2*np.pi*pT*FUU/F2
 
@@ -62,8 +103,12 @@ class RESIDUALS(_RESIDUALS):
 
       FUU = self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)\
            +self.stfuncs.get_FX(1,x,z,Q2,pT,'n',hadron)
+
+      FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
+
       F2  = self.dis_stfuncs.get_F2(x,Q2,'p')\
            +self.dis_stfuncs.get_F2(x,Q2,'n')
+
       thy = 2*np.pi*pT*FUU/F2
 
     elif obs=='AUTcollins':
@@ -152,18 +197,18 @@ class RESIDUALS(_RESIDUALS):
     elif obs == 'AUUcos2':      
 
       if target == 'proton':
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'p', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron)
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
       
       elif target == 'neutron':
 
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'n', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron)
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
       
       elif target == 'deuteron':
 
-        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'p', hadron)\
-                + self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron) + self.stfuncs.get_FX(22, x, z, Q2, pT, 'n', hadron)
+        FUUcos2 = self.stfuncs.get_FX(7, x, z, Q2, pT, 'p', hadron)\
+                + self.stfuncs.get_FX(7, x, z, Q2, pT, 'n', hadron)
 
         FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)\
                 + self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
@@ -171,11 +216,45 @@ class RESIDUALS(_RESIDUALS):
       epsilon = (1-y)/(1-y+0.5*y**2)
       thy = (epsilon)*FUUcos2/FUU
 
+    elif obs == 'A_pretzelosity':
+
+      #      if col=='compass':  coeff= 1.00
+      #      if col=='hermes':  coeff= 2*(1-y)/(1+(1-y)**2)
+      #      if col=='jlab':  coeff= 2*(1-y)/(1+(1-y)**2)
+
+      if target == 'proton':
+        FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)
+        FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
+
+      elif target == 'neutron':
+
+        FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
+        FUU     = self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
+
+      elif target == 'deuteron':
+
+        FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)\
+                + self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
+
+        FUU     = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)\
+                + self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
+
+      coeff= 2*(1-y)/(1+(1-y)**2)
+      thy = coeff*FUTsin3/FUU
+
+    elif obs == 'ALL':
+
+      if target == 'proton':
+        FLL = self.stfuncs.get_FX(3, x, z, Q2, pT, 'p', hadron)
+        FUU = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
+
+      coeff= 2*(1-y)/(1+(1-y)**2)
+      thy = coeff*FLL/FUU
+
     else:
       print 'ERR: exp=%d obs=%s and target=%s not implemented'%(k,obs,target)
       sys.exit()
-
-
+  
     return k,i,thy
 
   def gen_report(self,verb=1,level=1):
@@ -216,6 +295,9 @@ class RESIDUALS(_RESIDUALS):
       msg+='z=%10.3e  '
       msg+='pT=%10.3e  '
       msg+='Q2=%10.3e  '
+      msg+='yh=%10.3e  '
+      msg+='yp=%10.3e  '
+      msg+='dy=%10.3e  '
       msg+='exp=%10.3e  ' 
       msg+='alpha=%10.3e  ' 
       msg+='thy=%10.3e  ' 
@@ -237,12 +319,16 @@ class RESIDUALS(_RESIDUALS):
           rres=self.tabs[k]['r-residuals'][i]
           col=self.tabs[k]['col'][i]
           shift=self.tabs[k]['shift'][i]
+          yh=self.tabs[k]['yh'][i]
+          yp=self.tabs[k]['yp'][i]
+          dy=self.tabs[k]['dy'][i]
           if res<0: chi2=-res**2
           else: chi2=res**2
-          L.append(msg%(col,obs,x,z,pT,Q2,exp,alpha,thy,shift,chi2))
+          L.append(msg%(col,obs,x,z,pT,Q2,yh,yp,dy,exp,alpha,thy,shift,chi2))
 
     if verb==0:
       return L
     elif verb==1:
       for l in L: print l
+      return L
 
