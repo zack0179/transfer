@@ -218,9 +218,6 @@ class RESIDUALS(_RESIDUALS):
 
     elif obs == 'A_pretzelosity':
 
-      #      if col=='compass':  coeff= 1.00
-      #      if col=='hermes':  coeff= 2*(1-y)/(1+(1-y)**2)
-      #      if col=='jlab':  coeff= 2*(1-y)/(1+(1-y)**2)
 
       if target == 'proton':
         FUTsin3 = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)
@@ -239,7 +236,11 @@ class RESIDUALS(_RESIDUALS):
         FUU     = self.stfuncs.get_FX(8, x, z, Q2, pT, 'p', hadron)\
                 + self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
 
-      coeff= 2*(1-y)/(1+(1-y)**2)
+      coeff= 1.
+      if col=='HERMES':  factor= 2*(1-y)/(1+(1-y)**2)  # add depolarization factor for HERMES
+      if col=='COMPASS': factor= 1.    
+      if col=='JLAB':    factor= 2*(1-y)/(1+(1-y)**2)  # add depolarization factor for CLAS
+
       thy = coeff*FUTsin3/FUU
 
     elif obs == 'ALL':
@@ -248,7 +249,12 @@ class RESIDUALS(_RESIDUALS):
         FLL = self.stfuncs.get_FX(3, x, z, Q2, pT, 'p', hadron)
         FUU = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
 
-      coeff= 2*(1-y)/(1+(1-y)**2)
+      coeff= 1.
+      if col=='HERMES':  factor= y*(2-y)/(1+(1-y)**2)  # add depolarization factor for HERMES
+      if col=='COMPASS': factor= 1.    
+      if col=='CLAS':    factor= y*(2-y)/(1+(1-y)**2)  # add depolarization factor for CLAS
+
+
       thy = coeff*FLL/FUU
 
     else:
