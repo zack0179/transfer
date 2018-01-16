@@ -193,7 +193,12 @@ class RESIDUALS(_RESIDUALS):
                + self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
 
       epsilon = (1-y)/(1-y+0.5*y**2)
-      thy = np.sqrt(2*epsilon*(1+epsilon))*FUUcos/FUU
+      coeff= 1.
+      if col=='HERMES':  coeff= np.sqrt(2*epsilon*(1+epsilon))  # add depolarization factor for HERMES
+      if col=='COMPASS': coeff= 1.    
+      if col=='JLAB':    coeff= np.sqrt(2*epsilon*(1+epsilon))  # add depolarization factor for CLAS
+      
+      thy = coeff*FUUcos/FUU
 
     elif obs == 'AUUcos2':      
 
@@ -215,7 +220,12 @@ class RESIDUALS(_RESIDUALS):
                 + self.stfuncs.get_FX(1, x, z, Q2, pT, 'n', hadron)
 
       epsilon = (1-y)/(1-y+0.5*y**2)
-      thy = (epsilon)*FUUcos2/FUU
+      coeff= 1.
+      if col=='HERMES':  coeff= epsilon  # add depolarization factor for HERMES
+      if col=='COMPASS': coeff= 1.    
+      if col=='JLAB':    coeff=epsilon  # add depolarization factor for CLAS
+
+      thy = coeff*FUUcos2/FUU
 
     elif obs == 'A_pretzelosity':
 
