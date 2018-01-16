@@ -45,7 +45,14 @@ class RESIDUALS(_RESIDUALS):
     obs=self.tabs[k]['obs'][i].strip()
     col=self.tabs[k]['col'][i].strip().upper()
 
-    if obs=='M_Hermes' and target=='proton': 
+    if obs=='xsec':
+      phi_h=0
+      phi_S=0
+      Sperp=0
+      Spar=0
+      le=0
+      thy=self.stfuncs.get_xsec(x,z,y,Q2,pT,phi_h,phi_S,Sperp,Spar,le,'p',hadron)
+    elif obs=='M_Hermes' and target=='proton': 
 
       FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
       F2 =self.dis_stfuncs.get_F2(x,Q2,'p')

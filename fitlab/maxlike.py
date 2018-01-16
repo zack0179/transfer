@@ -110,14 +110,14 @@ class ML:
         right=L[i].split('>>')[1]
         L[i]=left+'<<%30.20e>>'%self.conf['params'][k.strip()][kk.strip()]['value']+right
 
-      #if 'norm' in L[i] and '<<' in L[i]:
-      #  l=L[i].split('=')[0].replace('conf','').replace("'",'')
-      #  dum1,k,dum2,kk=l.replace('][','@').replace('[','').replace(']','').split('@')
-      #  left=L[i].split('<<')[0]
-      #  right=L[i].split('>>')[1]
+      if 'norm' in L[i] and '<<' in L[i]:
+        l=L[i].split('=')[0].replace('conf','').replace("'",'')
+        dum1,k,dum2,kk=l.replace('][','@').replace('[','').replace(']','').split('@')
+        left=L[i].split('<<')[0]
+        right=L[i].split('>>')[1]
 
-      #  value=self.conf['datasets'][k.strip()]['norm'][int(kk)]['value']
-      #  L[i]=left+'<<%30.20e>>'%value+right
+        value=self.conf['datasets'][k.strip()]['norm'][int(kk)]['value']
+        L[i]=left+'<<%30.20e>>'%value+right
 
     #name=inputfile.split('/')[-1].replace('.py','')
     #outputdir='runs/%s'%name
