@@ -112,10 +112,11 @@ class RESIDUALS(_RESIDUALS):
       thy = 2*np.pi*pT*FUU/F2
 
     elif obs=='AUTcollins':
-
-      if col=='HERMES':  factor= 1   # hermes is sin(phi_s+phi_h)
-      if col=='COMPASS': factor=-1   # compass is sin(phi_s+phi_h+pi)
-      if col=='HERMES':  factor*= 2*(1-y)/(1+(1-y)**2) # add depolarization factor only for HERMES
+        
+      coeff = 1.
+      if col=='HERMES':  coeff= 1   # hermes is sin(phi_s+phi_h)
+      if col=='COMPASS': coeff=-1   # compass is sin(phi_s+phi_h+pi)
+      if col=='HERMES':  coeff*= 2*(1-y)/(1+(1-y)**2) # add depolarization factor only for HERMES
 
       Q2=2.0
 
@@ -138,7 +139,7 @@ class RESIDUALS(_RESIDUALS):
         FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)\
            +self.stfuncs.get_FX(1,x,z,Q2,pT,'n',hadron)
 
-        thy = factor*FUT/FUU
+        thy = coeff*FUT/FUU
 
     elif obs=='AUTsivers':
 
@@ -237,9 +238,9 @@ class RESIDUALS(_RESIDUALS):
                 + self.stfuncs.get_FX(8, x, z, Q2, pT, 'n', hadron)
 
       coeff= 1.
-      if col=='HERMES':  factor= 2*(1-y)/(1+(1-y)**2)  # add depolarization factor for HERMES
-      if col=='COMPASS': factor= 1.    
-      if col=='JLAB':    factor= 2*(1-y)/(1+(1-y)**2)  # add depolarization factor for CLAS
+      if col=='HERMES':  coeff= 2*(1-y)/(1+(1-y)**2)  # add depolarization factor for HERMES
+      if col=='COMPASS': coeff= 1.    
+      if col=='JLAB':    coeff= 2*(1-y)/(1+(1-y)**2)  # add depolarization factor for CLAS
 
       thy = coeff*FUTsin3/FUU
 
@@ -250,9 +251,9 @@ class RESIDUALS(_RESIDUALS):
         FUU = self.stfuncs.get_FX(1, x, z, Q2, pT, 'p', hadron)
 
       coeff= 1.
-      if col=='HERMES':  factor= y*(2-y)/(1+(1-y)**2)  # add depolarization factor for HERMES
-      if col=='COMPASS': factor= 1.    
-      if col=='CLAS':    factor= y*(2-y)/(1+(1-y)**2)  # add depolarization factor for CLAS
+      if col=='HERMES':  coeff= y*(2-y)/(1+(1-y)**2)  # add depolarization factor for HERMES
+      if col=='COMPASS': coeff= 1.    
+      if col=='CLAS':    coeff= y*(2-y)/(1+(1-y)**2)  # add depolarization factor for CLAS
 
 
       thy = coeff*FLL/FUU
