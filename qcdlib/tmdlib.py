@@ -289,6 +289,7 @@ class TRANSVERSITY(CORE):
 
   def set_default_params(self):
 
+    self.conf['shape']=0
     self.shape={}
     self.shape['p']=np.zeros((11,5))
     self.shape['p'][1]=[0.46,1.11,3.64,0,0]
