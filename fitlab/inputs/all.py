@@ -20,7 +20,7 @@ conf['tol']=1e-6
 conf['kde bw']=None
 conf['num points factor']=10
 
-
+conf['shape'] = 0
 ############################################################################
 # paths to external
 
@@ -36,7 +36,7 @@ conf['params']={}
 
 
 conf['params']['ppdf']={}
-conf['params']['ppdf']['widths0 valence']  = {'value':<<    4.31687891981962168497e-01>>,'fixed':False,'min':0,'max':10}
+conf['params']['ppdf']['widths0 valence']  = {'value':<<    4.79079796465986973431e-01>>,'fixed':False,'min':0,'max':10}
 conf['params']['ppdf']['widths0 sea']      = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':0,'max':10}
 
 
@@ -65,16 +65,16 @@ conf['datasets']['sidis']={}
 conf['datasets']['sidis']['filters']={}
 conf['datasets']['sidis']['filters'][0]={}
 conf['datasets']['sidis']['filters'][0]['idx']=[9000,9001]
-conf['datasets']['sidis']['filters'][0]['filter']="z>0"
-#conf['datasets']['sidis']['filters'][0]['filter']='z > 0.2 and x > 0.15 and x < 0.86 and y > 0.2 and y < 0.85 and Q2 > 1.00'
+#conf['datasets']['sidis']['filters'][0]['filter']="z>0"
+conf['datasets']['sidis']['filters'][0]['filter']='z > 0.2 and x > 0.15 and x < 0.86 and y > 0.2 and y < 0.85 and pT < 0.90 and Q2 > 1.00'
 
 conf['datasets']['sidis']['xlsx']={}
 
 
     
-conf['datasets']['sidis']['xlsx'][2000]='../database/sidis/expdata/9000.xlsx'  # |  proton | pi+    | ALL | clas 
-conf['datasets']['sidis']['xlsx'][2001]='../database/sidis/expdata/9001.xlsx'  # |  proton | pi-    | ALL | clas 
-#conf['datasets']['sidis']['xlsx'][2002]='../database/sidis/expdata/9002.xlsx'  # |  proton | pi0    | ALL | clas 
+conf['datasets']['sidis']['xlsx'][9000]='../database/sidis/expdata/9000.xlsx'  # |  proton | pi+    | ALL | clas 
+conf['datasets']['sidis']['xlsx'][9001]='../database/sidis/expdata/9001.xlsx'  # |  proton | pi-    | ALL | clas 
+#conf['datasets']['sidis']['xlsx'][9002]='../database/sidis/expdata/9002.xlsx'  # |  proton | pi0    | ALL | clas 
     
     
 conf['datasets']['sidis']['norm']={}
