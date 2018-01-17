@@ -36,8 +36,8 @@ conf['params']={}
 
 
 conf['params']['ppdf']={}
-conf['params']['ppdf']['widths0 valence']  = {'value':<<    4.51567390891571385225e-01>>,'fixed':False,'min':0,'max':10}
-conf['params']['ppdf']['widths0 sea']      = {'value':<<    3.71903127401610866798e+00>>,'fixed':False,'min':0,'max':10}
+conf['params']['ppdf']['widths0 valence']  = {'value':<<    4.31687891981962168497e-01>>,'fixed':False,'min':0,'max':10}
+conf['params']['ppdf']['widths0 sea']      = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':0,'max':10}
 
 
 conf['params']['pdf']={}
@@ -65,8 +65,8 @@ conf['datasets']['sidis']={}
 conf['datasets']['sidis']['filters']={}
 conf['datasets']['sidis']['filters'][0]={}
 conf['datasets']['sidis']['filters'][0]['idx']=[9000,9001]
-#conf['datasets']['sidis']['filters'][0]['filter']="z>0"
-conf['datasets']['sidis']['filters'][0]['filter']='z > 0.2 and x > 0.15 and x < 0.86 and y > 0.2 and y < 0.85 and Q2 > 1.00'
+conf['datasets']['sidis']['filters'][0]['filter']="z>0"
+#conf['datasets']['sidis']['filters'][0]['filter']='z > 0.2 and x > 0.15 and x < 0.86 and y > 0.2 and y < 0.85 and Q2 > 1.00'
 
 conf['datasets']['sidis']['xlsx']={}
 
