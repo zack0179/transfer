@@ -89,6 +89,7 @@ class PARMAN:
   def propagate_params(self,semaphore):
     #print 'semaphore:',semaphore
     if 'pdf' in semaphore and semaphore['pdf']==1: self.set_pdf_params()
+    if 'ppdf' in semaphore and semaphore['ppdf']==1: self.set_ppdf_params()
     if 'ff'  in semaphore and semaphore['ff']==1:  self.set_ff_params()
     if 'sivers' in semaphore and semaphore['sivers']==1:  self.set_sivers_params()
     if 'transversity' in semaphore and semaphore['transversity']==1:  self.set_transversity_params()
@@ -101,6 +102,11 @@ class PARMAN:
     self.conf['pdf'].widths0['valence']=self.conf['params']['pdf']['widths0 valence']['value']
     self.conf['pdf'].widths0['sea']=self.conf['params']['pdf']['widths0 sea']['value']
     self.conf['pdf'].setup() 
+
+  def set_ppdf_params(self):
+    self.conf['ppdf'].widths0['valence']=self.conf['params']['ppdf']['widths0 valence']['value']
+    self.conf['ppdf'].widths0['sea']=self.conf['params']['ppdf']['widths0 sea']['value']
+    self.conf['ppdf'].setup() 
   
   def set_ff_params(self):
     self.conf['ff'].widths0['pi+ fav']=self.conf['params']['ff']['widths0 pi+ fav']['value']

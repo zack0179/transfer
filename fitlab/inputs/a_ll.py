@@ -44,8 +44,8 @@ conf['params']['ppdf']['widths0 valence']  = {'value':<<    5.902886711028413335
 conf['params']['ppdf']['widths0 sea']      = {'value':<<    6.27510853614136498990e-01>>,'fixed':False,'min':1e-5,'max':1}
 
 conf['params']['ff']={}
-conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    3.13355583016935335117e-01>>,'fixed':False,'min':1e-5,'max':1}
-conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    2.55115146544206694568e-01>>,'fixed':False,'min':1e-5,'max':1}
+conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.17243549708200278658e-01>>,'fixed':False,'min':1e-5,'max':1}
+conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.34923899379786438324e-01>>,'fixed':False,'min':1e-5,'max':1}
 conf['params']['ff']['widths0 k+ fav']   = {'value':<<    1.32408177485670908169e-01>>,'fixed':False,'min':1e-5,'max':1}
 conf['params']['ff']['widths0 k+ unfav'] = {'value':<<    1.85494582991636902669e-01>>,'fixed':False,'min':1e-5,'max':1}
 
