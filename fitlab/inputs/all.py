@@ -36,7 +36,7 @@ conf['params']={}
 
 
 conf['params']['ppdf']={}
-conf['params']['ppdf']['widths0 valence']  = {'value':<<    4.79079796465986973431e-01>>,'fixed':False,'min':0,'max':10}
+conf['params']['ppdf']['widths0 valence']  = {'value':<<    4.37293266035515770795e-01>>,'fixed':False,'min':0,'max':10}
 conf['params']['ppdf']['widths0 sea']      = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':0,'max':10}
 
 
@@ -61,13 +61,10 @@ conf['datasets']={}
 
 conf['datasets']['sidis']={}
 
-
 conf['datasets']['sidis']['filters']={}
 conf['datasets']['sidis']['filters'][0]={}
 conf['datasets']['sidis']['filters'][0]['idx']=[9000,9001]
-#conf['datasets']['sidis']['filters'][0]['filter']="z>0"
-conf['datasets']['sidis']['filters'][0]['filter']='z > 0.2 and x > 0.15 and x < 0.86 and y > 0.2 and y < 0.85 and pT < 0.90 and Q2 > 1.00'
-
+conf['datasets']['sidis']['filters'][0]['filter']="z>0 and pT < 1.0"
 conf['datasets']['sidis']['xlsx']={}
 
 
