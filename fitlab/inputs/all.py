@@ -20,7 +20,7 @@ conf['tol']=1e-6
 conf['kde bw']=None
 conf['num points factor']=10
 
-
+conf['shape'] = 0
 ############################################################################
 # paths to external
 
@@ -65,15 +65,13 @@ conf['datasets']['sidis']['filters']={}
 conf['datasets']['sidis']['filters'][0]={}
 conf['datasets']['sidis']['filters'][0]['idx']=[9000,9001]
 conf['datasets']['sidis']['filters'][0]['filter']="z>0 and pT < 1.0"
-#conf['datasets']['sidis']['filters'][0]['filter']='z > 0.2 and x > 0.15 and x < 0.86 and y > 0.2 and y < 0.85 and Q2 > 1.00'
-
 conf['datasets']['sidis']['xlsx']={}
 
 
     
 conf['datasets']['sidis']['xlsx'][9000]='../database/sidis/expdata/9000.xlsx'  # |  proton | pi+    | ALL | clas 
 conf['datasets']['sidis']['xlsx'][9001]='../database/sidis/expdata/9001.xlsx'  # |  proton | pi-    | ALL | clas 
-#conf['datasets']['sidis']['xlsx'][2002]='../database/sidis/expdata/9002.xlsx'  # |  proton | pi0    | ALL | clas 
+#conf['datasets']['sidis']['xlsx'][9002]='../database/sidis/expdata/9002.xlsx'  # |  proton | pi0    | ALL | clas 
     
     
 conf['datasets']['sidis']['norm']={}
