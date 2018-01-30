@@ -124,13 +124,13 @@ class RESIDUALS(_RESIDUALS):
 
         FUT=self.stfuncs.get_FX(4,x,z,Q2,pT,'p',hadron)
         FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
-        thy = factor*FUT/FUU
+        thy = coeff*FUT/FUU
 
       elif target=='neutron': 
 
         FUT=self.stfuncs.get_FX(4,x,z,Q2,pT,'n',hadron)
         FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'n',hadron)
-        thy = factor*FUT/FUU
+        thy = coeff*FUT/FUU
 
       elif target=='deuteron': 
 
