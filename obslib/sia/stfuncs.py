@@ -72,8 +72,10 @@ class STFUNCS:
     k1=self.D[i]['k1']
     k2=self.D[i]['k2']
     if k1==None or k2==None: return 0
+
     D1=self.conf[k1].get_C(z1,Q2,hadron1)
     D2=self.get_cc(self.conf[k2].get_C(z2,Q2,hadron2))
+
     Wq=self.get_Wq(z1,z2,k1,k2,hadron1,hadron2)
     gauss=self.get_gauss(z1,z2,pT,k1,k2,Wq)
     K=self.get_K(i,z1,z2,pT,Wq,k1,k2,hadron1,hadron2)

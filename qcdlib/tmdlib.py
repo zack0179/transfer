@@ -67,6 +67,10 @@ class CORE:
        norm=self.beta(1+p[1],1+p[2])+p[3]*self.beta(1+p[1]+1,1+p[2])+p[4]*self.beta(1+p[1],1+p[2])*(psi(p[1]+p[2]+2)-psi(p[1]+1))
        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*np.log(1/x))/norm
 
+    elif self.conf['shape'] == 3:
+      norm = np.pow((p[1]+p[2]),p[1]+p[2])/(np.pow(p[1],p[1])*np.pow(p[2],p[2]))
+      return  norm*p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
+
   def get_collinear(self,x,hadron):
     N=np.zeros(11)
     for i in range(11): 
@@ -143,6 +147,9 @@ class FF(CORE):
     self.K['pi-']=np.ones(11)
     self.K['k-'] =np.ones(11)
 
+  def get_K(self, z, hadron):
+    return 1.0
+
   def setup(self):
     # u  1
     # ub 2
@@ -205,13 +212,18 @@ class COLLINS(CORE):
     self.widths['k+'] =np.ones(11)
 
     self.K={}
+    self.K['pi+']=np.ones(11)
+    self.K['k+'] =np.ones(11)
+    self.K['pi-']=np.ones(11)
+    self.K['k-'] =np.ones(11)
+
     self.norm={}
 
   def get_norm(self,hadron):
     return 1#np.sqrt(np.exp(1)/2)*self.widths[hadron]*self.M[hadron]**3/(self.Mh[hadron]*(self.M[hadron]**2+self.widths[hadron])**2)
 
-  def get_K(self,hadron):
-    return 2*self.Mh[hadron]**2/self.widths[hadron]
+  def get_K(self,z,hadron):
+    return 2*z**2*self.Mh[hadron]**2/self.widths[hadron]
 
   def setup(self):
     # 1,  2,  3,  4,  5,  6,  7,  8,  9, 10
@@ -232,9 +244,10 @@ class COLLINS(CORE):
     self.shape['k-']=self.kp2km(self.shape['k+'])
     self.widths['pi-']=self.pip2pim(self.widths['pi+'])
     self.widths['k-']=self.kp2km(self.widths['k+'])
+
     for hadron in ['pi+','pi-','k+','k-']:
       self.norm[hadron]=self.get_norm(hadron) 
-      self.K[hadron]=self.get_K(hadron) 
+      self.K[hadron]=self.get_K(1.0,hadron) 
 
   def get_C(self,z,Q2,hadron='pi+'):
     #ff=self.conf['_ff'].get_f(z,Q2,hadron)
@@ -380,7 +393,7 @@ class BOERMULDERS(CORE):
     self.K={}
     #self.norm={}
 
-  def get_K(self,hadron):
+  def get_K(self,x,hadron):
     return 2*self.aux.M2/self.widths[hadron]
 
   def setup(self):
@@ -393,7 +406,7 @@ class BOERMULDERS(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
     for hadron in ['p','n']:
       #self.norm[hadron]=self.get_norm(hadron)
-      self.K[hadron]=self.get_K(hadron)
+      self.K[hadron]=self.get_K(1.0,hadron)
 
   def get_C(self,x,Q2,target='p'):
     C=self.get_collinear(x,target)
@@ -429,7 +442,7 @@ class PRETZELOSITY(CORE):
     self.K={}
     #self.norm={}
 
-  def get_K(self,hadron):
+  def get_K(self,x,hadron):
     return 2*self.aux.M2**2/self.widths[hadron]**2
 
   def setup(self):
@@ -441,7 +454,7 @@ class PRETZELOSITY(CORE):
     self.shape['n']=self.p2n(self.shape['p'])
     self.widths['n']=self.p2n(self.widths['p'])
     for hadron in ['p','n']:
-      self.K[hadron]=self.get_K(hadron)
+      self.K[hadron]=self.get_K(1.0,hadron)
 
   def get_C(self,x,Q2,target='p'):
     C=self.get_collinear(x,target)
