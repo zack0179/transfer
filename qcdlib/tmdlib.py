@@ -79,7 +79,13 @@ class CORE:
   def get_collinear(self,x,hadron):
     N=np.zeros(11)
     for i in range(11): 
-      N[i]=self.get_shape(x,self.shape[hadron][i])
+      if 'shape' in self.__dict__:
+        N[i]=self.get_shape(x,self.shape[hadron][i])
+      if 'shape1' in self.__dict__:
+        N[i]=self.get_shape(x,self.shape1[hadron][i])
+      if 'shape2' in self.__dict__:
+        N[i]+=self.get_shape(x,self.shape1[hadron][i])
+
     return N
 
   def get_gauss(self,kT2,hadron):
@@ -205,9 +211,13 @@ class COLLINS(CORE):
     self.widths0['k+ fav']   =0.11
     self.widths0['k+ unfav'] =0.11
 
-    self.shape={}
-    self.shape['pi+']=np.zeros((11,5))+0.1
-    self.shape['k+']=np.zeros((11,5))+0.1
+    self.shape1={}
+    self.shape1['pi+']=np.zeros((11,5))
+    self.shape1['k+']=np.zeros((11,5))
+
+    self.shape2={}
+    self.shape2['pi+']=np.zeros((11,5))
+    self.shape2['k+']=np.zeros((11,5))
     
     self.widths={}
     self.widths['pi+']=np.ones(11)
@@ -242,8 +252,10 @@ class COLLINS(CORE):
       else: 
         self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
 
-    self.shape['pi-']=self.pip2pim(self.shape['pi+'])
-    self.shape['k-']=self.kp2km(self.shape['k+'])
+    self.shape1['pi-']=self.pip2pim(self.shape1['pi+'])
+    self.shape1['k-']=self.kp2km(self.shape1['k+'])
+    self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
+    self.shape2['k-']=self.kp2km(self.shape2['k+'])
     self.widths['pi-']=self.pip2pim(self.widths['pi+'])
     self.widths['k-']=self.kp2km(self.widths['k+'])
 
