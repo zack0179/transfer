@@ -4,11 +4,12 @@ import numpy as np
 import pandas as pd
 from tools.tools import checkdir,load_config
 from tools.reader import _READER
+from tools.config import conf
 
 class READER(_READER):
 
-  def __init__(self,conf):
-    self.conf=conf
+  def __init__(self):
+    conf=conf
 
   def get_Q2(self,tab):
     tab['Q2']=pd.Series(tab.Q**2,index=tab.index)
@@ -21,7 +22,6 @@ class READER(_READER):
 
 if __name__ == "__main__":
 
-  conf={}
   conf['datasets']={}
   conf['datasets']['sia']={}
 
@@ -38,7 +38,7 @@ if __name__ == "__main__":
   #conf['datasets']['sia']['filters'].append("Q2>1.69") 
   #conf['datasets']['sia']['filters'].append("pT>0.2 and pT<0.8") 
 
-  TAB=READER(conf).load_data_sets('sia')
+  TAB=READER().load_data_sets('sia')
   print TAB
 
 

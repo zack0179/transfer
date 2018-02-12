@@ -7,8 +7,8 @@ from tools.config import conf
 
 class SPEEDTEST:
 
-  def __init__(conf):
-    conf=conf
+  def __init__(self):
+    pass
 
   def run(self):
     resman=conf['resman']

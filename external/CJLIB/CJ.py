@@ -2,11 +2,11 @@
 import sys,os
 import numpy as np
 import fCJLO,fCJNLO
+from tools.config import conf
 
 class CJ:
 
-  def __init__(self,conf):
-    #root='./'):
+  def __init__(self):
 
     root=conf['path2CJ']
     if root.endswith('/')==False: root+='/'
@@ -33,14 +33,13 @@ class CJ:
 
 if __name__=='__main__':
 
-  conf={}
   conf['path2CJ']='./'
 
   conf['order']='LO'
-  cjLO=CJ(conf)
+  cjLO=CJ()
 
   conf['order']='NLO'
-  cjNLO=CJ(conf)
+  cjNLO=CJ()
 
   x=0.1
   Q2=1.62

@@ -2,10 +2,11 @@
 import sys,os
 import numpy as np
 import dssfpi,dssfk,dssfh
+from tools.config import conf
 
 class DSS:
   
-  def __init__(self,conf):
+  def __init__(self):
 
     root=conf['path2DSS']
     if root.endswith('/')==False: root+='/'
@@ -40,7 +41,6 @@ class DSS:
 
 if __name__=='__main__':
 
-  conf={}
   conf['path2DSS']='./'
 
   dss=DSS(conf)

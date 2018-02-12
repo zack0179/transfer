@@ -9,11 +9,11 @@ from qcdlib.aux import AUX
 from tools.residuals import _RESIDUALS
 from reader import READER
 from stfuncs import STFUNCS
+from tool.config import conf 
 
 class RESIDUALS(_RESIDUALS):
 
-  def __init__(self,conf):
-    self.conf=conf
+  def __init__(self):
     self.reaction='sia'
     self.tabs=conf['sia tabs']
     self.stfuncs=conf['sia stfuncs']
@@ -128,13 +128,12 @@ class RESIDUALS(_RESIDUALS):
 
 if __name__=='__main__':
 
-  conf={}
   conf['aux']=AUX()
   conf['path2DSS']='../../external/DSSLIB'
-  conf['_ff']=DSS(conf)
-  conf['ff']=FF(conf)
-  conf['collins']=COLLINS(conf)
-  conf['sia stfuncs']=STFUNCS(conf)
+  conf['_ff']=DSS()
+  conf['ff']=FF()
+  conf['collins']=COLLINS()
+  conf['sia stfuncs']=STFUNCS()
 
 
   conf['datasets']={}
@@ -158,8 +157,8 @@ if __name__=='__main__':
   #conf['datasets']['sia']['filters'].append("z<0.6") 
   #conf['datasets']['sia']['filters'].append("Q2>1.69") 
   #conf['datasets']['sia']['filters'].append("pT>0.2 and pT<0.8") 
-  conf['sia tabs']=READER(conf).load_data_sets('sia')
-  conf['residuals']=RESIDUALS(conf)
+  conf['sia tabs']=READER().load_data_sets('sia')
+  conf['residuals']=RESIDUALS()
   conf['residuals'].get_residuals()
   conf['residuals'].gen_report(verb=1,level=1)
 

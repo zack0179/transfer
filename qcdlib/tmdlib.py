@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import sys,os
-#sys.path.insert(1,'../') 
 import numpy as np
 import time
 from scipy.integrate import quad,fixed_quad
@@ -9,6 +8,7 @@ from external.LSSLIB.LSS import LSS
 from external.DSSLIB.DSS import DSS
 from aux import AUX
 from scipy.special import gamma, psi
+from tools.config import conf
 
 class CORE:
 
@@ -53,21 +53,21 @@ class CORE:
 
   def get_shape(self,x,p):
 
-    if self.conf['shape']==0:
+    if conf['shape']==0:
 
         return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
 
-    elif self.conf['shape']==1:
+    elif conf['shape']==1:
 
        norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
 
-    elif self.conf['shape']==2:
+    elif conf['shape']==2:
         
        norm=self.beta(1+p[1],1+p[2])+p[3]*self.beta(1+p[1]+1,1+p[2])+p[4]*self.beta(1+p[1],1+p[2])*(psi(p[1]+p[2]+2)-psi(p[1]+1))
        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*np.log(1/x))/norm
 
-    elif self.conf['shape'] == 3:
+    elif conf['shape'] == 3:
       norm = np.pow((p[1]+p[2]),p[1]+p[2])/(np.pow(p[1],p[1])*np.pow(p[2],p[2]))
       return  norm*p[0]*x**p[1]*(1-x)**p[2]
 
@@ -87,9 +87,9 @@ class CORE:
 
 class PDF(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -116,16 +116,16 @@ class PDF(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
 
   def get_C(self,x,Q2,target='p'):
-    C=self.conf['_pdf'].get_f(x,Q2)
+    C=conf['_pdf'].get_f(x,Q2)
     C[0]=0 # glue is not supported
     if target=='n': C=self.p2n(C)
     return C
 
 class FF(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -177,15 +177,15 @@ class FF(CORE):
     self.widths['k-'] =self.kp2km(self.widths['k+'])
 
   def get_C(self,x,Q2,hadron='pi+'):
-    C=self.conf['_ff'].get_f(x,Q2,hadron)
+    C=conf['_ff'].get_f(x,Q2,hadron)
     C[0]=0 # glue is not supported
     return C
 
 class COLLINS(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -250,7 +250,7 @@ class COLLINS(CORE):
       self.K[hadron]=self.get_K(1.0,hadron) 
 
   def get_C(self,z,Q2,hadron='pi+'):
-    ff=self.conf['_ff'].get_f(z,Q2,hadron)
+    ff=conf['_ff'].get_f(z,Q2,hadron)
     C=self.get_collinear(z,hadron)*ff
     #print hadron,self.shape[hadron]
     C[0]=0 # glue is not supported
@@ -258,9 +258,9 @@ class COLLINS(CORE):
 
 class SIVERS(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -294,15 +294,15 @@ class SIVERS(CORE):
 
 class TRANSVERSITY(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
   def set_default_params(self):
 
-    self.conf['shape']=0
+    conf['shape']=0
     self.shape={}
     self.shape['p']=np.zeros((11,5))
     self.shape['p'][1]=[0.46,1.11,3.64,0,0]
@@ -331,9 +331,9 @@ class TRANSVERSITY(CORE):
 
 class PPDF(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -359,16 +359,16 @@ class PPDF(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
 
   def get_C(self,x,Q2,target='p'):
-    C=self.conf['_ppdf'].get_f(x,Q2)
+    C=conf['_ppdf'].get_f(x,Q2)
     C[0]=0 # glue is not supported
     if target=='n': C=self.p2n(C)
     return C
 
 class BOERMULDERS(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -415,9 +415,9 @@ class BOERMULDERS(CORE):
 
 class PRETZELOSITY(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -463,9 +463,9 @@ class PRETZELOSITY(CORE):
 
 class WORMGEARG(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -490,7 +490,7 @@ class WORMGEARG(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
 
   def pol(self,i,x,Q2,target): 
-    return self.conf['_ppdf'].get_f(x,Q2)[i]
+    return conf['_ppdf'].get_f(x,Q2)[i]
  
   def get_C(self,x,Q2,target='p'):
     #C = np.array([x*quad(lambda y: self.pol(i,x,Q2,target)/y,x,1)[0] for i in range(11)])
@@ -502,9 +502,9 @@ class WORMGEARG(CORE):
 
 class WORMGEARH(CORE):
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
-    self.conf=conf
+    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -529,7 +529,7 @@ class WORMGEARH(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
 
   def trans(self,i,x,Q2,target):
-    return self.conf['transversity'].get_C(x,Q2,target)[i]
+    return conf['transversity'].get_C(x,Q2,target)[i]
 
   def get_C(self,x,Q2,target='p'):
     #C = np.array([x*quad(lambda y: self.trans(i,x,Q2,target)/y,x,1)[0] for i in range(11)])
@@ -542,28 +542,27 @@ class WORMGEARH(CORE):
 
 if __name__=='__main__':
 
-  conf={}
   conf['path2CJ'] ='../external/CJLIB'
   conf['path2LSS']='../external/LSSLIB'
   conf['path2DSS']='../external/DSSLIB'
 
   conf['order']='LO'
   conf['aux']=AUX()
-  conf['_pdf']=CJ(conf)
-  conf['_ppdf']=LSS(conf)
-  conf['_ff']=DSS(conf)
+  conf['_pdf']=CJ()
+  conf['_ppdf']=LSS()
+  conf['_ff']=DSS()
   conf['hadron']='pi'
 
-  conf['pdf']=PDF(conf)
-  conf['ppdf']=PPDF(conf)
-  conf['ff']=FF(conf)
-  conf['transversity']=TRANSVERSITY(conf)
-  conf['sivers']=SIVERS(conf)
-  conf['boermulders']=BOERMULDERS(conf)
-  conf['pretzelosity']=PRETZELOSITY(conf)
-  conf['wormgearg']=WORMGEARG(conf)
-  conf['wormgearh']=WORMGEARH(conf)
-  conf['collins']=COLLINS(conf)
+  conf['pdf']=PDF()
+  conf['ppdf']=PPDF()
+  conf['ff']=FF()
+  conf['transversity']=TRANSVERSITY()
+  conf['sivers']=SIVERS()
+  conf['boermulders']=BOERMULDERS()
+  conf['pretzelosity']=PRETZELOSITY()
+  conf['wormgearg']=WORMGEARG()
+  conf['wormgearh']=WORMGEARH()
+  conf['collins']=COLLINS()
 
   x=0.15
   Q2=2.4

@@ -2,7 +2,7 @@
 import sys,os
 import numpy as np 
 from numpy.random import choice,randn,uniform
-from tools.tools import load_config
+from tools.config import conf,load_config
 import pandas as pd
 from external.CJLIB.CJ import CJ
 from external.DSSLIB.DSS import DSS
@@ -24,7 +24,7 @@ from obslib.sidis.residuals import RESIDUALS as SIDIS_RESIDUALS
 
 class PARMAN:
 
-  def __init__(conf):
+  def __init__(self):
     conf=conf
     self.get_ordered_free_params()
     self.set_new_params(self.par,initial=True)

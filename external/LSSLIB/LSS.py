@@ -3,10 +3,11 @@ import sys,os
 import numpy as np
 import pylab as py
 import fLSS
+from tools.config import conf
 
 class LSS:
 
-  def __init__(self,conf):
+  def __init__(self):
 
     root=conf['path2LSS']
     if root.endswith('/')==False: root+='/'
@@ -39,7 +40,6 @@ class LSS:
 
 if __name__=='__main__':
 
-  conf={}
   conf['path2LSS']='./'
   lss=LSS(conf)
   x=0.1

@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 import sys,os;
-#sys.path.insert(1,'../') 
 from aux import AUX
 import numpy as np
+from tools.config import conf
 
 class ALPHAS:
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']
 
     if   conf['order']=='LO':  self.order=0
     elif conf['order']=='NLO': self.order=1
-    self.conf=conf
+    conf=conf
 
     self.Q20 = conf['Q20']
     self.aZ  = self.aux.alphaSMZ/(4*np.pi)
@@ -25,14 +25,14 @@ class ALPHAS:
       self.beta[Nf,1]=102.-38.0/3.0*Nf 
       self.beta[Nf,2]=2857.0/2.0-5033.0/18.0*Nf+325.0/54.0*Nf**2 
     
-    if self.conf['alphaSmode']=='backward':
+    if conf['alphaSmode']=='backward':
       # uses alphaS(mZ)--> backwards evolution
       self.ab=self.evolve_a(self.aux.mZ2,self.aZ,self.aux.mb2,5)
       self.ac=self.evolve_a(self.aux.mb2,self.ab,self.aux.mc2,4)
       self.a0=self.evolve_a(self.aux.mc2,self.ac,self.Q20,3)
 
-    elif self.conf['alphaSmode']=='forward':
-      self.a0=self.conf['alphaS0']/(4*np.pi)
+    elif conf['alphaSmode']=='forward':
+      self.a0=conf['alphaS0']/(4*np.pi)
       self.ac=self.evolve_a(self.Q20,self.a0,self.aux.mc2,3)
       self.ab=self.evolve_a(self.aux.mc2,self.ac,self.aux.mb2,4)
 
@@ -79,7 +79,6 @@ class ALPHAS:
 
 if __name__=='__main__':
 
-  conf={}
   conf['alphaSmode']='backward'
   conf['alphaS0']=0.3
   conf['mode']='truncated'
@@ -87,7 +86,7 @@ if __name__=='__main__':
   conf['scheme']='ZMVFS'
   conf['Q20'] = 1.0
   conf['aux']=AUX()
-  aS=ALPHAS(conf)
+  aS=ALPHAS()
 
   print '========================'
   print 'test alphaS evolution'

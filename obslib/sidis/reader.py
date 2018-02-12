@@ -3,15 +3,16 @@ import sys,os
 import numpy as np
 import pandas as pd
 from tools.reader import _READER
+from tools.config import conf
 
 class READER(_READER):
 
-  def __init__(self,conf):
-    self.conf=conf
+  def __init__(self):
+    conf=conf
 
   def get_W2(self,tab,k):
     cols=tab.columns.values
-    tab['W2']=pd.Series(self.conf['aux'].M**2 + tab['Q2']/tab['x'] - tab['Q2'] ,index=tab.index)
+    tab['W2']=pd.Series(conf['aux'].M**2 + tab['Q2']/tab['x'] - tab['Q2'] ,index=tab.index)
     return tab
 
   def get_rap(self,tab,k):
@@ -21,10 +22,10 @@ class READER(_READER):
     zh=tab['z']
     Q=Q2**0.5
     hadron=tab['hadron'][0]
-    M=self.conf['aux'].M
-    M2=self.conf['aux'].M**2
-    if 'pi' in hadron: Mh=self.conf['aux'].Mpi
-    if 'k' in hadron:  Mh=self.conf['aux'].Mk
+    M=conf['aux'].M
+    M2=conf['aux'].M**2
+    if 'pi' in hadron: Mh=conf['aux'].Mpi
+    if 'k' in hadron:  Mh=conf['aux'].Mk
     MhT=np.sqrt(Mh**2+pT**2)
     xn=2*x/(1+np.sqrt(1+4*x**2*M2/Q2))
     yp=0.5*np.log(Q2/xn**2/M2)
@@ -45,7 +46,6 @@ class READER(_READER):
 
 if __name__ == "__main__":
 
-  conf={}
   conf['datasets']={}
   conf['datasets']['sidis']={}
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
   conf['datasets']['sidis']['filters'][1]['cond'].append("Q2>1.69")
   conf['datasets']['sidis']['filters'][1]['cond'].append("pT>0.2 and pT<0.9")
 
-  TAB=READER(conf).load_data_sets('sidis')
+  TAB=READER().load_data_sets('sidis')
   print TAB
 
 

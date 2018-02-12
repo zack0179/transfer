@@ -1,6 +1,0 @@
-# DIS structure functions
-
-
-
-
-

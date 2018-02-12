@@ -9,7 +9,7 @@ from tools.config import conf
  
 class ML:
 
-  def __init__(conf):
+  def __init__(self):
     conf=conf
     self.cum_shifts=0
     self.iteration=0

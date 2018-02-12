@@ -22,11 +22,12 @@ from qcdlib.tmdlib import WORMGEARH
 from qcdlib.aux import AUX
 from qcdlib.alphaS import ALPHAS
 from obslib.dis.stfuncs import STFUNCS as DIS_STFUNCS
+from tools.config import conf
 
 class RESIDUALS(_RESIDUALS):
 
-  def __init__(self,conf):
-    self.conf=conf
+  def __init__(self):
+    conf=conf
     self.reaction='sidis'
     self.tabs=conf['sidis tabs']
     self.stfuncs=conf['sidis stfuncs']
@@ -35,23 +36,23 @@ class RESIDUALS(_RESIDUALS):
 
   def get_IFUU(self,FUU,x,zh,Q2,pT,target,hadron):
     Q=np.sqrt(Q2)
-    M=self.conf['aux'].M
-    M2=self.conf['aux'].M**2
-    if 'pi' in hadron: Mh=self.conf['aux'].Mpi
-    if 'k' in hadron:  Mh=self.conf['aux'].Mk
+    M=conf['aux'].M
+    M2=conf['aux'].M**2
+    if 'pi' in hadron: Mh=conf['aux'].Mpi
+    if 'k' in hadron:  Mh=conf['aux'].Mk
     MhT=np.sqrt(Mh**2+pT**2)
     xn=2*x/(1+np.sqrt(1+4*x**2*M2/Q2))
     yp=0.5*np.log(Q2/xn**2/M2)
     yh=np.log( Q*zh*(Q2-xn**2*M2)/(2*xn**2*M2*MhT) - Q/(xn*M)*np.sqrt(zh**2*(Q2-xn**2*M2)**2/(4*xn**2*M2*MhT**2)-1) )
     dy=yp-yh
     
-    if len(self.conf['aux'].soft.keys())==0:
+    if len(conf['aux'].soft.keys())==0:
 
       return FUU 
 
     else:
-      p0=self.conf['aux'].soft['p0']
-      p1=self.conf['aux'].soft['p1']
+      p0=conf['aux'].soft['p0']
+      p1=conf['aux'].soft['p1']
 
       z0=xn*MhT*M/(Q2-xn**2*M2)*(np.exp(p0)+np.exp(-p0))
 

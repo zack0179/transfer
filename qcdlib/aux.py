@@ -1,5 +1,4 @@
 import sys,os
-#sys.path.insert(1,'../') 
 from mpmath import fp
 from scipy.special import gamma
 from scipy.integrate import quad

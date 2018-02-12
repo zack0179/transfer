@@ -15,13 +15,13 @@ from qcdlib.tmdlib import COLLINS
 from qcdlib.tmdlib import WORMGEARG
 from qcdlib.tmdlib import WORMGEARH
 from qcdlib.aux import AUX
-import matplotlib.pyplot as plt
+from tools.config import conf
 
 class STFUNCS:
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']  
-    self.conf=conf
+    conf=conf
     eu2,ed2=4/9.,1/9. 
     self.e2=[]
     self.e2.append(0)   # g
@@ -67,7 +67,6 @@ class STFUNCS:
     self.D[21]={'k1':'pretzelosity','k2':'collins'}
     self.D[22] ={'k1':'pdf','k2':'ff'}
 
-
   def get_K(self,i,x,Q2,z,pT,wq,k1,k2,target,hadron):
     if   i==1: return x
     elif i==2: return 0
@@ -79,21 +78,21 @@ class STFUNCS:
     elif i==8: return 2*x*z**3*pT**3*self.Mh[hadron]*self.aux.M**2/wq**3
     elif i==9: return 2*x*z*self.aux.M*pT/wq
     elif i==10:return 4*x*z**2*self.aux.M*pT**2*self.Mh[hadron]/wq**2
-    elif i==11: return -2*self.aux.M/np.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2+self.conf[k2].widths[hadron])+self.conf[k2].widths[hadron]**2)/wq**2
-    elif i==12: return -2*x*z*pT*self.conf[k1].widths[target]/(np.sqrt(Q2)*wq)
-    elif i==13: return -2*x*z**2*pT**2*self.aux.M*self.conf[k1].widths[target]/(np.sqrt(Q2)*wq**2)
-    elif i==14: return -8*self.aux.M**3/np.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2-z**2*self.conf[k1].widths[target])+self.conf[k2].widths[hadron]**2)/wq**3
+    elif i==11: return -2*self.aux.M/np.sqrt(Q2)*x*(z**2*conf[k1].widths[target]*(pT**2+conf[k2].widths[hadron])+conf[k2].widths[hadron]**2)/wq**2
+    elif i==12: return -2*x*z*pT*conf[k1].widths[target]/(np.sqrt(Q2)*wq)
+    elif i==13: return -2*x*z**2*pT**2*self.aux.M*conf[k1].widths[target]/(np.sqrt(Q2)*wq**2)
+    elif i==14: return -8*self.aux.M**3/np.sqrt(Q2)*x*(z**2*conf[k1].widths[target]*(pT**2-z**2*conf[k1].widths[target])+conf[k2].widths[hadron]**2)/wq**3
     elif i==15: return 0
-    elif i==16: return -8*self.aux.M*z*pT*self.Mh[hadron]/np.sqrt(Q2)*x*(self.conf[k2].widths[hadron]**2+z**2*self.conf[k1].widths[target]*(pT**2-z**2*self.conf[k1].widths[target]))/wq**3
-    elif i==17: return -2*self.aux.M/np.sqrt(Q2)*x*(z*pT/self.aux.M)*self.conf[k1].widths[target]/wq
-    elif i==18: return -2*self.aux.M/np.sqrt(Q2)*x*(z**2*self.conf[k1].widths[target]*(pT**2+self.conf[k2].widths[hadron])+self.conf[k2].widths[hadron]**2)/wq**2
-    elif i==19: return 4*x*z**2*self.Mh[hadron]/np.sqrt(Q2)*self.conf[k1].widths[target]*(-pT**2+wq)/wq**2
-    elif i==20: return -2*self.aux.M**3/np.sqrt(Q2)*x*self.conf[k1].widths[target]/wq**2
+    elif i==16: return -8*self.aux.M*z*pT*self.Mh[hadron]/np.sqrt(Q2)*x*(conf[k2].widths[hadron]**2+z**2*conf[k1].widths[target]*(pT**2-z**2*conf[k1].widths[target]))/wq**3
+    elif i==17: return -2*self.aux.M/np.sqrt(Q2)*x*(z*pT/self.aux.M)*conf[k1].widths[target]/wq
+    elif i==18: return -2*self.aux.M/np.sqrt(Q2)*x*(z**2*conf[k1].widths[target]*(pT**2+conf[k2].widths[hadron])+conf[k2].widths[hadron]**2)/wq**2
+    elif i==19: return 4*x*z**2*self.Mh[hadron]/np.sqrt(Q2)*conf[k1].widths[target]*(-pT**2+wq)/wq**2
+    elif i==20: return -2*self.aux.M**3/np.sqrt(Q2)*x*conf[k1].widths[target]/wq**2
     elif i==21: return -8*self.aux.M**2*self.Mh[hadron]/np.sqrt(Q2)*x*z**2*pT**2/wq**2
-    elif i==22: return 2*x*z**2*pT**2/Q2*self.conf[k1].widths[target]**2/wq**2
+    elif i==22: return 2*x*z**2*pT**2/Q2*conf[k1].widths[target]**2/wq**2
 
   def get_wq(self,z,k1,k2,target,hadron):
-    return z**2*np.abs(self.conf[k1].widths[target]) + np.abs(self.conf[k2].widths[hadron])
+    return z**2*np.abs(conf[k1].widths[target]) + np.abs(conf[k2].widths[hadron])
 
   def get_gauss(self,z,pT,wq):
     return np.exp(-pT**2/wq)/(np.pi*wq)
@@ -103,8 +102,8 @@ class STFUNCS:
     k2=self.D[i]['k2']
     if k1==None or k2==None: return 0
     mu2=Q2
-    F=self.conf[k1].get_C(x,mu2,target)
-    D=self.conf[k2].get_C(z,mu2,hadron)
+    F=conf[k1].get_C(x,mu2,target)
+    D=conf[k2].get_C(z,mu2,hadron)
     wq=self.get_wq(z,k1,k2,target,hadron)
     gauss=self.get_gauss(z,pT,wq) 
     K=self.get_K(i,x,Q2,z,pT,wq,k1,k2,target,hadron)
