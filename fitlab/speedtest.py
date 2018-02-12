@@ -3,16 +3,17 @@ import sys,os
 import numpy as np
 from timeit import default_timer as timer
 from tools.tools import lprint
+from tools.config import conf
 
 class SPEEDTEST:
 
-  def __init__(self,conf):
-    self.conf=conf
+  def __init__(conf):
+    conf=conf
 
   def run(self):
-    resman=self.conf['resman']
-    parman=self.conf['parman']
-    args=self.conf['args']
+    resman=conf['resman']
+    parman=conf['parman']
+    args=conf['args']
 
     a = timer()
     np.random.seed(12345)

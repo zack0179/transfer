@@ -5,11 +5,12 @@ from tools.tools import load,save,checkdir,load_config
 import time
 from scipy.optimize import leastsq,minimize
 import copy
-
+from tools.config import conf
+ 
 class ML:
 
-  def __init__(self,conf):
-    self.conf=conf
+  def __init__(conf):
+    conf=conf
     self.cum_shifts=0
     self.iteration=0
     self.CHI2T=[]
@@ -22,7 +23,7 @@ class ML:
 
   def get_stats(self,res,rres,nres,delay):
 
-    shifts=self.conf['parman'].shifts
+    shifts=conf['parman'].shifts
     etime = (time.time()-self.t0)/60
 
     npts=res.size
@@ -51,11 +52,11 @@ class ML:
     self.status.append('dchi2(local) = %f'%dchi2)
 
     self.status.append('')
-    self.status.extend(self.conf['resman'].gen_report())
+    self.status.extend(conf['resman'].gen_report())
 
-    parstatus = self.conf['parman'].gen_report()
+    parstatus = conf['parman'].gen_report()
 
-    if self.conf['screen mode']=='curses':
+    if conf['screen mode']=='curses':
 
       self.status.append('')
       if    delay==False: self.status.append('')
@@ -63,25 +64,25 @@ class ML:
       self.status.append('')
       self.status.append('press q to exit')
 
-      self.conf['screen'].clear()
-      self.conf['screen'].border(0)
-      if delay==False: self.conf['screen'].nodelay(1)
-      else: self.conf['screen'].nodelay(0)
+      conf['screen'].clear()
+      conf['screen'].border(0)
+      if delay==False: conf['screen'].nodelay(1)
+      else: conf['screen'].nodelay(0)
 
       for i in range(len(self.status)):
-        self.conf['screen'].addstr(i+2,2,self.status[i])
+        conf['screen'].addstr(i+2,2,self.status[i])
 
       for i in range(len(parstatus)):
-        self.conf['screen'].addstr(i+2,80,parstatus[i])
+        conf['screen'].addstr(i+2,80,parstatus[i])
 
 
-      self.conf['screen'].refresh()
-      if self.conf['screen'].getch()==ord('q'):
+      conf['screen'].refresh()
+      if conf['screen'].getch()==ord('q'):
         curses.endwin()
         self.gen_output()
         sys.exit()
 
-    elif self.conf['screen mode']=='plain':
+    elif conf['screen mode']=='plain':
       for i in range(len(self.status)): print self.status[i]
       for i in range(len(parstatus)): print parstatus[i]
       if delay==True: 
@@ -90,7 +91,7 @@ class ML:
 
   def get_residuals(self,par,delay=False):
     self.cnt+=1
-    res,rres,nres=self.conf['resman'].get_residuals(par)
+    res,rres,nres=conf['resman'].get_residuals(par)
     self.get_stats(res,rres,nres,delay)
     if len(rres)!=0: res=np.append(res,rres)
     if len(nres)!=0: res=np.append(res,nres)
@@ -98,7 +99,7 @@ class ML:
 
   def gen_output(self):
 
-    inputfile=self.conf['args'].config
+    inputfile=conf['args'].config
     L=open(inputfile).readlines()
     for i in range(len(L)):
 
@@ -109,7 +110,7 @@ class ML:
         k,kk=l.replace('][','@').replace('[','').replace(']','').split('@')[1:]
         left=L[i].split('<<')[0]
         right=L[i].split('>>')[1]
-        L[i]=left+'<<%30.20e>>'%self.conf['params'][k.strip()][kk.strip()]['value']+right
+        L[i]=left+'<<%30.20e>>'%conf['params'][k.strip()][kk.strip()]['value']+right
 
       if 'norm' in L[i] and '<<' in L[i]:
         l=L[i].split('=')[0].replace('conf','').replace("'",'')
@@ -117,7 +118,7 @@ class ML:
         left=L[i].split('<<')[0]
         right=L[i].split('>>')[1]
 
-        value=self.conf['datasets'][k.strip()]['norm'][int(kk)]['value']
+        value=conf['datasets'][k.strip()]['norm'][int(kk)]['value']
         L[i]=left+'<<%30.20e>>'%value+right
 
     #name=inputfile.split('/')[-1].replace('.py','')
@@ -134,20 +135,20 @@ class ML:
 
   def run_minimize(self):
 
-    guess=self.conf['parman'].par
-    order=self.conf['parman'].order
+    guess=conf['parman'].par
+    order=conf['parman'].order
 
 
     bounds=[]
     for entry in order:
       i,k,kk=entry
       if i==1:
-        bounds.append([self.conf['params'][k][kk]['min'],self.conf['params'][k][kk]['max']])
+        bounds.append([conf['params'][k][kk]['min'],conf['params'][k][kk]['max']])
       elif i==2:
         bounds.append([None,None])
 
-    if self.conf['screen mode']=='curses':
-      self.conf['screen']=curses.initscr()
+    if conf['screen mode']=='curses':
+      conf['screen']=curses.initscr()
 
     self.chi2tot=1e1000
     self.dchi2=0
@@ -162,19 +163,19 @@ class ML:
 
   def run_leastsq(self,gen_output=True):
 
-    guess=self.conf['parman'].par
-    order=self.conf['parman'].order
+    guess=conf['parman'].par
+    order=conf['parman'].order
 
     bounds=[]
     for entry in order:
       i,k,kk=entry
       if i==1:
-        bounds.append([self.conf['params'][k][kk]['min'],self.conf['params'][k][kk]['max']])
+        bounds.append([conf['params'][k][kk]['min'],conf['params'][k][kk]['max']])
       elif i==2:
         bounds.append([None,None])
 
-    if self.conf['screen mode']=='curses':
-      self.conf['screen']=curses.initscr()
+    if conf['screen mode']=='curses':
+      conf['screen']=curses.initscr()
 
     self.chi2tot=1e1000
     self.dchi2=0
@@ -189,10 +190,10 @@ class ML:
     self.gen_report()
 
   def gen_report(self):
-    inputfile=self.conf['args'].config
+    inputfile=conf['args'].config
     outdir='outputs/'+inputfile.split('/')[-1].replace('.py','')
     checkdir(outdir)
-    par=self.conf['parman'].par
+    par=conf['parman'].par
     self.t0 = time.time()
     self.cnt=0
     self.chi2tot=1e1000
@@ -200,7 +201,7 @@ class ML:
     self.t0 = time.time()
     self.cnt=0
     self.get_residuals(par)
-    report=self.conf['resman'].gen_report(verb=1,level=1)
+    report=conf['resman'].gen_report(verb=1,level=1)
     #save(report,'%s/report-ML'%outdir)
 
   def rap_fits(self):
@@ -209,8 +210,8 @@ class ML:
     PAR={}
     for _dy in dy:
       print '#'*10
-      self.conf['datasets']['sidis']['filters'][0]['filter']="z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9 and dy>%f"%_dy
-      self.conf['resman'].setup()
+      conf['datasets']['sidis']['filters'][0]['filter']="z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9 and dy>%f"%_dy
+      conf['resman'].setup()
       par=self.run_leastsq(gen_output=False)
       PAR[_dy]=par
     save(PAR,'maxlike/rap_fits.dat')
