@@ -45,7 +45,7 @@ class PARMAN:
           if conf['datasets'][k]['norm'][kk]['fixed']==False:
             self.par.append(conf['datasets'][k]['norm'][kk]['value'])
             self.order.append([2,k,kk])
-        
+
   def set_new_params(self,parnew,initial=False):
     self.shifts=0
     semaphore={}
@@ -298,30 +298,6 @@ class PARMAN:
       conf['collins'].shape1['pi+'][6][2]=conf['params']['collins']['pi+ d b 1']['value']
       conf['collins'].shape1['pi+'][6][3]=conf['params']['collins']['pi+ d c 1']['value']
       conf['collins'].shape1['pi+'][6][4]=conf['params']['collins']['pi+ d d 1']['value']
-
-      conf['collins'].shape1['pi+'][7][0]=conf['params']['collins']['pi+ c N 1']['value']
-      conf['collins'].shape1['pi+'][7][1]=conf['params']['collins']['pi+ c a 1']['value']
-      conf['collins'].shape1['pi+'][7][2]=conf['params']['collins']['pi+ c b 1']['value']
-      conf['collins'].shape1['pi+'][7][3]=conf['params']['collins']['pi+ c c 1']['value']
-      conf['collins'].shape1['pi+'][7][4]=conf['params']['collins']['pi+ c d 1']['value']
-
-      conf['collins'].shape1['pi+'][8][0]=conf['params']['collins']['pi+ c N 1']['value']
-      conf['collins'].shape1['pi+'][8][1]=conf['params']['collins']['pi+ c a 1']['value']
-      conf['collins'].shape1['pi+'][8][2]=conf['params']['collins']['pi+ c b 1']['value']
-      conf['collins'].shape1['pi+'][8][3]=conf['params']['collins']['pi+ c c 1']['value']
-      conf['collins'].shape1['pi+'][8][4]=conf['params']['collins']['pi+ c d 1']['value']
-
-      conf['collins'].shape1['pi+'][9][0]=conf['params']['collins']['pi+ b N 1']['value']
-      conf['collins'].shape1['pi+'][9][1]=conf['params']['collins']['pi+ b a 1']['value']
-      conf['collins'].shape1['pi+'][9][2]=conf['params']['collins']['pi+ b b 1']['value']
-      conf['collins'].shape1['pi+'][9][3]=conf['params']['collins']['pi+ b c 1']['value']
-      conf['collins'].shape1['pi+'][9][4]=conf['params']['collins']['pi+ b d 1']['value']
-
-      conf['collins'].shape1['pi+'][10][0]=conf['params']['collins']['pi+ b N 1']['value']
-      conf['collins'].shape1['pi+'][10][1]=conf['params']['collins']['pi+ b a 1']['value']
-      conf['collins'].shape1['pi+'][10][2]=conf['params']['collins']['pi+ b b 1']['value']
-      conf['collins'].shape1['pi+'][10][3]=conf['params']['collins']['pi+ b c 1']['value']
-      conf['collins'].shape1['pi+'][10][4]=conf['params']['collins']['pi+ b d 1']['value']
 
       #------------------
 

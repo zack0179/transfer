@@ -84,7 +84,7 @@ class CORE:
       if 'shape1' in self.__dict__:
         N[i]=self.get_shape(x,self.shape1[hadron][i])
       if 'shape2' in self.__dict__:
-        N[i]+=self.get_shape(x,self.shape1[hadron][i])
+        N[i]+=self.get_shape(x,self.shape2[hadron][i])
 
     return N
 
@@ -253,9 +253,11 @@ class COLLINS(CORE):
         self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
 
     self.shape1['pi-']=self.pip2pim(self.shape1['pi+'])
-    self.shape1['k-']=self.kp2km(self.shape1['k+'])
     self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
+
+    self.shape1['k-']=self.kp2km(self.shape1['k+'])
     self.shape2['k-']=self.kp2km(self.shape2['k+'])
+
     self.widths['pi-']=self.pip2pim(self.widths['pi+'])
     self.widths['k-']=self.kp2km(self.widths['k+'])
 
