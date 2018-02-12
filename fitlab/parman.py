@@ -311,6 +311,19 @@ class PARMAN:
       conf['collins'].shape['pi+'][8][3]=conf['params']['collins']['pi+ c c']['value']
       conf['collins'].shape['pi+'][8][4]=conf['params']['collins']['pi+ c d']['value']
 
+      conf['collins'].shape['pi+'][9][0]=conf['params']['collins']['pi+ b N']['value']
+      conf['collins'].shape['pi+'][9][1]=conf['params']['collins']['pi+ b a']['value']
+      conf['collins'].shape['pi+'][9][2]=conf['params']['collins']['pi+ b b']['value']
+      conf['collins'].shape['pi+'][9][3]=conf['params']['collins']['pi+ b c']['value']
+      conf['collins'].shape['pi+'][9][4]=conf['params']['collins']['pi+ b d']['value']
+
+      conf['collins'].shape['pi+'][10][0]=conf['params']['collins']['pi+ b N']['value']
+      conf['collins'].shape['pi+'][10][1]=conf['params']['collins']['pi+ b a']['value']
+      conf['collins'].shape['pi+'][10][2]=conf['params']['collins']['pi+ b b']['value']
+      conf['collins'].shape['pi+'][10][3]=conf['params']['collins']['pi+ b c']['value']
+      conf['collins'].shape['pi+'][10][4]=conf['params']['collins']['pi+ b d']['value']
+
+
     if 'k+ u N' in conf['params']['collins']: 
       conf['collins'].widths0['k+ fav']     = conf['params']['collins']['widths0 k+ fav']['value']
       conf['collins'].widths0['k+ unfav']   = conf['params']['collins']['widths0 k+ unfav']['value']
