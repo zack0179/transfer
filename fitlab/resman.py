@@ -141,7 +141,6 @@ if __name__=='__main__':
   load_config(args.config)
   conf['args']=args
   conf['resman']=RESMAN()
-  sys.exit()
 
   if   args.task==0: SPEEDTEST().run()
   elif args.task==1: ML().run_minimize()
