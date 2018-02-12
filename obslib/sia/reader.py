@@ -9,7 +9,7 @@ from tools.config import conf
 class READER(_READER):
 
   def __init__(self):
-    conf=conf
+    pass
 
   def get_Q2(self,tab):
     tab['Q2']=pd.Series(tab.Q**2,index=tab.index)

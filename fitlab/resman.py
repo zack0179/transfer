@@ -3,7 +3,6 @@ import sys,os
 import argparse
 import numpy as np
 from numpy.random import choice,randn,uniform
-from tools.tools import load_config
 import pandas as pd
 import external.CJLIB.CJ
 import external.DSSLIB.DSS
@@ -25,6 +24,7 @@ from parman import PARMAN
 from speedtest import SPEEDTEST
 from mcsamp import MCSAMP
 from maxlike import ML
+from tools.config import load_config,conf
 
 class RESMAN:
 
@@ -32,7 +32,7 @@ class RESMAN:
     self.npts=0
     conf['aux']=qcdlib.aux.AUX()
     self.setup_tmds()
-    conf['parman']=PARMAN(conf)
+    conf['parman']=PARMAN()
     self.setup()
 
   def setup(self):
@@ -57,44 +57,42 @@ class RESMAN:
     conf['dis stfuncs']=obslib.dis.stfuncs.STFUNCS(conf)
 
   def setup_tmds(self):
-    conf=conf
     conf['order']='LO'
-    conf['_pdf'] =external.CJLIB.CJ.CJ(conf)
-    conf['_ppdf']=external.LSSLIB.LSS.LSS(conf)
-    conf['_ff']  =external.DSSLIB.DSS.DSS(conf)
-    conf['pdf']  =qcdlib.tmdlib.PDF(conf)
-    conf['ppdf'] =qcdlib.tmdlib.PPDF(conf)
-    conf['ff']   =qcdlib.tmdlib.FF(conf)
-    conf['transversity']=qcdlib.tmdlib.TRANSVERSITY(conf)
-    conf['sivers']      =qcdlib.tmdlib.SIVERS(conf)
-    conf['boermulders'] =qcdlib.tmdlib.BOERMULDERS(conf)
-    conf['pretzelosity']=qcdlib.tmdlib.PRETZELOSITY(conf)
-    conf['wormgearg']   =qcdlib.tmdlib.WORMGEARG(conf)
-    conf['wormgearh']   =qcdlib.tmdlib.WORMGEARH(conf)
-    conf['collins']     =qcdlib.tmdlib.COLLINS(conf)
+    conf['_pdf'] =external.CJLIB.CJ.CJ()
+    conf['_ppdf']=external.LSSLIB.LSS.LSS()
+    conf['_ff']  =external.DSSLIB.DSS.DSS()
+    conf['pdf']  =qcdlib.tmdlib.PDF()
+    conf['ppdf'] =qcdlib.tmdlib.PPDF()
+    conf['ff']   =qcdlib.tmdlib.FF()
+    conf['transversity']=qcdlib.tmdlib.TRANSVERSITY()
+    conf['sivers']      =qcdlib.tmdlib.SIVERS()
+    conf['boermulders'] =qcdlib.tmdlib.BOERMULDERS()
+    conf['pretzelosity']=qcdlib.tmdlib.PRETZELOSITY()
+    conf['wormgearg']   =qcdlib.tmdlib.WORMGEARG()
+    conf['wormgearh']   =qcdlib.tmdlib.WORMGEARH()
+    conf['collins']     =qcdlib.tmdlib.COLLINS()
     
   def setup_sidis(self):
     conf=conf
-    conf['sidis tabs']      =obslib.sidis.reader.READER(conf).load_data_sets('sidis')
-    conf['sidis stfuncs']   =obslib.sidis.stfuncs.STFUNCS(conf)
-    self.sidisres=obslib.sidis.residuals.RESIDUALS(conf)
+    conf['sidis tabs']      =obslib.sidis.reader.READER().load_data_sets('sidis')
+    conf['sidis stfuncs']   =obslib.sidis.stfuncs.STFUNCS()
+    self.sidisres=obslib.sidis.residuals.RESIDUALS()
     conf['sidisres']=self.sidisres
     res,rres,nres=self.sidisres.get_residuals()
     self.npts+=res.size
 
   def setup_sia(self):
-    conf=conf
-    conf['sia tabs']      =obslib.sia.reader.READER(conf).load_data_sets('sia')
-    conf['sia stfuncs']   =obslib.sia.stfuncs.STFUNCS(conf)
-    self.siares=obslib.sia.residuals.RESIDUALS(conf)
+    conf['sia tabs']      =obslib.sia.reader.READER().load_data_sets('sia')
+    conf['sia stfuncs']   =obslib.sia.stfuncs.STFUNCS()
+    self.siares=obslib.sia.residuals.RESIDUALS()
     res,rres,nres=self.siares.get_residuals()
     self.npts+=res.size
 
   def setup_moments(self):
     conf=conf
-    conf['moments tabs']=obslib.moments.reader.READER(conf).load_data_sets('moments')
-    conf['moments']=obslib.moments.moments.MOMENTS(conf)
-    self.momres=obslib.moments.residuals.RESIDUALS(conf)
+    conf['moments tabs']=obslib.moments.reader.READER().load_data_sets('moments')
+    conf['moments']=obslib.moments.moments.MOMENTS()
+    self.momres=obslib.moments.residuals.RESIDUALS()
     res,rres,nres=self.momres.get_residuals()
     self.npts+=res.size
 
@@ -138,10 +136,12 @@ if __name__=='__main__':
   ap.add_argument('-l','--list',nargs='+',help=" list of numbers e.g.: 123 234 345 ",default=[])
   ap.add_argument('-r','--reaction',type=str,help=" e.g.: sidis, sia ",default='sidis')
   args = ap.parse_args()
+
   
   load_config(args.config)
   conf['args']=args
-  conf['resman']=RESMAN(conf)
+  conf['resman']=RESMAN()
+  sys.exit()
 
   if   args.task==0: SPEEDTEST().run()
   elif args.task==1: ML().run_minimize()

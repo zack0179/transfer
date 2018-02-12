@@ -9,7 +9,7 @@ from qcdlib.aux import AUX
 from tools.residuals import _RESIDUALS
 from reader import READER
 from stfuncs import STFUNCS
-from tool.config import conf 
+from tools.config import conf 
 
 class RESIDUALS(_RESIDUALS):
 

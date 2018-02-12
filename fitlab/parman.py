@@ -25,7 +25,6 @@ from obslib.sidis.residuals import RESIDUALS as SIDIS_RESIDUALS
 class PARMAN:
 
   def __init__(self):
-    conf=conf
     self.get_ordered_free_params()
     self.set_new_params(self.par,initial=True)
 

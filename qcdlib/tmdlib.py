@@ -89,7 +89,6 @@ class PDF(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -125,7 +124,6 @@ class FF(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -185,7 +183,6 @@ class COLLINS(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -260,7 +257,6 @@ class SIVERS(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -296,7 +292,6 @@ class TRANSVERSITY(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -333,7 +328,6 @@ class PPDF(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -368,7 +362,6 @@ class BOERMULDERS(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -417,7 +410,6 @@ class PRETZELOSITY(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -465,7 +457,6 @@ class WORMGEARG(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 
@@ -504,7 +495,6 @@ class WORMGEARH(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.set_default_params()
     self.setup()
 

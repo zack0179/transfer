@@ -2,7 +2,6 @@ import os
 import numpy as np
 from tools.tools import load,save,checkdir
 from tools.config import conf
-import nest2 as nest
 from multiprocessing import Process,Queue,Pool,Pipe
 
 class MCSAMP:
