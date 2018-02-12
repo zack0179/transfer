@@ -71,6 +71,11 @@ class CORE:
       norm = np.pow((p[1]+p[2]),p[1]+p[2])/(np.pow(p[1],p[1])*np.pow(p[2],p[2]))
       return  norm*p[0]*x**p[1]*(1-x)**p[2]
 
+    elif conf['shape']==4:
+
+       norm=self.beta(2+p[1],p[2]+1)+p[3]*self.beta(2+p[1]+1,p[2]+1)+p[4]*self.beta(2+p[1]+2,p[2]+1)
+       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
+
   def get_collinear(self,x,hadron):
     N=np.zeros(11)
     for i in range(11): 
@@ -247,9 +252,8 @@ class COLLINS(CORE):
       self.K[hadron]=self.get_K(1.0,hadron) 
 
   def get_C(self,z,Q2,hadron='pi+'):
-    ff=conf['_ff'].get_f(z,Q2,hadron)
-    C=self.get_collinear(z,hadron)*ff
-    #print hadron,self.shape[hadron]
+    #ff=conf['_ff'].get_f(z,Q2,hadron)
+    C=self.get_collinear(z,hadron)#*ff
     C[0]=0 # glue is not supported
     return C
 

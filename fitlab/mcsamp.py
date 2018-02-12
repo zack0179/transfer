@@ -3,6 +3,7 @@ import numpy as np
 from tools.tools import load,save,checkdir
 from tools.config import conf
 from multiprocessing import Process,Queue,Pool,Pipe
+import nest
 
 class MCSAMP:
     
