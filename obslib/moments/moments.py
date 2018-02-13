@@ -16,12 +16,12 @@ from qcdlib.tmdlib import WORMGEARG
 from qcdlib.tmdlib import WORMGEARH
 from qcdlib.aux import AUX
 from scipy.special import gamma
+from tools.config import conf
 
 class MOMENTS:
 
-  def __init__(self,conf):
+  def __init__(self):
     self.aux=conf['aux']  
-    self.conf=conf
 
   def beta(self,a,b):
     return gamma(a)*gamma(b)/gamma(a+b)
@@ -31,21 +31,20 @@ class MOMENTS:
     return N*(self.beta(1+a,b+1)+c*self.beta(1+0.5+a,b+1)+d*self.beta(1+1+a,b+1))
 
   def get_flav(self,flav):
-    shape=self.conf['transversity'].shape['p']
+    shape=conf['transversity'].shape['p']
     if flav=='u': return self.get_moment(shape[1])
     if flav=='d': return self.get_moment(shape[3])
     if flav=='uv': return self.get_moment(shape[1])-self.get_moment(shape[2])
     if flav=='dv': return self.get_moment(shape[3])-self.get_moment(shape[4])
 
   def get_gT(self):
-    shape=self.conf['transversity'].shape['p']
+    shape=conf['transversity'].shape['p']
     mom_u=self.get_moment(shape[1])
     mom_d=self.get_moment(shape[3])
     return mom_u - mom_d
 
 if __name__=='__main__':
 
-  conf={}
   conf['path2CJ'] ='../../external/CJLIB'
   conf['path2LSS']='../../external/LSSLIB'
   conf['path2DSS']='../../external/DSSLIB'

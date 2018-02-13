@@ -25,8 +25,7 @@ from obslib.dis.stfuncs import STFUNCS as DIS_STFUNCS
 
 class RESIDUALS(_RESIDUALS):
 
-  def __init__(self,conf):
-    self.conf=conf
+  def __init__(self):
     self.reaction='moments'
     self.tabs=conf['moments tabs']
     self.moments=conf['moments']
@@ -99,7 +98,6 @@ class RESIDUALS(_RESIDUALS):
 
 if __name__=='__main__':
 
-  conf={}
   conf['datasets']={}
   conf['datasets']['lattice']={}
   conf['datasets']['lattice']['xlsx']={}
