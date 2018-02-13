@@ -27,7 +27,6 @@ from tools.config import conf
 class RESIDUALS(_RESIDUALS):
 
   def __init__(self):
-    conf=conf
     self.reaction='sidis'
     self.tabs=conf['sidis tabs']
     self.stfuncs=conf['sidis stfuncs']

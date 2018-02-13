@@ -8,7 +8,7 @@ from tools.config import conf
 class READER(_READER):
 
   def __init__(self):
-    conf=conf
+    pass
 
   def get_W2(self,tab,k):
     cols=tab.columns.values

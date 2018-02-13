@@ -21,7 +21,6 @@ class STFUNCS:
 
   def __init__(self):
     self.aux=conf['aux']  
-    conf=conf
     eu2,ed2=4/9.,1/9. 
     self.e2=[]
     self.e2.append(0)   # g

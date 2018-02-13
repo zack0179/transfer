@@ -13,7 +13,6 @@ class STFUNCS:
   
   def __init__(self):
     self.aux=conf['aux']
-    conf=conf
     self.CF = self.aux.CF
     self.TR = self.aux.TR
     self.CA = self.aux.CA
