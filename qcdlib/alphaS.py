@@ -11,7 +11,6 @@ class ALPHAS:
 
     if   conf['order']=='LO':  self.order=0
     elif conf['order']=='NLO': self.order=1
-    conf=conf
 
     self.Q20 = conf['Q20']
     self.aZ  = self.aux.alphaSMZ/(4*np.pi)
