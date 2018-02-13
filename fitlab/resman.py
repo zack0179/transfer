@@ -47,7 +47,6 @@ class RESMAN:
       self.setup_moments()
 
   def setup_dis(self):
-    conf=conf
     conf['alphaSmode']='backward'
     conf['Q20']=1
     #conf['order']='NLO'
@@ -73,7 +72,6 @@ class RESMAN:
     conf['collins']     =qcdlib.tmdlib.COLLINS()
     
   def setup_sidis(self):
-    conf=conf
     conf['sidis tabs']      =obslib.sidis.reader.READER().load_data_sets('sidis')
     conf['sidis stfuncs']   =obslib.sidis.stfuncs.STFUNCS()
     self.sidisres=obslib.sidis.residuals.RESIDUALS()
@@ -89,7 +87,6 @@ class RESMAN:
     self.npts+=res.size
 
   def setup_moments(self):
-    conf=conf
     conf['moments tabs']=obslib.moments.reader.READER().load_data_sets('moments')
     conf['moments']=obslib.moments.moments.MOMENTS()
     self.momres=obslib.moments.residuals.RESIDUALS()
