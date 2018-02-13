@@ -37,7 +37,7 @@ class RESMAN:
 
   def setup(self):
 
-    conf['moments']=obslib.moments.moments.MOMENTS(conf)
+    conf['moments']=obslib.moments.moments.MOMENTS()
     if 'sidis' in conf['datasets']:
       self.setup_dis()
       self.setup_sidis()
@@ -51,9 +51,9 @@ class RESMAN:
     conf['Q20']=1
     #conf['order']='NLO'
     conf['order']='LO'
-    conf['alphaS']=qcdlib.alphaS.ALPHAS(conf)
-    conf['pdf-NLO']=external.CJLIB.CJ.CJ(conf)
-    conf['dis stfuncs']=obslib.dis.stfuncs.STFUNCS(conf)
+    conf['alphaS']=qcdlib.alphaS.ALPHAS()
+    conf['pdf-NLO']=external.CJLIB.CJ.CJ()
+    conf['dis stfuncs']=obslib.dis.stfuncs.STFUNCS()
 
   def setup_tmds(self):
     conf['order']='LO'
