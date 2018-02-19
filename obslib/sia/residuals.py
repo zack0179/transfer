@@ -58,6 +58,7 @@ class RESIDUALS(_RESIDUALS):
       ZCuu=ZUuu+ZLuu
       ZCcol=ZUcol+ZLcol
       thy=factor*(ZUcol/ZUuu - ZCcol/ZCuu)
+
     else:
       print 'ERR: obs=%s  not implemented'%obs
       sys.exit()

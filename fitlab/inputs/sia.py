@@ -4,7 +4,7 @@ conf={}
 conf['method']='cov'
 conf['kappa']=1.1
 conf['tol']=10e-10
-conf['num points'] = 30#self.npar*3
+conf['num points'] = 30 #self.npar*3
 conf['burn size']  = 10
 conf['sample size']= 10000
 
