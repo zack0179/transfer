@@ -45,16 +45,20 @@ class RESIDUALS(_RESIDUALS):
       ZCcol=ZUcol+ZLcol
       thy=factor*(ZUcol/ZUuu - ZCcol/ZCuu)
     elif obs=='AUL-0-PT-INT':
-      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,None,'pi+','pi-') + self.stfuncs.ZX(1,z1,z2,Q2,None,'pi-','pi+')
-      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,None,'pi+','pi+') + self.stfuncs.ZX(1,z1,z2,Q2,None,'pi-','pi-')
-      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,None,'pi+','pi-') + self.stfuncs.ZX(2,z1,z2,Q2,None,'pi-','pi+')
-      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,None,'pi+','pi+') + self.stfuncs.ZX(2,z1,z2,Q2,None,'pi-','pi-')
+      if self.tabs[k]['col'][i]=='BaBar': pT = self.tabs[k]['pT'][i]
+      if self.tabs[k]['col'][i]=='belle': pT = None
+      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi+')
+      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi-')
+      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi+')
+      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi-')
       thy=factor*(ZUcol/ZUuu - ZLcol/ZLuu)
     elif obs=='AUC-0-PT-INT':
-      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,None,'pi+','pi-') + self.stfuncs.ZX(1,z1,z2,Q2,None,'pi-','pi+')
-      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,None,'pi+','pi+') + self.stfuncs.ZX(1,z1,z2,Q2,None,'pi-','pi-')
-      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,None,'pi+','pi-') + self.stfuncs.ZX(2,z1,z2,Q2,None,'pi-','pi+')
-      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,None,'pi+','pi+') + self.stfuncs.ZX(2,z1,z2,Q2,None,'pi-','pi-')
+      if self.tabs[k]['col'][i]=='BaBar': pT = self.tabs[k]['pT'][i]
+      if self.tabs[k]['col'][i]=='belle': pT = None
+      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi+')
+      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi-')
+      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi+')
+      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi-')
       ZCuu=ZUuu+ZLuu
       ZCcol=ZUcol+ZLcol
       thy=factor*(ZUcol/ZUuu - ZCcol/ZCuu)
