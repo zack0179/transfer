@@ -30,35 +30,45 @@ class RESIDUALS(_RESIDUALS):
 
     if obs=='AUL-0-PT':
       pT =self.tabs[k]['pT'][i]
-      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi+')
-      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi-')
-      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi+')
-      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi-')
+      h1 = self.tabs[k]['hadron1'][i]   
+      h2 = self.tabs[k]['hadron2'][i]   
+      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'+',h2+'-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'-',h2+'+')
+      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'+',h2+'+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'-',h2+'-')
+      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'+',h2+'-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'-',h2+'+')
+      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'+',h2+'+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'-',h2+'-')
       thy=factor*(ZUcol/ZUuu - ZLcol/ZLuu)
     elif obs=='AUC-0-PT':
       pT =self.tabs[k]['pT'][i]
-      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi+')
-      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi-')
-      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi+')
-      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi-')
+      h1 = self.tabs[k]['hadron1'][i]   
+      h2 = self.tabs[k]['hadron2'][i]   
+      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'+',h2+'-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'-',h2+'+')
+      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'+',h2+'+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'-',h2+'-')
+      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'+',h2+'-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'-',h2+'+')
+      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'+',h2+'+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'-',h2+'-')
       ZCuu=ZUuu+ZLuu
       ZCcol=ZUcol+ZLcol
       thy=factor*(ZUcol/ZUuu - ZCcol/ZCuu)
     elif obs=='AUL-0-PT-INT':
-      if self.tabs[k]['col'][i]=='BaBar': pT = self.tabs[k]['pT'][i]
-      if self.tabs[k]['col'][i]=='belle': pT = None
-      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi+')
-      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi-')
-      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi+')
-      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi-')
+      #if self.tabs[k]['col'][i]=='BaBaR': pT = self.tabs[k]['pT'][i]
+      #if self.tabs[k]['col'][i]=='belle': pT = None
+      pT = None    
+      h1 = self.tabs[k]['hadron1'][i]   
+      h2 = self.tabs[k]['hadron2'][i]   
+      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'+',h2+'-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'-',h2+'+')
+      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'+',h2+'+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'-',h2+'-')
+      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'+',h2+'-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'-',h2+'+')
+      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'+',h2+'+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'-',h2+'-')
       thy=factor*(ZUcol/ZUuu - ZLcol/ZLuu)
     elif obs=='AUC-0-PT-INT':
-      if self.tabs[k]['col'][i]=='BaBar': pT = self.tabs[k]['pT'][i]
-      if self.tabs[k]['col'][i]=='belle': pT = None
-      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi+')
-      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,'pi-','pi-')
-      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi+')
-      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi+','pi+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,'pi-','pi-')
+      #if self.tabs[k]['col'][i]=='BaBaR': pT = self.tabs[k]['pT'][i]
+      #if self.tabs[k]['col'][i]=='belle': pT = None
+      pT = None
+      h1 = self.tabs[k]['hadron1'][i]   
+      h2 = self.tabs[k]['hadron2'][i]   
+      ZUuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'+',h2+'-') + self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'-',h2+'+')
+      ZLuu =self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'+',h2+'+') + self.stfuncs.ZX(1,z1,z2,Q2,pT,h1+'-',h2+'-')
+      ZUcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'+',h2+'-') + self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'-',h2+'+')
+      ZLcol=self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'+',h2+'+') + self.stfuncs.ZX(2,z1,z2,Q2,pT,h1+'-',h2+'-')
       ZCuu=ZUuu+ZLuu
       ZCcol=ZUcol+ZLcol
       thy=factor*(ZUcol/ZUuu - ZCcol/ZCuu)
