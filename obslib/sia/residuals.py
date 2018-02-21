@@ -78,7 +78,7 @@ class RESIDUALS(_RESIDUALS):
       print 'ERR: obs=%s  not implemented'%obs
       sys.exit()
 
-    if col is not 'bes3':
+    if not col == 'bes3':
       thy = thy * 100. # from obs to %
 
     return k,i,thy
