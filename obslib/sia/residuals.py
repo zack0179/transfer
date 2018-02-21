@@ -22,6 +22,7 @@ class RESIDUALS(_RESIDUALS):
   def _get_theory(self,entry):
     k,i=entry
     obs=self.tabs[k]['obs'][i].strip()
+    col=self.tabs[k]['col'][i].strip()
     z1 =self.tabs[k]['z1'][i]
     z2 =self.tabs[k]['z2'][i]
     Q2 =self.tabs[k]['Q2'][i]
@@ -76,7 +77,10 @@ class RESIDUALS(_RESIDUALS):
     else:
       print 'ERR: obs=%s  not implemented'%obs
       sys.exit()
-    thy = thy * 100. # from obs to %
+
+    if col is not 'bes3':
+      thy = thy * 100. # from obs to %
+
     return k,i,thy
 
   def gen_report(self,verb=1,level=1):

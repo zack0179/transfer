@@ -20,9 +20,15 @@
 | 2009  | [link][2000] | babar      | pi,pi | AUL-12           | 16     | z1,z2      |
 | 2010  | [link][2000] | babar      | pi,pi | AUC-0            | 16     | z1,z2      |
 | 2011  | [link][2000] | babar      | pi,pi | AUC-12           | 16     | z1,z2      |
+| 3000  | [link][3000] | bes3       | pi,pi | AUL-0            | 6      | z1,z2      |
+| 3001  | [link][3000] | bes3       | pi,pi | AUC-0            | 6      | z1,z2      |
+| 3002  | [link][3000] | bes3       | pi,pi | AUL-0            | 6      | z1,z2,pt   |
+| 3003  | [link][3000] | bes3       | pi,pi | AUC-0            | 6      | z1,z2,pt   |
+
 
 [1000]: https://inspirehep.net/record/1254862 
 [1004]: http://somewere 
 [2000]: http://inspirehep.net/record/1377201?ln=en
+[3000]: https://arxiv.org/pdf/1507.06824.pdf
 
 
