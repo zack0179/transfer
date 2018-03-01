@@ -25,31 +25,32 @@ from scipy.integrate import quad,dblquad
 class ANTHEORY: #This only includes the fragmentation term (see 1701.09170)
     
     def __init__(self):
-        self.aux=conf['aux']  
+#        self.aux=conf['aux']  
         
         self.Mh={}
-        self.Mh['pi+']=self.aux.Mpi
-        self.Mh['pi-']=self.aux.Mpi
-        self.Mh['k+']=self.aux.Mk
-        self.Mh['k-']=self.aux.Mk
+        self.Mh['pi+']=0.13957018 #self.aux.Mpi
+        self.Mh['pi-']=0.13957018 #self.aux.Mpi
+        self.Mh['pi0']=0.1349766 #self.aux.Mpi
+        self.Mh['k+']=0.13957018 #self.aux.Mk
+        self.Mh['k-']=0.13957018 #self.aux.Mk
         
         self.flavor = ['u','d','s','ub','db','sb','g']
         self.target = ['p']
         self.hadron = ['pi+','pi-','pi0']
     
-    def get_pdf(flav,tar,x,Q2): #Collinear unpolarized PDF
+    def get_pdf(self,flav,tar,x,Q2): #Collinear unpolarized PDF
         return x*(1.-x) #We will modify this output later
     
-    def get_ff(flav,had,z,Q2): #Collinear unpolarized FF
+    def get_ff(self,flav,had,z,Q2): #Collinear unpolarized FF
         return z*(1.-z) #We will modify this output later
     
-    def get_h1(flav,tar,x,Q2): #Collinear transversity
+    def get_h1(self,flav,tar,x,Q2): #Collinear transversity
         return x*(1.-x) #We will modify this output later
     
-    def get_H1p(flav,had,z,Q2): #(H_1^{\perp(1)}(z) - z*dH_1^{\perp(1)}(z)/dz)
+    def get_H1p(self,flav,had,z,Q2): #(H_1^{\perp(1)}(z) - z*dH_1^{\perp(1)}(z)/dz)
         return z*(1.-z) #We will modify this output later
     
-    def get_H(flav,had,z,Q2): #-2*z*H_1^{\perp(1)}(z)+\tilde{H}(z) 
+    def get_H(self,flav,had,z,Q2): #-2*z*H_1^{\perp(1)}(z)+\tilde{H}(z) 
         return z*(1.-z) #We will modify this output later
     
     def get_dsig(self,x,z,xF,pT,rs,tar,had): #Calculation of the unpolarized cross section
@@ -293,41 +294,44 @@ class ANTHEORY: #This only includes the fragmentation term (see 1701.09170)
 
 if __name__=='__main__':
     
-    files = os.listdir('./../../database/pp_AN/expdata/')
-    files = [(r'./../../database/pp_AN/expdata/' + f) for f in files if f.endswith('.xlsx')]
+    files = os.listdir('./../../database/AN_pp/expdata/')
+    files = [(r'./../../database/AN_pp/expdata/' + f) for f in files if f.endswith('.xlsx')]
     
     data = [pd.read_excel(f) for f in files] 
     
     for i in range(len(data)):
         df = pd.DataFrame(data[i])
         
-        xF = df['xF']
-        pT = df['pT']
-        rs = 200.
-        tar = 'p'
-        had = df['hadron']   
-        xT  = 2.*pT/rs
+        for j in range(len(df)):
+            xF = df['xF'][j]
+            pT = df['pT'][j]
+            rs = 200.
+            tar = 'p'
+            had = df['hadron'][j]  
+            xT  = 2.*pT/rs
+            
+            print(ANTHEORY().get_dsig(0.3,0.6,xF,pT,rs,tar,had))
         
-        xF2 = xF*xF
-        xT2 = xT*xT
+            xF2 = xF*xF
+            xT2 = xT*xT
         
-        #Mandelstam variables at the hadron level
-        ss = rs*rs
-        tt = -0.5 * ss * ( np.sqrt(xF2+xT2) - xF )
-        uu = -0.5 * ss * ( np.sqrt(xF2+xT2) + xF )
+            #Mandelstam variables at the hadron level
+            ss = rs*rs
+            tt = -0.5 * ss * ( np.sqrt(xF2+xT2) - xF )
+            uu = -0.5 * ss * ( np.sqrt(xF2+xT2) + xF )
         
-        #Lower limits of the z and x integrations
-        zmin = np.sqrt(xF2+xT2)
-        xmin = lambda z: -uu/(z*ss+tt)
+            #Lower limits of the z and x integrations
+            zmin = np.sqrt(xF2+xT2)
+            xmin = lambda z: -uu/(z*ss+tt)
         
-        #Integration of the numerator from xmin to 1 and from zmin to 1 (the values for xmin and zmin are above)
-        num = dblquad(lambda x,z: ANTHEORY().get_dsigST(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
+            #Integration of the numerator from xmin to 1 and from zmin to 1 (the values for xmin and zmin are above)
+#            num = dblquad(lambda x,z: ANTHEORY().get_dsigST(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
         
-        #Integration of the denominator from xmin to 1 and from zmin to 1 (the values for xmin and zmin are above)
-        den = dblquad(lambda x,z: ANTHEORY().get_dsig(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
+            #Integration of the denominator from xmin to 1 and from zmin to 1 (the values for xmin and zmin are above)
+#            den = dblquad(lambda x,z: ANTHEORY().get_dsig(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
         
-        AN = num/den
+#            AN = num/den
         
-        print(AN)
+#            print(AN)
       
     
