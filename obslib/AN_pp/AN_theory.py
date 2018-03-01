@@ -326,12 +326,12 @@ if __name__=='__main__':
             xmin = lambda z: -uu/(z*ss+tt)
         
             #Integration of the numerator from xmin to 1 and from zmin to 1 (the values for xmin and zmin are above)
-            num = dblquad(lambda x,z: ANTHEORY().get_dsigST(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
+            num = dblquad(lambda x,z: ANTHEORY().get_dsigST(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,lambda x: 1.)
         
             #Integration of the denominator from xmin to 1 and from zmin to 1 (the values for xmin and zmin are above)
-            den = dblquad(lambda x,z: ANTHEORY().get_dsig(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
+            den = dblquad(lambda x,z: ANTHEORY().get_dsig(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,lambda x: 1.)
         
-            AN = num/den
+            AN = num[0]/den[0]
         
             print(AN)
       
