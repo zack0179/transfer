@@ -115,61 +115,61 @@ class ANTHEORY: #This only includes the fragmentation term (see 1701.09170)
         D1z = {}
         
         for flav in self.flavor:
-            f1x[flav][tar] = self.get_pdf(flav,tar,x,Q2)
-            f1xp[flav][tar] = self.get_pdf(flav,tar,xp,Q2)
-            D1z[flav][had] = self.get_ff(flav,had,z,Q2)
+            f1x[(flav,tar)] = self.get_pdf(flav,tar,x,Q2)
+            f1xp[(flav,tar)] = self.get_pdf(flav,tar,xp,Q2)
+            D1z[(flav,had)] = self.get_ff(flav,had,z,Q2)
             
         upol = {}
             
-        upol[1] = ( f1x['u'][tar]*D1z['u'][had] + f1x['d'][tar]*D1z['d'][had] + f1x['s'][tar]*D1z['s'][had] ) * ( f1xp['u'][tar] + f1xp['d'][tar] + f1xp['s'][tar] ) * Hupol['av1'] 
-        + ( f1x['u'][tar] + f1x['d'][tar] + f1x['s'][tar] ) * ( f1xp['u'][tar]*D1z['u'][had] + f1xp['d'][tar]*D1z['d'][had] + f1xp['s'][tar]*D1z['s'][had] ) * Hupol['av2'] 
-        + ( f1x['u'][tar]*f1xp['u'][tar]*D1z['u'][had] + f1x['d'][tar]*f1xp['d'][tar]*D1z['d'][had] + f1x['s'][tar]*f1xp['s'][tar]*D1z['s'][had] ) * Hupol['av3']
+        upol[1] = ( f1x[('u',tar)]*D1z[('u',had)] + f1x[('d',tar)]*D1z[('d',had)] + f1x[('s',tar)]*D1z[('s',had)] ) * ( f1xp[('u',tar)] + f1xp[('d',tar)] + f1xp[('s',tar)] ) * Hupol['av1'] 
+        + ( f1x[('u',tar)] + f1x[('d',tar)] + f1x[('s',tar)] ) * ( f1xp[('u',tar)]*D1z[('u',had)] + f1xp[('d',tar)]*D1z[('d',had)] + f1xp[('s',tar)]*D1z[('s',had)] ) * Hupol['av2'] 
+        + ( f1x[('u',tar)]*f1xp[('u',tar)]*D1z[('u',had)] + f1x[('d',tar)]*f1xp[('d',tar)]*D1z[('d',had)] + f1x[('s',tar)]*f1xp[('s',tar)]*D1z[('s',had)] ) * Hupol['av3']
         
-        upol[2] = ( f1x['ub'][tar]*D1z['ub'][had] + f1x['db'][tar]*D1z['db'][had] + f1x['sb'][tar]*D1z['sb'][had] ) * ( f1xp['ub'][tar] + f1xp['db'][tar] + f1xp['sb'][tar] ) * Hupol['av1'] 
-        + ( f1x['ub'][tar] + f1x['db'][tar] + f1x['sb'][tar] ) * ( f1xp['ub'][tar]*D1z['ub'][had] + f1xp['db'][tar]*D1z['db'][had] + f1xp['sb'][tar]*D1z['sb'][had] ) * Hupol['av2'] 
-        + ( f1x['ub'][tar]*f1xp['ub'][tar]*D1z['ub'][had] + f1x['db'][tar]*f1xp['db'][tar]*D1z['db'][had] + f1x['sb'][tar]*f1xp['sb'][tar]*D1z['sb'][had] ) * Hupol['av3']
+        upol[2] = ( f1x[('ub',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*D1z[('sb',had)] ) * ( f1xp[('ub',tar)] + f1xp[('db',tar)] + f1xp[('sb',tar)] ) * Hupol['av1'] 
+        + ( f1x[('ub',tar)] + f1x[('db',tar)] + f1x[('sb',tar)] ) * ( f1xp[('ub',tar)]*D1z[('ub',had)] + f1xp[('db',tar)]*D1z[('db',had)] + f1xp[('sb',tar)]*D1z[('sb',had)] ) * Hupol['av2'] 
+        + ( f1x[('ub',tar)]*f1xp[('ub',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*f1xp[('db',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*f1xp[('sb',tar)]*D1z[('sb',had)] ) * Hupol['av3']
 
-        upol[3] = ( f1x['u'][tar]*D1z['u'][had] + f1x['d'][tar]*D1z['d'][had] + f1x['s'][tar]*D1z['s'][had] ) * ( f1xp['ub'][tar] + f1xp['db'][tar] + f1xp['sb'][tar] ) * Hupol['av5'] 
-        + ( f1x['u'][tar]*f1xp['ub'][tar] + f1x['d'][tar]*f1xp['db'][tar] + f1x['s'][tar]*f1xp['sb'][tar] ) * ( D1z['u'][had] + D1z['d'][had] + D1z['s'][had] ) * Hupol['av4'] 
-        + ( f1x['u'][tar]*f1xp['ub'][tar]*D1z['u'][had] + f1x['d'][tar]*f1xp['db'][tar]*D1z['d'][had] + f1x['s'][tar]*f1xp['sb']*D1z['s'][had] ) * Hupol['av6']
+        upol[3] = ( f1x[('u',tar)]*D1z[('u',had)] + f1x[('d',tar)]*D1z[('d',had)] + f1x[('s',tar)]*D1z[('s',had)] ) * ( f1xp[('ub',tar)] + f1xp[('db',tar)] + f1xp[('sb',tar)] ) * Hupol['av5'] 
+        + ( f1x[('u',tar)]*f1xp[('ub',tar)] + f1x[('d',tar)]*f1xp[('db',tar)] + f1x[('s',tar)]*f1xp[('sb',tar)] ) * ( D1z[('u',had)] + D1z[('d',had)] + D1z[('s',had)] ) * Hupol['av4'] 
+        + ( f1x[('u',tar)]*f1xp[('ub',tar)]*D1z[('u',had)] + f1x[('d',tar)]*f1xp[('db',tar)]*D1z[('d',had)] + f1x[('s',tar)]*f1xp[('sb',tar)]*D1z[('s',had)] ) * Hupol['av6']
         
-        upol[4] = ( f1x['ub'][tar]*D1z['ub'][had] + f1x['db'][tar]*D1z['db'][had] + f1x['sb'][tar]*D1z['sb'][had] ) * ( f1xp['u'][tar] + f1xp['d'][tar] + f1xp['s'][tar] ) * Hupol['av5'] 
-        + ( f1x['ub'][tar]*f1xp['u'][tar] + f1x['db'][tar]*f1xp['d'][tar] + f1x['sb'][tar]*f1xp['s'][tar] ) * ( D1z['ub'][had] + D1z['db'][had] + D1z['sb'][had] ) * Hupol['av4'] 
-        + ( f1x['ub'][tar]*f1xp['u'][tar]*D1z['ub'][had] + f1x['db'][tar]*f1xp['d'][tar]*D1z['db'][had] + f1x['sb'][tar]*f1xp['s'][tar]*D1z['sb'][had] ) * Hupol['av6']
+        upol[4] = ( f1x[('ub',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*D1z[('sb',had)] ) * ( f1xp[('u',tar)] + f1xp[('d',tar)] + f1xp[('s',tar)] ) * Hupol['av5'] 
+        + ( f1x[('ub',tar)]*f1xp[('u',tar)] + f1x[('db',tar)]*f1xp[('d',tar)] + f1x[('sb',tar)]*f1xp[('s',tar)] ) * ( D1z[('ub',had)] + D1z[('db',had)] + D1z[('sb',had)] ) * Hupol['av4'] 
+        + ( f1x[('ub',tar)]*f1xp[('u',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*f1xp[('d',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*f1xp[('s',tar)]*D1z[('sb',had)] ) * Hupol['av6']
       
-        upol[5] = ( f1x['u'][tar] + f1x['d'][tar] + f1x['s'][tar] ) * ( f1xp['ub'][tar]*D1z['ub'][had] + f1xp['db'][tar]*D1z['db'][had] + f1xp['sb'][tar]*D1z['sb'][had] ) * Hupol['av8'] 
-        + ( f1x['u'][tar]*f1xp['ub'][tar] + f1x['d'][tar]*f1xp['db'][tar] + f1x['s'][tar]*f1xp['sb'][tar] ) * ( D1z['ub'][had] + D1z['db'][had] + D1z['sb'][had] ) * Hupol['av7'] 
-        + (f1x['u'][tar]*f1xp['ub'][tar]*D1z['ub'][had]+f1x['d'][tar]*f1xp['db'][tar]*D1z['db'][had]+f1x['s'][tar]*f1xp['sb'][tar]*D1z['sb'][had]) * Hupol['av9']
+        upol[5] = ( f1x[('u',tar)] + f1x[('d',tar)] + f1x[('s',tar)] ) * ( f1xp[('ub',tar)]*D1z[('ub',had)] + f1xp[('db',tar)]*D1z[('db',had)] + f1xp[('sb',tar)]*D1z[('sb',had)] ) * Hupol['av8'] 
+        + ( f1x[('u',tar)]*f1xp[('ub',tar)] + f1x[('d',tar)]*f1xp[('db',tar)] + f1x[('s',tar)]*f1xp[('sb',tar)] ) * ( D1z[('ub',had)] + D1z[('db',had)] + D1z[('sb',had)] ) * Hupol['av7'] 
+        + (f1x[('u',tar)]*f1xp[('ub',tar)]*D1z[('ub',had)]+f1x[('d',tar)]*f1xp[('db',tar)]*D1z[('db',had)]+f1x[('s',tar)]*f1xp[('sb',tar)]*D1z[('sb',had)]) * Hupol['av9']
           
-        upol[6] = ( f1x['ub'][tar] + f1x['db'][tar] + f1x['sb'][tar] ) * ( f1xp['u'][tar]*D1z['u'][had] + f1xp['d'][tar]*D1z['d'][had] + f1xp['s'][tar]*D1z['s'][had] ) * Hupol['av8']
-        + ( f1x['ub'][tar]*f1xp['u'][tar] + f1x['db'][tar]*f1xp['d'][tar] + f1x['sb'][tar]*f1xp['s'][tar] ) * ( D1z['u'][had] + D1z['d'][had] + D1z['s'][had] ) * Hupol['av7']
-        + ( f1x['ub'][tar]*f1xp['u'][tar]*D1z['u'][had] + f1x['db'][tar]*f1xp['d'][tar]*D1z['d'][had] + f1x['sb'][tar]*f1xp['s'][tar]*D1z['s'][had] ) * Hupol['av9']
+        upol[6] = ( f1x[('ub',tar)] + f1x[('db',tar)] + f1x[('sb',tar)] ) * ( f1xp[('u',tar)]*D1z[('u',had)] + f1xp[('d',tar)]*D1z[('d',had)] + f1xp[('s',tar)]*D1z[('s',had)] ) * Hupol['av8']
+        + ( f1x[('ub',tar)]*f1xp[('u',tar)] + f1x[('db',tar)]*f1xp[('d',tar)] + f1x[('sb',tar)]*f1xp[('s',tar)] ) * ( D1z[('u',had)] + D1z[('d',had)] + D1z[('s',had)] ) * Hupol['av7']
+        + ( f1x[('ub',tar)]*f1xp[('u',tar)]*D1z[('u',had)] + f1x[('db',tar)]*f1xp[('d',tar)]*D1z[('d',had)] + f1x[('sb',tar)]*f1xp[('s',tar)]*D1z[('s',had)] ) * Hupol['av9']
         
-        upol[7]  = ( f1x['u'][tar]*f1xp['ub'][tar] + f1x['d'][tar]*f1xp['db'][tar] + f1x['s'][tar]*f1xp['sb'][tar] ) * D1z['g'][had] * Hupol['av10']
+        upol[7]  = ( f1x[('u',tar)]*f1xp[('ub',tar)] + f1x[('d',tar)]*f1xp[('db',tar)] + f1x[('s',tar)]*f1xp[('sb',tar)] ) * D1z[('g',had)] * Hupol['av10']
         
-        upol[8] = ( f1x['ub'][tar]*f1xp['u'][tar] + f1x['db'][tar]*f1xp['d'][tar] + f1x['sb'][tar]*f1xp['s'][tar] ) * D1z['g'][had] * Hupol['av10']
+        upol[8] = ( f1x[('ub',tar)]*f1xp[('u',tar)] + f1x[('db',tar)]*f1xp[('d',tar)] + f1x[('sb',tar)]*f1xp[('s',tar)] ) * D1z[('g',had)] * Hupol['av10']
         
-        upol[9]  = ( f1x['u'][tar]*D1z['u'][had]  + f1x['d'][tar]*D1z['d'][had]  + f1x['s'][tar]*D1z['s'][had]  ) * f1xp['g'][tar] * Hupol['av11']
+        upol[9]  = ( f1x[('u',tar)]*D1z[('u',had)]  + f1x[('d',tar)]*D1z[('d',had)]  + f1x[('s',tar)]*D1z[('s',had)]  ) * f1xp[('g',tar)] * Hupol['av11']
         
-        upol[10] = ( f1x['ub'][tar]*D1z['ub'][had] + f1x['db'][tar]*D1z['db'][had] + f1x['sb'][tar]*D1z['sb'][had] ) * f1xp['g'][tar] * Hupol['av11']
+        upol[10] = ( f1x[('ub',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*D1z[('sb',had)] ) * f1xp[('g',tar)] * Hupol['av11']
         
-        upol[11]  = ( f1x['u'][tar]  + f1x['d'][tar]  + f1x['s'][tar]  ) * f1xp['g'][tar] * D1z['g'][had] * Hupol['av12']
+        upol[11]  = ( f1x[('u',tar)]  + f1x[('d',tar)]  + f1x[('s',tar)]  ) * f1xp[('g',tar)] * D1z[('g',had)] * Hupol['av12']
         
-        upol[12] = ( f1x['ub'][tar] + f1x['db'][tar] + f1x['sb'][tar] ) * f1xp['g'][tar] * D1z['g'][had] * Hupol['av12']
+        upol[12] = ( f1x[('ub',tar)] + f1x[('db',tar)] + f1x[('sb',tar)] ) * f1xp[('g',tar)] * D1z[('g',had)] * Hupol['av12']
         
-        upol[13]  = f1x['g'][tar] * f1xp['g'][tar] * ( D1z['u'][had] + D1z['d'][had] + D1z['s'][had] ) * Hupol['av13']
+        upol[13]  = f1x[('g',tar)] * f1xp[('g',tar)] * ( D1z[('u',had)] + D1z[('d',had)] + D1z[('s',had)] ) * Hupol['av13']
         
-        upol[14] = f1x['g'][tar] * f1xp['g'][tar] * ( D1z['ub'][had] + D1z['db'][had] + D1z['sb'][had] ) * Hupol['av13']
+        upol[14] = f1x[('g',tar)] * f1xp[('g',tar)] * ( D1z[('ub',had)] + D1z[('db',had)] + D1z[('sb',had)] ) * Hupol['av13']
         
-        upol[15]  = f1x['g'][tar] * f1xp['g'][tar] * D1z['g'][had] * Hupol['av14']
+        upol[15]  = f1x[('g',tar)] * f1xp[('g',tar)] * D1z[('g',had)] * Hupol['av14']
         
-        upol[16]  = f1x['g'][tar] * ( f1xp['u'][tar]*D1z['u'][had] + f1xp['d'][tar]*D1z['d'][had] + f1xp['s'][tar]*D1z['s'][had]) * Hupol['av12']
+        upol[16]  = f1x[('g',tar)] * ( f1xp[('u',tar)]*D1z[('u',had)] + f1xp[('d',tar)]*D1z[('d',had)] + f1xp[('s',tar)]*D1z[('s',had)]) * Hupol['av12']
         
-        upol[17] = f1x['g'][tar] * ( f1xp['ub'][tar]*D1z['ub'][had] + f1xp['db'][tar]*D1z['db'][had] + f1xp['sb'][tar]*D1z['sb'][had]) * Hupol['av12']
+        upol[17] = f1x[('g',tar)] * ( f1xp[('ub',tar)]*D1z[('ub',had)] + f1xp[('db',tar)]*D1z[('db',had)] + f1xp[('sb',tar)]*D1z[('sb',had)]) * Hupol['av12']
         
-        upol[18]  = f1x['g'][tar] * ( f1xp['u'][tar]  + f1xp['d'][tar]  + f1xp['s'][tar]  ) * D1z['g'][had] * Hupol['av11']
+        upol[18]  = f1x[('g',tar)] * ( f1xp[('u',tar)]  + f1xp[('d',tar)]  + f1xp[('s',tar)]  ) * D1z[('g',had)] * Hupol['av11']
         
-        upol[19] = f1x['g'][tar] * ( f1xp['ub'][tar] + f1xp['db'][tar] + f1xp['sb'][tar] ) * D1z['g'][had] * Hupol['av11']
+        upol[19] = f1x[('g',tar)] * ( f1xp[('ub',tar)] + f1xp[('db',tar)] + f1xp[('sb',tar)] ) * D1z[('g',had)] * Hupol['av11']
         
         
         upolcs = denfac * np.sum(np.array([upol[i] for i in range(1,20)]))
@@ -249,43 +249,44 @@ class ANTHEORY: #This only includes the fragmentation term (see 1701.09170)
         Hxxpz = {}
         
         for flav in self.flavor:
-            h1x[flav][tar] = self.get_h1(flav,tar,x,Q2)
-            H1pz[flav][had] = self.get_H1p(flav,had,z,Q2) #Note again H1p(z) = (H_1^{\perp(1)}(z) - z*dH_1^{\perp(1)}(z)/dz)
-            Hz[flav][had] = self.get_H(flav,had,z,Q2) #Note again H(z) = -2*z*H_1^{\perp(1)}(z)+\tilde{H}(z) 
+            f1xp[(flav,tar)] = self.get_pdf(flav,tar,xp,Q2)
+            h1x[(flav,tar)] = self.get_h1(flav,tar,x,Q2)
+            H1pz[(flav,had)] = self.get_H1p(flav,had,z,Q2) #Note again H1p(z) = (H_1^{\perp(1)}(z) - z*dH_1^{\perp(1)}(z)/dz)
+            Hz[(flav,had)] = self.get_H(flav,had,z,Q2) #Note again H(z) = -2*z*H_1^{\perp(1)}(z)+\tilde{H}(z) 
             
         for i in range(1,7):
             for flav in ['u','d','s']:
-                Hxxpz[i][flav][had] = H1pz[flav][had] * HTff['ff'+str(i)+'a'] + oz * Hz[flav][had] * HTff['ff'+str(i)+'b']
+                Hxxpz[(i,flav,had)] = H1pz[(flav,had)] * HTff['ff'+str(i)+'a'] + oz * Hz[(flav,had)] * HTff['ff'+str(i)+'b']
         
         for i in range(7,13):
             for flav in ['ub','db','sb']:
-                Hxxpz[i][flav][had] = H1pz[flav][had] * HTffb['ff'+str(i)+'a'] + oz * Hz[flav][had] * HTffb['ff'+str(i)+'b']
+                Hxxpz[(i,flav,had)] = H1pz[(flav,had)] * HTffb['ff'+str(i)+'a'] + oz * Hz[(flav,had)] * HTffb['ff'+str(i)+'b']
         
         ffcs = {}
                 
-        ffcs[1] = f1xp['g'][tar] * (h1x['u'][tar]*Hxxpz[1]['u'][had] + h1x['d'][tar]*Hxxpz[1]['d'][had] + h1x['s'][tar]*Hxxpz[1]['s'][had])
+        ffcs[1] = f1xp[('g',tar)] * (h1x[('u',tar)]*Hxxpz[(1,'u',had)] + h1x[('d',tar)]*Hxxpz[(1,'d',had)] + h1x[('s',tar)]*Hxxpz[(1,'s',had)])
 
-        ffcs[2] = (h1x['u'][tar]*f1xp['u'][tar]*Hxxpz[2]['u'][had]) + (h1x['d'][tar]*f1xp['d'][tar]*Hxxpz[2]['d'][had]) + (h1x['s'][tar]*f1xp['s'][tar]*Hxxpz[2]['s'][had])
+        ffcs[2] = (h1x[('u',tar)]*f1xp[('u',tar)]*Hxxpz[(2,'u',had)]) + (h1x[('d',tar)]*f1xp[('d',tar)]*Hxxpz[(2,'d',had)]) + (h1x[('s',tar)]*f1xp[('s',tar)]*Hxxpz[(2,'s',had)])
 
-        ffcs[3] = (h1x['u'][tar]*f1xp['ub'][tar]*Hxxpz[3]['u'][had]) + (h1x['d'][tar]*f1xp['db'][tar]*Hxxpz[3]['d'][had]) + (h1x['s'][tar]*f1xp['sb'][tar]*Hxxpz[3]['s'][had])
+        ffcs[3] = (h1x[('u',tar)]*f1xp[('ub',tar)]*Hxxpz[(3,'u',had)]) + (h1x[('d',tar)]*f1xp[('db',tar)]*Hxxpz[(3,'d',had)]) + (h1x[('s',tar)]*f1xp[('sb',tar)]*Hxxpz[(3,'s',had)])
 
-        ffcs[4] = (h1x['ub'][tar]*f1xp['u'][tar]*Hxxpz[4]['u'][had]) + (h1x['db'][tar]*f1xp['d'][tar]*Hxxpz[4]['d'][had]) + (h1x['sb'][tar]*f1xp['s'][tar]*Hxxpz[4]['s'][had])
+        ffcs[4] = (h1x[('ub',tar)]*f1xp[('u',tar)]*Hxxpz[(4,'u',had)]) + (h1x[('db',tar)]*f1xp[('d',tar)]*Hxxpz[(4,'d',had)]) + (h1x[('sb',tar)]*f1xp[('s',tar)]*Hxxpz[(4,'s',had)])
 
-        ffcs[5] = f1xp['u'][tar] * (h1x['d'][tar]*Hxxpz[5]['d'][had] + h1x['s'][tar]*Hxxpz[5]['s'][had]) + f1xp['d'][tar] * (h1x['u'][tar]*Hxxpz[5]['u'][had] + h1x['s'][tar]*Hxxpz[5]['s'][had]) + f1xp['s'][tar] * (h1x['u'][tar] * Hxxpz[5]['u'][had] + h1x['d'][tar]*Hxxpz[5]['d'][had])
+        ffcs[5] = f1xp[('u',tar)] * (h1x[('d',tar)]*Hxxpz[(5,'d',had)] + h1x[('s',tar)]*Hxxpz[(5,'s',had)]) + f1xp[('d',tar)] * (h1x[('u',tar)]*Hxxpz[(5,'u',had)] + h1x[('s',tar)]*Hxxpz[(5,'s',had)]) + f1xp[('s',tar)] * (h1x[('u',tar)] * Hxxpz[(5,'u',had)] + h1x[('d',tar)]*Hxxpz[(5,'d',had)])
 
-        ffcs[6] = f1xp['ub'][tar] * (h1x['d'][tar]*Hxxpz[6]['d'][had] + h1x['s'][tar]*Hxxpz[6]['s'][had]) + f1xp['db'][tar] * (h1x['u'][tar]*Hxxpz[6]['u'][had] + h1x['s'][tar]*Hxxpz[6]['s'][had]) + f1xp['sb'][tar] * (h1x['u'][tar]*Hxxpz[6]['u'][had] + h1x['d'][tar]*Hxxpz[6]['d'][had])
+        ffcs[6] = f1xp[('ub',tar)] * (h1x[('d',tar)]*Hxxpz[(6,'d',had)] + h1x[('s',tar)]*Hxxpz[(6,'s',had)]) + f1xp[('db',tar)] * (h1x[('u',tar)]*Hxxpz[(6,'u',had)] + h1x[('s',tar)]*Hxxpz[(6,'s',had)]) + f1xp[('sb',tar)] * (h1x[('u',tar)]*Hxxpz[(6,'u',had)] + h1x[('d',tar)]*Hxxpz[(6,'d',had)])
 
-        ffcs[7] = f1xp['g'][tar] * (h1x['ub'][tar]*Hxxpz[7]['ub'][had] + h1x['db'][tar]*Hxxpz[7]['db'][had] + h1x['sb'][tar]*Hxxpz[7]['sb'][had])
+        ffcs[7] = f1xp[('g',tar)] * (h1x[('ub',tar)]*Hxxpz[(7,'ub',had)] + h1x[('db',tar)]*Hxxpz[(7,'db',had)] + h1x[('sb',tar)]*Hxxpz[(7,'sb',had)])
 
-        ffcs[8] = (h1x['ub'][tar]*f1xp['ub'][tar]*Hxxpz[8]['ub'][had]) + (h1x['db'][tar]*f1xp['db'][tar]*Hxxpz[8]['db'][had]) + (h1x['sb'][tar]*f1xp['sb'][tar]*Hxxpz[8]['sb'][had])
+        ffcs[8] = (h1x[('ub',tar)]*f1xp[('ub',tar)]*Hxxpz[(8,'ub',had)]) + (h1x[('db',tar)]*f1xp[('db',tar)]*Hxxpz[(8,'db',had)]) + (h1x[('sb',tar)]*f1xp[('sb',tar)]*Hxxpz[(8,'sb',had)])
 
-        ffcs[9] = (h1x['ub'][tar]*f1xp['u'][tar]*Hxxpz[9]['ub'][had]) + (h1x['db'][tar]*f1xp['d'][tar]*Hxxpz[9]['db'][had]) + (h1x['sb'][tar]*f1xp['s'][tar]*Hxxpz[9]['sb'][had])
+        ffcs[9] = (h1x[('ub',tar)]*f1xp[('u',tar)]*Hxxpz[(9,'ub',had)]) + (h1x[('db',tar)]*f1xp[('d',tar)]*Hxxpz[(9,'db',had)]) + (h1x[('sb',tar)]*f1xp[('s',tar)]*Hxxpz[(9,'sb',had)])
 
-        ffcs[10] = (h1x['u'][tar]*f1xp['ub'][tar]*Hxxpz[10]['ub'][had]) + (h1x['d'][tar]*f1xp['db'][tar]*Hxxpz[10]['db'][had]) + (h1x['s'][tar]*f1xp['sb'][tar]*Hxxpz[10]['sb'][had])
+        ffcs[10] = (h1x[('u',tar)]*f1xp[('ub',tar)]*Hxxpz[(10,'ub',had)]) + (h1x[('d',tar)]*f1xp[('db',tar)]*Hxxpz[(10,'db',had)]) + (h1x[('s',tar)]*f1xp[('sb',tar)]*Hxxpz[(10,'sb',had)])
 
-        ffcs[11] = f1xp['ub'][tar] * (h1x['db'][tar]*Hxxpz[11]['db'][had] + h1x['sb'][tar]*Hxxpz[11]['sb'][had]) + f1xp['db'][tar] * (h1x['ub'][tar]*Hxxpz[11]['ub'][had] + h1x['sb'][tar]*Hxxpz[11]['sb'][had]) + f1xp['sb'][tar] * (h1x['ub'][tar]*Hxxpz[11]['ub'][had] + h1x['db'][tar]*Hxxpz[11]['db'][had])
+        ffcs[11] = f1xp[('ub',tar)] * (h1x[('db',tar)]*Hxxpz[(11,'db',had)] + h1x[('sb',tar)]*Hxxpz[(11,'sb',had)]) + f1xp[('db',tar)] * (h1x[('ub',tar)]*Hxxpz[(11,'ub',had)] + h1x[('sb',tar)]*Hxxpz[(11,'sb',had)]) + f1xp[('sb',tar)] * (h1x[('ub',tar)]*Hxxpz[(11,'ub',had)] + h1x[('db',tar)]*Hxxpz[(11,'db',had)])
 
-        ffcs[12] = f1xp['u'][tar] * (h1x['db'][tar]*Hxxpz[12]['db'][had] + h1x['sb'][tar]*Hxxpz[12]['sb'][had]) + f1xp['d'][tar] * (h1x['ub'][tar]*Hxxpz[12]['ub'][had] + h1x['sb'][tar]*Hxxpz[12]['sb'][had]) + f1xp['s'][tar] * (h1x['ub'][tar]*Hxxpz[12]['ub'][had] + h1x['db'][tar]*Hxxpz[12]['db'][had])
+        ffcs[12] = f1xp[('u',tar)] * (h1x[('db',tar)]*Hxxpz[(12,'db',had)] + h1x[('sb',tar)]*Hxxpz[(12,'sb',had)]) + f1xp[('d',tar)] * (h1x[('ub',tar)]*Hxxpz[(12,'ub',had)] + h1x[('sb',tar)]*Hxxpz[(12,'sb',had)]) + f1xp[('s',tar)] * (h1x[('ub',tar)]*Hxxpz[(12,'ub',had)] + h1x[('db',tar)]*Hxxpz[(12,'db',had)])
         
 
         ffcs = 2. * Mh * pT * numfac * np.sum(np.array([ffcs[i] for i in range(1,13)])) 
@@ -310,7 +311,7 @@ if __name__=='__main__':
             had = df['hadron'][j]  
             xT  = 2.*pT/rs
             
-            print(ANTHEORY().get_dsig(0.3,0.6,xF,pT,rs,tar,had))
+#            print(ANTHEORY().get_dsigST(0.3,0.6,xF,pT,rs,tar,had))
         
             xF2 = xF*xF
             xT2 = xT*xT
@@ -325,13 +326,13 @@ if __name__=='__main__':
             xmin = lambda z: -uu/(z*ss+tt)
         
             #Integration of the numerator from xmin to 1 and from zmin to 1 (the values for xmin and zmin are above)
-#            num = dblquad(lambda x,z: ANTHEORY().get_dsigST(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
+            num = dblquad(lambda x,z: ANTHEORY().get_dsigST(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
         
             #Integration of the denominator from xmin to 1 and from zmin to 1 (the values for xmin and zmin are above)
-#            den = dblquad(lambda x,z: ANTHEORY().get_dsig(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
+            den = dblquad(lambda x,z: ANTHEORY().get_dsig(x,z,xF,pT,rs,tar,had),zmin,1.,xmin,1.)
         
-#            AN = num/den
+            AN = num/den
         
-#            print(AN)
+            print(AN)
       
     
