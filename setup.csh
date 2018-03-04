@@ -1,2 +1,4 @@
-setenv PYTHONPATH `pwd`
+setenv FITPACK  `pwd`   
+setenv PYTHONPATH ${FITPACK}:${PYTHONPATH}
+setenv PATH ${FITPACK}/bin:${PATH}
 

@@ -26,7 +26,7 @@ args = ap.parse_args()
 
 load_config(args.config)
 conf['args']=args
-conf['resman']=RESMAN(mode=mode,ip=ip,nworkers=nworkers)
+conf['resman']=RESMAN()
 
 if   args.task==0: SPEEDTEST().run()
 elif args.task==1: MCSAMP().run()

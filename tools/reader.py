@@ -28,7 +28,10 @@ class _READER:
       sys.stdout.write('loading %s data sets %d'%(reaction,k))
       sys.stdout.flush()
       fname=conf['datasets'][reaction]['xlsx'][k]
-      tab=pd.read_excel(fname)
+      if fname.startswith('.'):
+        tab=pd.read_excel(fname)
+      else:
+        tab=pd.read_excel('%s/database/%s'%(os.environ['FITPACK'],fname))
       tab=self.modify_table(tab,k)
       TAB[k]=tab.to_dict(orient='list')
       for kk in TAB[k]:

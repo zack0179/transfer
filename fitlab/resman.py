@@ -57,6 +57,9 @@ class RESMAN:
 
   def setup_tmds(self):
     conf['order']='LO'
+    conf['path2CJ']='%s/external/CJLIB'%os.environ['FITPACK']
+    conf['path2LSS']='%s/external/LSSLIB'%os.environ['FITPACK']
+    conf['path2DSS']='%s/external/DSSLIB'%os.environ['FITPACK']
     conf['_pdf'] =external.CJLIB.CJ.CJ()
     conf['_ppdf']=external.LSSLIB.LSS.LSS()
     conf['_ff']  =external.DSSLIB.DSS.DSS()
