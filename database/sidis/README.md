@@ -2,14 +2,14 @@
 
 | index | ref          | target   | hadron | obs        | experiment | dependence |
 | :--:  | :--:         | :--:     | :--:   | :--:       | :--:       | :--:       |
-| 1000  | [link][?]    | proton   | pi+    | M_Hermes   | hermes     | -          |
-| 1001  | [link][?]    | proton   | pi-    | M_Hermes   | hermes     | -          |
-| 1002  | [link][?]    | proton   | k+     | M_Hermes   | hermes     | -          |
-| 1003  | [link][?]    | proton   | k-     | M_Hermes   | hermes     | -          |
-| 1004  | [link][?]    | deuteron | pi+    | M_Hermes   | hermes     | -          |
-| 1005  | [link][?]    | deuteron | pi-    | M_Hermes   | hermes     | -          |
-| 1006  | [link][?]    | deuteron | k+     | M_Hermes   | hermes     | -          |
-| 1007  | [link][?]    | deuteron | k-     | M_Hermes   | hermes     | -          |
+| 1000  | [link][100X]    | proton   | pi+    | M_Hermes   | hermes     | -          |
+| 1001  | [link][100X]    | proton   | pi-    | M_Hermes   | hermes     | -          |
+| 1002  | [link][100X]    | proton   | k+     | M_Hermes   | hermes     | -          |
+| 1003  | [link][100X]    | proton   | k-     | M_Hermes   | hermes     | -          |
+| 1004  | [link][100X]    | deuteron | pi+    | M_Hermes   | hermes     | -          |
+| 1005  | [link][100X]    | deuteron | pi-    | M_Hermes   | hermes     | -          |
+| 1006  | [link][100X]    | deuteron | k+     | M_Hermes   | hermes     | -          |
+| 1007  | [link][100X]    | deuteron | k-     | M_Hermes   | hermes     | -          |
 | 1008  | [link][http://inspirehep.net/record/1624692]    | deuteron | h+     | M_Compass   | compass     | -          |
 | 1009  | [link][http://inspirehep.net/record/1624692]    | deuteron | h-     | M_Compass  | compass     | -          |
 | 2000  | [link][?]    | proton   | pi+    | AUTsivers  | hermes     | PT         |
@@ -117,6 +117,7 @@
 
 
 [?]: http://inspirehep.net/
+[100X]: http://inspirehep.net/record/1208547
 [600X]: http://inspirehep.net/record/1311491
 
 
