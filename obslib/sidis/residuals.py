@@ -284,8 +284,9 @@ class RESIDUALS(_RESIDUALS):
 
     L=[]
 
-    L.append(self.reaction)
+    L.append('reaction: %s'%self.reaction)
 
+    L.append('%7s %10s %10s %10s %10s %5s %10s %10s %10s'%('idx','tar','had','col','obs','npts','chi2','rchi2','nchi2'))
     for k in self.tabs:
       #print k,len(self.tabs[k]['value'])
       if self.tabs[k]['value'].size==0: continue
@@ -306,19 +307,23 @@ class RESIDUALS(_RESIDUALS):
     if level==1:
       L.append('-'*100)  
 
-      msg ='col=%7s  '
-      msg+='obs=%7s  '
-      msg+='x=%10.3e  '
-      msg+='z=%10.3e  '
-      msg+='pT=%10.3e  '
-      msg+='Q2=%10.3e  '
-      msg+='yh=%10.3e  '
-      msg+='yp=%10.3e  '
-      msg+='dy=%10.3e  '
-      msg+='exp=%10.3e  ' 
-      msg+='alpha=%10.3e  ' 
-      msg+='thy=%10.3e  ' 
-      msg+='shift=%10.3e  ' 
+      msg ='idx=%7d,  '
+      msg+='col=%7s,  '
+      msg+='tar=%7s,  '
+      msg+='had=%7s,  '
+      msg+='obs=%7s,  '
+      msg+='x=%10.3e,  '
+      msg+='z=%10.3e,  '
+      msg+='pT=%10.3e,  '
+      msg+='Q2=%10.3e,  '
+      msg+='yh=%10.3e,  '
+      msg+='yp=%10.3e,  '
+      msg+='dy=%10.3e,  '
+      msg+='exp=%10.3e,  ' 
+      msg+='alpha=%10.3e,  ' 
+      msg+='thy=%10.3e,  ' 
+      if 'dthy' in self.tabs[k]: msg+='dthy=%10.3e,  ' 
+      msg+='shift=%10.3e,  ' 
       msg+='chi2=%10.3f  '
 
       for k in self.tabs:
@@ -328,6 +333,8 @@ class RESIDUALS(_RESIDUALS):
           z=self.tabs[k]['z'][i]
           pT=self.tabs[k]['pT'][i]
           obs=self.tabs[k]['obs'][i]
+          tar=self.tabs[k]['target'][i]
+          had=self.tabs[k]['hadron'][i]
           Q2=self.tabs[k]['Q2'][i]
           res=self.tabs[k]['residuals'][i]
           thy=self.tabs[k]['thy'][i]
@@ -341,7 +348,11 @@ class RESIDUALS(_RESIDUALS):
           dy=self.tabs[k]['dy'][i]
           if res<0: chi2=-res**2
           else: chi2=res**2
-          L.append(msg%(col,obs,x,z,pT,Q2,yh,yp,dy,exp,alpha,thy,shift,chi2))
+          if 'dthy' in self.tabs[k]: 
+            dthy=self.tabs[k]['dthy'][i]
+            L.append(msg%(k,col,tar,had,obs,x,z,pT,Q2,yh,yp,dy,exp,alpha,thy,dthy,shift,chi2))
+          else:
+            L.append(msg%(k,col,tar,had,obs,x,z,pT,Q2,yh,yp,dy,exp,alpha,thy,shift,chi2))
 
     if verb==0:
       return L

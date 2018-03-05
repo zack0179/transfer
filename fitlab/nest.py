@@ -369,19 +369,16 @@ class NEST:
       rel = std/mean
       dchi2max=2*np.amax(self.active_nll)
       dchi2min=2*np.amin(self.active_nll)
-      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  dchi2min=%.3e dchi2max=%0.3e  attemps1=%10d  attemps2=%10d Vk/V0=%0.3e  %s  '
-      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,dchi2min,dchi2max,self.attempts1,self.attempts2,self.Vk/self.V0,self.msg)
+      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  dchi2min=%.3e dchi2max=%0.3e'
+      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,dchi2min,dchi2max)
       if self.verb: lprint(msg)
       # stopping criterion
       if 'itmax' in conf and self.cnt==conf['itmax']: 
         self.status='stop'
       if self.logz[-1]>-1e10  and conf['tol']!=None:
         if rel<conf['tol']: self.status='stop'
-        #l=np.exp(-self.active_nll[0])
-        #x=self.samples_x[-1]
-        #dz=l*x
-        #if np.log(dz)<self.logz[-1]+np.log(conf['tol']):
-        #  self.status='stop'
+      if np.isinf(self.logz[-1]) and self.cnt>1000: 
+        if rel<conf['tol']: self.status='stop'
 
   def results(self):
     dx=0.5*(np.array(self.samples_x[:-1])-np.array(self.samples_x[1:]))

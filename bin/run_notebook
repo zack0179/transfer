@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+import argparse
+import sys,os
+import time
+import numpy as np
+from tools.config import load_config, conf
+from fitlab.maxlike import ML
+from fitlab.mcsamp import MCSAMP
+from fitlab.parman import PARMAN
+from fitlab.speedtest import SPEEDTEST
+from fitlab.resman import RESMAN
+    
+ap = argparse.ArgumentParser()
+ap.add_argument('notebook', help='jupyter notebook *.ipynb')
+args = ap.parse_args()
+os.system('jupyter-nbconvert --to python %s'%args.notebook )
+
+L=open(args.notebook.replace('.ipynb','.py')).readlines()
+L=[l for l in L if 'magic' not in l]
+for i in range(len(L)):
+  if 'mcsamp.run' in L[i]:
+    ifin=i
+    break
+L=[L[i]+'\n' for i in range(ifin+1)]
+
+
+F=open(args.notebook.replace('.ipynb','.py'),'w')
+F.writelines(L)
+F.close()
+
+os.system('python %s '%args.notebook.replace('.ipynb','.py'))
+
+
+
+

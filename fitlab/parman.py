@@ -108,10 +108,12 @@ class PARMAN:
     conf['ppdf'].setup() 
   
   def set_ff_params(self):
-    conf['ff'].widths0['pi+ fav']=conf['params']['ff']['widths0 pi+ fav']['value']
-    conf['ff'].widths0['pi+ unfav']=conf['params']['ff']['widths0 pi+ unfav']['value']
-    conf['ff'].widths0['k+ fav']=conf['params']['ff']['widths0 k+ fav']['value']
-    conf['ff'].widths0['k+ unfav']=conf['params']['ff']['widths0 k+ unfav']['value']
+    if 'pi+' in conf['params']['ff']:
+      conf['ff'].widths0['pi+ fav']=conf['params']['ff']['widths0 pi+ fav']['value']
+      conf['ff'].widths0['pi+ unfav']=conf['params']['ff']['widths0 pi+ unfav']['value']
+    if 'k+' in conf['params']['ff']:
+      conf['ff'].widths0['k+ fav']=conf['params']['ff']['widths0 k+ fav']['value']
+      conf['ff'].widths0['k+ unfav']=conf['params']['ff']['widths0 k+ unfav']['value']
     conf['ff'].setup() 
 
   def set_sivers_params(self):
@@ -158,7 +160,6 @@ class PARMAN:
     conf['sivers'].setup() 
 
   def set_transversity_params(self):
-
     conf['transversity'].widths0['valence']=conf['params']['transversity']['widths0 valence']['value']
     conf['transversity'].widths0['sea']=conf['params']['transversity']['widths0 sea']['value']
 
