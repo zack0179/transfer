@@ -84,6 +84,9 @@ class MCSAMP:
 
   def run(self,path=None,size=10,factor=4):
 
+    if 'size' in conf: size=conf['size']
+    if 'factor' in conf: factor=conf['factor']
+
     if 'args' in conf:
       outputdir='%s/mcdata'%conf['args'].config.split('/')[-1].replace('.py','')
     elif path!=None:
