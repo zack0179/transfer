@@ -92,6 +92,13 @@ class RESIDUALS(_RESIDUALS):
       Spar=0
       le=0
       thy=self.stfuncs.get_xsec(x,z,y,Q2,pT,phi_h,phi_S,Sperp,Spar,le,'p',hadron)
+    elif obs=='M_EIC' and target=='proton': 
+
+      #FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
+      FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
+      
+      thy = FUU
+      
     elif obs=='M_Hermes' and target=='proton': 
 
       FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
