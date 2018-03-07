@@ -34,6 +34,9 @@ class RESIDUALS(_RESIDUALS):
     self.setup()
 
   def get_IFUU(self,FUU,x,zh,Q2,pT,target,hadron):
+    """
+    this functions is experimental... but I don't recall what was it purpose :(
+    """
     Q=np.sqrt(Q2)
     M=conf['aux'].M
     M2=conf['aux'].M**2
@@ -67,9 +70,6 @@ class RESIDUALS(_RESIDUALS):
       J=Q2*MhT*M*2*np.sinh(dy)/(W2+Q2)**3
 
       return FUU * R + (1-R)*FUUcut*J0/J
-
-
-
       #dy=yh+2
       #return FUU*(1+np.sum([p[i]*dy**(i+1) for i in range(len(p))])) #( p[0]*dy + p[1]*(dy/(1-yh))#**p[1]#
 
@@ -94,15 +94,14 @@ class RESIDUALS(_RESIDUALS):
       thy=self.stfuncs.get_xsec(x,z,y,Q2,pT,phi_h,phi_S,Sperp,Spar,le,'p',hadron)
     elif obs=='M_EIC' and target=='proton': 
 
-      #FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
-      FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
-      
+      FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
+      #FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
       thy = FUU
       
     elif obs=='M_Hermes' and target=='proton': 
 
       FUU=self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)
-      FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
+      #FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
       F2 =self.dis_stfuncs.get_F2(x,Q2,'p')
       thy = 2*np.pi*pT*FUU/F2
 
@@ -110,8 +109,7 @@ class RESIDUALS(_RESIDUALS):
 
       FUU = self.stfuncs.get_FX(1,x,z,Q2,pT,'p',hadron)\
            +self.stfuncs.get_FX(1,x,z,Q2,pT,'n',hadron)
-
-      FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
+      #FUU=self.get_IFUU(FUU,x,z,Q2,pT,target,hadron)
 
       F2  = self.dis_stfuncs.get_F2(x,Q2,'p')\
            +self.dis_stfuncs.get_F2(x,Q2,'n')
