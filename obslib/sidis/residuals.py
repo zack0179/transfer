@@ -312,6 +312,7 @@ class RESIDUALS(_RESIDUALS):
       msg+='tar=%7s,  '
       msg+='had=%7s,  '
       msg+='obs=%7s,  '
+      if 'dependence' in self.tabs[k]: msg+='dep=%7s,  ' 
       msg+='x=%10.3e,  '
       msg+='z=%10.3e,  '
       msg+='pT=%10.3e,  '
@@ -329,30 +330,32 @@ class RESIDUALS(_RESIDUALS):
       for k in self.tabs:
         if len(self.tabs[k]['value'])==0: continue 
         for i in range(len(self.tabs[k]['value'])):
-          x=self.tabs[k]['x'][i]
-          z=self.tabs[k]['z'][i]
-          pT=self.tabs[k]['pT'][i]
-          obs=self.tabs[k]['obs'][i]
-          tar=self.tabs[k]['target'][i]
-          had=self.tabs[k]['hadron'][i]
-          Q2=self.tabs[k]['Q2'][i]
+          row=[k]
+          row.append(self.tabs[k]['col'][i])
+          row.append(self.tabs[k]['target'][i])
+          row.append(self.tabs[k]['hadron'][i])
+          row.append(self.tabs[k]['obs'][i])
+          if 'dependence' in  self.tabs[k]: row.append(self.tabs[k]['dependence'][i].strip())
+          row.append(self.tabs[k]['x'][i])
+          row.append(self.tabs[k]['z'][i])
+          row.append(self.tabs[k]['pT'][i])
+          row.append(self.tabs[k]['Q2'][i])
+          row.append(self.tabs[k]['yh'][i])
+          row.append(self.tabs[k]['yp'][i])
+          row.append(self.tabs[k]['dy'][i])
+          row.append(self.tabs[k]['value'][i])
+          row.append(self.tabs[k]['alpha'][i])
+          row.append(self.tabs[k]['thy'][i])
+          if 'dthy' in  self.tabs[k]: row.append(self.tabs[k]['dthy'][i])
+          row.append(self.tabs[k]['shift'][i])
+          #row.append(self.tabs[k]['residuals'][i])
+          #row.append(self.tabs[k]['r-residuals'][i])
           res=self.tabs[k]['residuals'][i]
-          thy=self.tabs[k]['thy'][i]
-          exp=self.tabs[k]['value'][i]
-          alpha=self.tabs[k]['alpha'][i]
-          rres=self.tabs[k]['r-residuals'][i]
-          col=self.tabs[k]['col'][i]
-          shift=self.tabs[k]['shift'][i]
-          yh=self.tabs[k]['yh'][i]
-          yp=self.tabs[k]['yp'][i]
-          dy=self.tabs[k]['dy'][i]
           if res<0: chi2=-res**2
           else: chi2=res**2
-          if 'dthy' in self.tabs[k]: 
-            dthy=self.tabs[k]['dthy'][i]
-            L.append(msg%(k,col,tar,had,obs,x,z,pT,Q2,yh,yp,dy,exp,alpha,thy,dthy,shift,chi2))
-          else:
-            L.append(msg%(k,col,tar,had,obs,x,z,pT,Q2,yh,yp,dy,exp,alpha,thy,shift,chi2))
+          row.append(chi2)
+          row=tuple(row)
+          L.append(msg%row)
 
     if verb==0:
       return L
