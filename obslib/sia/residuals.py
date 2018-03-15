@@ -93,7 +93,7 @@ class RESIDUALS(_RESIDUALS):
 
     L=[]
 
-    L.append(self.reaction)
+    L.append('reaction: %s'%self.reaction)
 
     for k in self.tabs:
       if len(self.tabs[k]['value'])==0: continue
