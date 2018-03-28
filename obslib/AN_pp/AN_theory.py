@@ -4,6 +4,7 @@ import sys,os
 import numpy as np
 import pandas as pd
 import math
+import re
 from tools.tools import load_config
 from external.CJLIB.CJ import CJ
 from external.LSSLIB.LSS import LSS
@@ -20,6 +21,7 @@ class ANTHEORY:
     AN_theory.py - program to calculate A_N in pp -> hX
     This only includes the fragmentation term (see 1701.09170)
     """
+#    @profile
     def  __init__(self):
         #self.aux=conf['aux']  
         
@@ -33,18 +35,97 @@ class ANTHEORY:
         self.flavor = ['u','d','s','ub','db','sb','g']
         self.target = ['p']
         self.hadron = ['pi+','pi-','pi0']
+        
+        self.flavdict = {'g':0,'u':1,'d':2,'s':3,'ub':4,'db':5,'sb':6}
 
         #Common color factors and fractions
         self.c = {'r3':1./3.,'r4':0.25,'r6':1./6.,'r8':0.125,'r9':1./9.,'r18':1./18.,'r24':1./24.,'r27':1./27.}
 
+        self.ch = {}
+        self.chT = {}
         self.m={}
         self.Hupol={}
         self.f={}
         self.ft={}
         self.d={}
-
-        self.B1=np.zeros(7*7).reshape((7,7))
-        self.B1[1:4,1:4]=np.ones(3*3).reshape((3,3))
+        self.h={}
+        self.H1p={}
+        self.H={}
+        self.HTffa=np.zeros(12)
+        self.HTffb=np.zeros(12)
+        self.Hxxpz = np.zeros((12,7))
+        
+        #Unpolarized cross section as strings to create matrices for array multiplication of pdf*pdf*ff*H
+        #D=D1z, Ft=f1xp, F=f1x
+        self.ch[0] = '(DdFdFtd+DsFsFtd+DdFdFts+DsFsFts+DdFdFtu+DsFsFtu+DuFuFtd+DuFuFts+DuFuFtu)*av1'
+        self.ch[1] = '(DdFdFtd+DdFsFtd+DsFdFts+DsFsFts+DuFdFtu+DuFsFtu+DdFuFtd+DsFuFts+DuFuFtu)*av2'
+        self.ch[2] = '(DdFdFtd+DsFsFts+DuFuFtu)*av3'
+        self.ch[3] = '(DdbFdbFtdb+DsbFsbFtdb+DdbFdbFtsb+DsbFsbFtsb+DdbFdbFtub+DsbFsbFtub+DubFubFtdb+DubFubFtsb+DubFubFtub)*av1'
+        self.ch[4] = '(DdbFdbFtdb+DdbFsbFtdb+DsbFdbFtsb+DsbFsbFtsb+DubFdbFtub+DubFsbFtub+DdbFubFtdb+DsbFubFtsb+DubFubFtub)*av2'
+        self.ch[5] = '(DdbFdbFtdb+DsbFsbFtsb+DubFubFtub)*av3'
+        self.ch[6] = '(DdFdFtdb+DsFsFtdb+DdFdFtsb+DsFsFtsb+DdFdFtub+DsFsFtub+DuFuFtdb+DuFuFtsb+DuFuFtub)*av5'
+        self.ch[7] = '(DdFdFtdb+DsFdFtdb+DuFdFtdb+DdFsFtsb+DsFsFtsb+DuFsFtsb+DdFuFtub+DsFuFtub+DuFuFtub)*av4'
+        self.ch[8] = '(DdFdFtdb+DsFsFtsb+DuFuFtub)*av6'
+        self.ch[9] = '(DdbFdbFtd+DsbFsbFtd+DdbFdbFts+DsbFsbFts+DdbFdbFtu+DsbFsbFtu+DubFubFtd+DubFubFts+DubFubFtu)*av5'
+        self.ch[10] = '(DdbFdbFtd+DsbFdbFtd+DubFdbFtd+DdbFsbFts+DsbFsbFts+DubFsbFts+DdbFubFtu+DsbFubFtu+DubFubFtu)*av4'
+        self.ch[11] = '(DdbFdbFtd+DsbFsbFts+DubFubFtu)*av6'   
+        self.ch[12] = '(DdbFdFtdb+DdbFsFtdb+DsbFdFtsb+DsbFsFtsb+DubFdFtub+DubFsFtub+DdbFuFtdb+DsbFuFtsb+DubFuFtub)*av8'
+        self.ch[13] = '(DdbFdFtdb+DsbFdFtdb+DubFdFtdb+DdbFsFtsb+DsbFsFtsb+DubFsFtsb+DdbFuFtub+DsbFuFtub+DubFuFtub)*av7'
+        self.ch[14] = '(DdbFdFtdb+DsbFsFtsb+DubFuFtub)*av9'
+        self.ch[15] = '(DdFdbFtd+DdFsbFtd+DsFdbFts+DsFsbFts+DuFdbFtu+DuFsbFtu+DdFubFtd+DsFubFts+DuFubFtu)*av8'
+        self.ch[16] = '(DdFdbFtd+DsFdbFtd+DuFdbFtd+DdFsbFts+DsFsbFts+DuFsbFts+DdFubFtu+DsFubFtu+DuFubFtu)*av7'
+        self.ch[17] = '(DdFdbFtd+DsFsbFts+DuFubFtu)*av9'
+        self.ch[18] = '(DgFdFtdb+DgFsFtsb+DgFuFtub)*av10'
+        self.ch[19] = '(DgFdbFtd+DgFsbFts+DgFubFtu)*av10'
+        self.ch[20] = '(DdFdFtg+DsFsFtg+DuFuFtg)*av11'
+        self.ch[21] = '(DdbFdbFtg+DsbFsbFtg+DubFubFtg)*av11'
+        self.ch[22] = '(DgFdFtg+DgFsFtg+DgFuFtg)*av12'
+        self.ch[23] = '(DgFdbFtg+DgFsbFtg+DgFubFtg)*av12'
+        self.ch[24] = '(DdFgFtg+DsFgFtg+DuFgFtg)*av13'
+        self.ch[25] = '(DdbFgFtg+DsbFgFtg+DubFgFtg)*av13'
+        self.ch[26] = '(DgFgFtg)*av14'
+        self.ch[27] = '(DdFgFtd+DsFgFts+DuFgFtu)*av12'
+        self.ch[28] = '(DdbFgFtdb+DsbFgFtsb+DubFgFtub)*av12'
+        self.ch[29] = '(DgFgFtd+DgFgFts+DgFgFtu)*av11'
+        self.ch[30] = '(DgFgFtdb+DgFgFtsb+DgFgFtub)*av11'
+        
+        
+        #Transversely polarized cross section as strings to create matrices for array multiplication of pdf*h1*Hxxpz
+        #Ft=f1xp, HH=Hxxpz, h=h1x
+        self.chT[0] = 'FtgHH0dhd+FtgHH0shs+FtgHH0uhu'
+        self.chT[1] = 'FtdHH1dhd+FtsHH1shs+FtuHH1uhu'
+        self.chT[2] = 'FtdbHH2dhd+FtsbHH2shs+FtubHH2uhu'
+        self.chT[3] = 'FtdHH3dhdb+FtsHH3shsb+FtuHH3uhub'
+        self.chT[4] = 'FtsHH4dhd+FtuHH4dhd+FtdHH4shs+FtuHH4shs+FtdHH4uhu+FtsHH4uhu'
+        self.chT[5] = 'FtsbHH5dhd+FtubHH5dhd+FtdbHH5shs+FtubHH5shs+FtdbHH5uhu+FtsbHH5uhu'
+        self.chT[6] = 'FtgHH6dbhdb+FtgHH6sbhsb+FtgHH6ubhub'
+        self.chT[7] = 'FtdbHH7dbhdb+FtsbHH7sbhsb+FtubHH7ubhub'
+        self.chT[8] = 'FtdHH8dbhdb+FtsHH8sbhsb+FtuHH8ubhub'
+        self.chT[9] = 'FtdbHH9dbhd+FtsbHH9sbhs+FtubHH9ubhu'
+        self.chT[10] = 'FtsbHH10dbhdb+FtubHH10dbhdb+FtdbHH10sbhsb+FtubHH10sbhsb+FtdbHH10ubhub+FtsbHH10ubhub'
+        self.chT[11] = 'FtsHH11dbhdb+FtuHH11dbhdb+FtdHH11sbhsb+FtuHH11sbhsb+FtdHH11ubhub+FtsHH11ubhub'
+        
+        self.B = []
+        for j in range(len(self.ch)):
+            M = np.zeros((7,7,7))
+            cs = self.ch[j].split('(')[1].split(')')[0].split('+')
+            for i in range(len(cs)):
+                _ = re.split('[DFFt]', cs[i])
+                _ = filter(None,_)
+                M[self.flavdict[_[0]],self.flavdict[_[1]],self.flavdict[_[2]]] = 1
+            self.B.append(M)
+            
+        self.BT = []
+        for j in range(len(self.chT)):
+            MT=np.zeros((7,12,7,7))
+            csT = self.chT[j].split('+')
+            for i in range(len(csT)):
+                _ = re.split('[FtHHh]', csT[i])
+                _ = filter(None,_)
+                HHind = re.split('(\d+)',_[1])
+                HHind = filter(None,HHind)
+                MT[self.flavdict[_[0]],int(HHind[0]),self.flavdict[HHind[1]],self.flavdict[_[2]]] = 1
+            self.BT.append(MT)
 
     def get_f(self,x,Q2): #Collinear unpolarized PDF
         if (x,Q2) not in self.f:
@@ -61,14 +142,20 @@ class ANTHEORY:
           self.d[(z,Q2)]=z*(1.-z)*np.ones(7)
         return self.d[(z,Q2)]
     
-    def get_h1(self,flav,tar,x,Q2): #Collinear transversity
-        return x*(1.-x) #We will modify this output later
+    def get_h(self,x,Q2): #Collinear transversity
+        if (x,Q2) not in self.h:
+          self.h[(x,Q2)]=x*(1.-x)*np.ones(7)
+        return self.h[(x,Q2)]
     
-    def get_H1p(self,flav,had,z,Q2): #(H_1^{\perp(1)}(z) - z*dH_1^{\perp(1)}(z)/dz)
-        return z*(1.-z) #We will modify this output later
+    def get_H1p(self,z,Q2): #(H_1^{\perp(1)}(z) - z*dH_1^{\perp(1)}(z)/dz)
+        if (z,Q2) not in self.H1p:
+          self.H1p[(z,Q2)]=z*(1.-z)*np.ones(7)
+        return self.H1p[(z,Q2)]
     
-    def get_H(self,flav,had,z,Q2): #-2*z*H_1^{\perp(1)}(z)+\tilde{H}(z) 
-        return z*(1.-z) #We will modify this output later
+    def get_H(self,z,Q2): #-2*z*H_1^{\perp(1)}(z)+\tilde{H}(z) 
+        if (z,Q2) not in self.H:
+          self.H[(z,Q2)]=z*(1.-z)*np.ones(7)
+        return self.H[(z,Q2)]
 
     def get_mandelstam(self,s,t,u):
         #Convenient combinations of the partonic Mandelstam variables
@@ -117,8 +204,75 @@ class ANTHEORY:
         self.Hupol['av12']=4.*self.c['r9']*(-self.m['st']-self.m['ts'])*(1. - 9.*self.m['su']*self.m['tu']*self.c['r4'] )
         self.Hupol['av13']=(self.m['tu']+self.m['ut'])*self.c['r6'] - 3.*(self.m['ts2']+self.m['us2'])*self.c['r8']
         self.Hupol['av14']=4.5*(3. - self.m['ts']*self.m['us'] - self.m['st']*self.m['ut'] - self.m['su']*self.m['tu'] )
-
-    #@profile    
+     
+    def get_HTffa(self,s,t,u):
+        #Hard parts for the transversely polarized fragmentation term
+        self.HTffa[0]=-self.c['r9']*self.m['ot'] + self.c['r8']*s*(u-s)*self.m['ot3'] - self.m['st2']*self.m['ou']
+        
+        self.HTffa[1]=self.c['r27']*s*(t-u)*self.m['ot2']*self.m['ou'] + self.c['r9']*s*(u-2.*t)*self.m['ot3'] + s*self.m['ot2']
+        
+        self.HTffa[2]=self.c['r27']*s*self.m['ot2'] + self.c['r9']*s*(t-s)*self.m['ot3'] - self.c['r3']*self.m['ot']
+        
+        self.HTffa[3]=self.c['r27']*s*self.m['ot']*self.m['ou'] - self.c['r3']*self.m['ot']
+        
+        self.HTffa[4]=self.c['r9']*s*(u-2.*t)*self.m['ot3'] + s*self.m['ot2']
+        
+        self.HTffa[5]=self.c['r9']*s*(t-s)*self.m['ot3']
+        
+        self.HTffa[6]=self.HTffa[0]
+        
+        self.HTffa[7]=self.HTffa[1]
+        
+        self.HTffa[8]=self.HTffa[2]
+        
+        self.HTffa[9]=self.HTffa[3]
+        
+        self.HTffa[10]=self.HTffa[4]
+        
+        self.HTffa[11]=self.HTffa[5]
+        
+        return self.HTffa
+        
+    def get_HTffb(self,s,t,u):
+        #Hard parts for the transversely polarized fragmentation term
+        self.HTffb[0]=self.c['r8']*s*(u-s)*self.m['ot3'] + 0.5*self.c['r9']*(s-u)*self.m['ot']*self.m['ou'] + 0.5*(s-u)*(self.m['t2']-2.*t*u-2.*self.m['u2'])*self.m['ot3']*self.m['ou']
+        
+        self.HTffb[1]=self.c['r27']*0.5*s*(t-3.*u)*self.m['ot2']*self.m['ou'] - s*u*self.m['ot3'] + self.c['r9']*s*(2.*u-t)*self.m['ot3'] - self.c['r3']*0.5*self.m['s2']*self.m['ot2']*self.m['ou']
+        
+        self.HTffb[2]=self.c['r27']*0.5*(3.*s-t)*self.m['ot2'] + self.m['s2']*self.m['ot3'] + self.c['r9']*s*(t-2.*s)*self.m['ot3'] + self.c['r3']*0.5*u*self.m['ot2']
+        
+        self.HTffb[3]=10.*self.c['r27']*0.5*(s-u)*self.m['ot']*self.m['ou']
+        
+        self.HTffb[4]=self.c['r9']*s*(2.*u-t)*self.m['ot3'] - s*u*self.m['ot3']
+        
+        self.HTffb[5]=self.c['r9']*s*(t-2.*s)*self.m['ot3'] + self.m['s2']*self.m['ot3']
+        
+        self.HTffb[6]=self.HTffb[0]
+        
+        self.HTffb[7]=self.HTffb[1]
+        
+        self.HTffb[8]=self.HTffb[2]
+        
+        self.HTffb[9]=self.HTffb[3]
+        
+        self.HTffb[10]=self.HTffb[4]
+        
+        self.HTffb[11]=self.HTffb[5]
+        
+        return self.HTffb
+    
+    def get_Hxxpz(self,z,Q2,s,t,u):
+        
+        HTffa = self.get_HTffa(s,t,u)
+        HTffb = self.get_HTffb(s,t,u)
+        H1p = self.get_H1p(z,Q2)
+        H = self.get_H(z,Q2)
+                
+        self.Hxxpz = np.einsum('i,j->ij',HTffa,H1p) + np.einsum('i,j->ij',HTffb,H)/z
+        
+        return self.Hxxpz
+    
+#    @profile   
     def get_dsig(self,x,z,xF,pT,rs,tar,had): #Calculation of the unpolarized cross section
         
         if pT < 1.: 
@@ -138,12 +292,8 @@ class ANTHEORY:
         uu = -0.5 * ss * ( np.sqrt(xF2+xT2) + xF )
         
         oz = 1./z
-        ozz = 1./z**2.
         
         xp = -x*tt/(z*x*ss+uu)
-
-        ox  = 1./x
-        oxp = 1./xp
         
         #Mandelstam variables at the parton level
         s = x  * xp * ss
@@ -155,111 +305,20 @@ class ANTHEORY:
         
         self.get_mandelstam(s,t,u)
         self.get_Hupol()
+#        self.get_matrices()
         
-        #Create dictionaries of the nonperturbative functions
-        f1x = {}
-        f1xp = {}
-        D1z = {}
-        
-        #for flav in self.flavor:
-        #    f1x[(flav,tar)] = self.get_pdf(flav,tar,x,Q2)
-        #    f1xp[(flav,tar)] = self.get_pdf(flav,tar,xp,Q2)
-        #    D1z[(flav,had)] = self.get_ff(flav,had,z,Q2)
-
-
+        #Get arrays of the nonperturbative functions
         f=self.get_f(x,Q2)
-        ft=self.get_ft(x,Q2)
+        ft=self.get_ft(xp,Q2)
         d=self.get_d(x,Q2)
 
         upol = 0
-        upol+=np.einsum('i,j,i,ij',f,ft,d,self.B1)*self.Hupol['av1']
-
-        return upol
-            
-        upol = 0
-            
-        upol+=   ( f1x[('u',tar)]*D1z[('u',had)] + f1x[('d',tar)]*D1z[('d',had)] + f1x[('s',tar)]*D1z[('s',had)] ) \
-              * ( f1xp[('u',tar)] + f1xp[('d',tar)] + f1xp[('s',tar)] ) \
-              * Hupol['av1'] \
-              + ( f1x[('u',tar)] + f1x[('d',tar)] + f1x[('s',tar)] ) \
-              * ( f1xp[('u',tar)]*D1z[('u',had)] + f1xp[('d',tar)]*D1z[('d',had)] + f1xp[('s',tar)]*D1z[('s',had)] ) \
-              * Hupol['av2'] \
-              + ( f1x[('u',tar)]*f1xp[('u',tar)]*D1z[('u',had)] + f1x[('d',tar)]*f1xp[('d',tar)]*D1z[('d',had)] + f1x[('s',tar)]*f1xp[('s',tar)]*D1z[('s',had)] ) \
-              * Hupol['av3']
-        
-        upol+=   ( f1x[('ub',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*D1z[('sb',had)] ) \
-              * ( f1xp[('ub',tar)] + f1xp[('db',tar)] + f1xp[('sb',tar)] ) \
-              * Hupol['av1'] \
-              + ( f1x[('ub',tar)] + f1x[('db',tar)] + f1x[('sb',tar)] ) \
-              * ( f1xp[('ub',tar)]*D1z[('ub',had)] + f1xp[('db',tar)]*D1z[('db',had)] + f1xp[('sb',tar)]*D1z[('sb',had)] ) \
-              * Hupol['av2'] \
-              + ( f1x[('ub',tar)]*f1xp[('ub',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*f1xp[('db',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*f1xp[('sb',tar)]*D1z[('sb',had)] ) \
-              * Hupol['av3']
-
-        upol+=   ( f1x[('u',tar)]*D1z[('u',had)] + f1x[('d',tar)]*D1z[('d',had)] + f1x[('s',tar)]*D1z[('s',had)] ) \
-              * ( f1xp[('ub',tar)] + f1xp[('db',tar)] + f1xp[('sb',tar)] ) \
-              * Hupol['av5'] \
-              + ( f1x[('u',tar)]*f1xp[('ub',tar)] + f1x[('d',tar)]*f1xp[('db',tar)] + f1x[('s',tar)]*f1xp[('sb',tar)] ) \
-              * ( D1z[('u',had)] + D1z[('d',had)] + D1z[('s',had)] ) \
-              * Hupol['av4'] \
-              + ( f1x[('u',tar)]*f1xp[('ub',tar)]*D1z[('u',had)] + f1x[('d',tar)]*f1xp[('db',tar)]*D1z[('d',had)] + f1x[('s',tar)]*f1xp[('sb',tar)]*D1z[('s',had)] ) \
-              * Hupol['av6']
-        
-        upol+=   ( f1x[('ub',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*D1z[('sb',had)] ) \
-              * ( f1xp[('u',tar)] + f1xp[('d',tar)] + f1xp[('s',tar)] ) \
-              * Hupol['av5'] \
-              + ( f1x[('ub',tar)]*f1xp[('u',tar)] + f1x[('db',tar)]*f1xp[('d',tar)] + f1x[('sb',tar)]*f1xp[('s',tar)] ) \
-              * ( D1z[('ub',had)] + D1z[('db',had)] + D1z[('sb',had)] ) \
-              * Hupol['av4'] \
-              + ( f1x[('ub',tar)]*f1xp[('u',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*f1xp[('d',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*f1xp[('s',tar)]*D1z[('sb',had)] ) \
-              * Hupol['av6']
-      
-        upol+=   ( f1x[('u',tar)] + f1x[('d',tar)] + f1x[('s',tar)] ) \
-              * ( f1xp[('ub',tar)]*D1z[('ub',had)] + f1xp[('db',tar)]*D1z[('db',had)] + f1xp[('sb',tar)]*D1z[('sb',had)] ) \
-              * Hupol['av8'] \
-              + ( f1x[('u',tar)]*f1xp[('ub',tar)] + f1x[('d',tar)]*f1xp[('db',tar)] + f1x[('s',tar)]*f1xp[('sb',tar)] ) \
-              * ( D1z[('ub',had)] + D1z[('db',had)] + D1z[('sb',had)] ) \
-              * Hupol['av7'] \
-              + (f1x[('u',tar)]*f1xp[('ub',tar)]*D1z[('ub',had)]+f1x[('d',tar)]*f1xp[('db',tar)]*D1z[('db',had)]+f1x[('s',tar)]*f1xp[('sb',tar)]*D1z[('sb',had)]) \
-              * Hupol['av9']
-          
-        upol+=   ( f1x[('ub',tar)] + f1x[('db',tar)] + f1x[('sb',tar)] ) \
-              * ( f1xp[('u',tar)]*D1z[('u',had)] + f1xp[('d',tar)]*D1z[('d',had)] + f1xp[('s',tar)]*D1z[('s',had)] ) \
-              * Hupol['av8']\
-              + ( f1x[('ub',tar)]*f1xp[('u',tar)] + f1x[('db',tar)]*f1xp[('d',tar)] + f1x[('sb',tar)]*f1xp[('s',tar)] ) * ( D1z[('u',had)] + D1z[('d',had)] + D1z[('s',had)] ) \
-              * Hupol['av7']\
-              + ( f1x[('ub',tar)]*f1xp[('u',tar)]*D1z[('u',had)] + f1x[('db',tar)]*f1xp[('d',tar)]*D1z[('d',had)] + f1x[('sb',tar)]*f1xp[('s',tar)]*D1z[('s',had)] ) \
-              * Hupol['av9']
-        
-        upol+= ( f1x[('u',tar)]*f1xp[('ub',tar)] + f1x[('d',tar)]*f1xp[('db',tar)] + f1x[('s',tar)]*f1xp[('sb',tar)] ) * D1z[('g',had)] * Hupol['av10']
-        
-        upol+= ( f1x[('ub',tar)]*f1xp[('u',tar)] + f1x[('db',tar)]*f1xp[('d',tar)] + f1x[('sb',tar)]*f1xp[('s',tar)] ) * D1z[('g',had)] * Hupol['av10']
-        
-        upol+= ( f1x[('u',tar)]*D1z[('u',had)]  + f1x[('d',tar)]*D1z[('d',had)]  + f1x[('s',tar)]*D1z[('s',had)]  ) * f1xp[('g',tar)] * Hupol['av11']
-        
-        upol+= ( f1x[('ub',tar)]*D1z[('ub',had)] + f1x[('db',tar)]*D1z[('db',had)] + f1x[('sb',tar)]*D1z[('sb',had)] ) * f1xp[('g',tar)] * Hupol['av11']
-        
-        upol+= ( f1x[('u',tar)]  + f1x[('d',tar)]  + f1x[('s',tar)]  ) * f1xp[('g',tar)] * D1z[('g',had)] * Hupol['av12']
-        
-        upol+= ( f1x[('ub',tar)] + f1x[('db',tar)] + f1x[('sb',tar)] ) * f1xp[('g',tar)] * D1z[('g',had)] * Hupol['av12']
-        
-        upol+= f1x[('g',tar)] * f1xp[('g',tar)] * ( D1z[('u',had)] + D1z[('d',had)] + D1z[('s',had)] ) * Hupol['av13']
-        
-        upol+= f1x[('g',tar)] * f1xp[('g',tar)] * ( D1z[('ub',had)] + D1z[('db',had)] + D1z[('sb',had)] ) * Hupol['av13']
-        
-        upol+= f1x[('g',tar)] * f1xp[('g',tar)] * D1z[('g',had)] * Hupol['av14']
-        
-        upol+= f1x[('g',tar)] * ( f1xp[('u',tar)]*D1z[('u',had)] + f1xp[('d',tar)]*D1z[('d',had)] + f1xp[('s',tar)]*D1z[('s',had)]) * Hupol['av12']
-        
-        upol+= f1x[('g',tar)] * ( f1xp[('ub',tar)]*D1z[('ub',had)] + f1xp[('db',tar)]*D1z[('db',had)] + f1xp[('sb',tar)]*D1z[('sb',had)]) * Hupol['av12']
-        
-        upol+= f1x[('g',tar)] * ( f1xp[('u',tar)]  + f1xp[('d',tar)]  + f1xp[('s',tar)]  ) * D1z[('g',had)] * Hupol['av11']
-        
-        upol+= f1x[('g',tar)] * ( f1xp[('ub',tar)] + f1xp[('db',tar)] + f1xp[('sb',tar)] ) * D1z[('g',had)] * Hupol['av11']
+        for i in range(len(self.ch)):
+            upol+= self.Hupol[self.ch[i].split('*')[1]] * np.einsum('i,j,k,ijk',d,f,ft,self.B[i])
         
         return denfac * upol 
         
-        
+#    @profile   
     def get_dsigST(self,x,z,xF,pT,rs,tar,had): #Calculation of the fragmentation term in the transversely polarized cross section
         
         Mh = self.Mh[had]
@@ -281,12 +340,8 @@ class ANTHEORY:
         uu = -0.5 * ss * ( np.sqrt(xF2+xT2) + xF )
         
         oz = 1./z
-        ozz = 1./z**2.
         
         xp = -x*tt/(z*x*ss+uu)
-
-        ox  = 1./x
-        oxp = 1./xp
         
         #Mandelstam variables at the parton level
         s = x  * xp * ss
@@ -296,83 +351,18 @@ class ANTHEORY:
         #Prefactor
         numfac = oz * 1. / ( ( z*z*x*ss + uu*z ) * x * xp )
         
-        #Common color factors and fractions
-        c = {'r3':1./3.,'r4':0.25,'r6':1./6.,'r8':0.125,'r9':1./9.,'r18':1./18.,'r24':1./24.,'r27':1./27.}
+        self.get_mandelstam(s,t,u)
         
-        #Convenient combinations of the partonic Mandelstam variables
-        m = {'s2':s*s,'s3':s**3.,'t2':t*t,'t3':t**3.,'u2':u*u,'u3':u**3.,
-             'ostu':1./(s*t*u),'os':1./s,'ot':1./t,'ou':1./u,
-             'st':s/t,'su':s/u,'ts':t/s,'tu':t/u,'us':u/s,'ut':u/t,
-             'st2':s**2./t**2.,'su2':s**2./u**2.,'ts2':t**2./s**2.,
-             'tu2':t**2./u**2.,'us2':u**2./s**2.,'ut2':u**2./t**2.,
-             'os2':1./s**2.,'ot2':1./t**2.,'ou2':1./u**2.,
-             'os3':1./s**3.,'ot3':1./t**3.,'ou3':1./u**3.}
+        #Get arrays of the nonperturbative functions
+        ft=self.get_ft(xp,Q2)
+        h = self.get_h(x,Q2)
+        Hxxpz = self.get_Hxxpz(z,Q2,s,t,u)
         
-        #Hard parts for the transversely polarized fragmentation term
-        HTff = {'ff1a':-c['r9']*m['ot'] + c['r8']*s*(u-s)*m['ot3'] - m['st2']*m['ou'],
-                'ff1b':c['r8']*s*(u-s)*m['ot3'] + 0.5*c['r9']*(s-u)*m['ot']*m['ou'] + 0.5*(s-u)*(m['t2']-2.*t*u-2.*m['u2'])*m['ot3']*m['ou'],
-                'ff2a':c['r27']*s*(t-u)*m['ot2']*m['ou'] + c['r9']*s*(u-2.*t)*m['ot3'] + s*m['ot2'],
-                'ff2b':c['r27']*0.5*s*(t-3.*u)*m['ot2']*m['ou'] - s*u*m['ot3'] + c['r9']*s*(2.*u-t)*m['ot3'] - c['r3']*0.5*m['s2']*m['ot2']*m['ou'],
-                'ff3a':c['r27']*s*m['ot2'] + c['r9']*s*(t-s)*m['ot3'] - c['r3']*m['ot'],
-                'ff3b':c['r27']*0.5*(3.*s-t)*m['ot2'] + m['s2']*m['ot3'] + c['r9']*s*(t-2.*s)*m['ot3'] + c['r3']*0.5*u*m['ot2'],
-                'ff4a':c['r27']*s*m['ot']*m['ou'] - c['r3']*m['ot'],'ff4b':10.*c['r27']*0.5*(s-u)*m['ot']*m['ou'],
-                'ff5a':c['r9']*s*(u-2.*t)*m['ot3'] + s*m['ot2'],'ff5b':c['r9']*s*(2.*u-t)*m['ot3'] - s*u*m['ot3'],
-                'ff6a':c['r9']*s*(t-s)*m['ot3'],'ff6b':c['r9']*s*(t-2.*s)*m['ot3'] + m['s2']*m['ot3']}
-                  
-                  
-        HTffb = {'ff7a':HTff['ff1a'],'ff7b':HTff['ff1b'],'ff8a':HTff['ff2a'],'ff8b':HTff['ff2b'],
-                 'ff9a':HTff['ff3a'],'ff9b':HTff['ff3b'],'ff10a':HTff['ff4a'],'ff10b':HTff['ff4b'],
-                 'ff11a':HTff['ff5a'],'ff11b':HTff['ff5b'],'ff12a':HTff['ff6a'],'ff12b':HTff['ff6b']}
-        
-        #Create dictionaries of the nonperturbative functions
-        f1xp = {}
-        h1x = {}
-        H1pz = {}
-        Hz = {}
-        Hxxpz = {}
-        
-        for flav in self.flavor:
-            f1xp[(flav,tar)] = self.get_pdf(flav,tar,xp,Q2)
-            h1x[(flav,tar)] = self.get_h1(flav,tar,x,Q2)
-            H1pz[(flav,had)] = self.get_H1p(flav,had,z,Q2) #Note again H1p(z) = (H_1^{\perp(1)}(z) - z*dH_1^{\perp(1)}(z)/dz)
-            Hz[(flav,had)] = self.get_H(flav,had,z,Q2) #Note again H(z) = -2*z*H_1^{\perp(1)}(z)+\tilde{H}(z) 
-            
-        for i in range(1,7):
-            for flav in ['u','d','s']:
-                Hxxpz[(i,flav,had)] = H1pz[(flav,had)] * HTff['ff'+str(i)+'a'] + oz * Hz[(flav,had)] * HTff['ff'+str(i)+'b']
-        
-        for i in range(7,13):
-            for flav in ['ub','db','sb']:
-                Hxxpz[(i,flav,had)] = H1pz[(flav,had)] * HTffb['ff'+str(i)+'a'] + oz * Hz[(flav,had)] * HTffb['ff'+str(i)+'b']
-        
-        ffcs = {}
+        ffcs = 0
+        for i in range(len(self.chT)):
+            ffcs+= np.einsum('i,jk,l,ijkl',ft,Hxxpz,h,self.BT[i])
                 
-        ffcs[1] = f1xp[('g',tar)] * (h1x[('u',tar)]*Hxxpz[(1,'u',had)] + h1x[('d',tar)]*Hxxpz[(1,'d',had)] + h1x[('s',tar)]*Hxxpz[(1,'s',had)])
-
-        ffcs[2] = (h1x[('u',tar)]*f1xp[('u',tar)]*Hxxpz[(2,'u',had)]) + (h1x[('d',tar)]*f1xp[('d',tar)]*Hxxpz[(2,'d',had)]) + (h1x[('s',tar)]*f1xp[('s',tar)]*Hxxpz[(2,'s',had)])
-
-        ffcs[3] = (h1x[('u',tar)]*f1xp[('ub',tar)]*Hxxpz[(3,'u',had)]) + (h1x[('d',tar)]*f1xp[('db',tar)]*Hxxpz[(3,'d',had)]) + (h1x[('s',tar)]*f1xp[('sb',tar)]*Hxxpz[(3,'s',had)])
-
-        ffcs[4] = (h1x[('ub',tar)]*f1xp[('u',tar)]*Hxxpz[(4,'u',had)]) + (h1x[('db',tar)]*f1xp[('d',tar)]*Hxxpz[(4,'d',had)]) + (h1x[('sb',tar)]*f1xp[('s',tar)]*Hxxpz[(4,'s',had)])
-
-        ffcs[5] = f1xp[('u',tar)] * (h1x[('d',tar)]*Hxxpz[(5,'d',had)] + h1x[('s',tar)]*Hxxpz[(5,'s',had)]) + f1xp[('d',tar)] * (h1x[('u',tar)]*Hxxpz[(5,'u',had)] + h1x[('s',tar)]*Hxxpz[(5,'s',had)]) + f1xp[('s',tar)] * (h1x[('u',tar)] * Hxxpz[(5,'u',had)] + h1x[('d',tar)]*Hxxpz[(5,'d',had)])
-
-        ffcs[6] = f1xp[('ub',tar)] * (h1x[('d',tar)]*Hxxpz[(6,'d',had)] + h1x[('s',tar)]*Hxxpz[(6,'s',had)]) + f1xp[('db',tar)] * (h1x[('u',tar)]*Hxxpz[(6,'u',had)] + h1x[('s',tar)]*Hxxpz[(6,'s',had)]) + f1xp[('sb',tar)] * (h1x[('u',tar)]*Hxxpz[(6,'u',had)] + h1x[('d',tar)]*Hxxpz[(6,'d',had)])
-
-        ffcs[7] = f1xp[('g',tar)] * (h1x[('ub',tar)]*Hxxpz[(7,'ub',had)] + h1x[('db',tar)]*Hxxpz[(7,'db',had)] + h1x[('sb',tar)]*Hxxpz[(7,'sb',had)])
-
-        ffcs[8] = (h1x[('ub',tar)]*f1xp[('ub',tar)]*Hxxpz[(8,'ub',had)]) + (h1x[('db',tar)]*f1xp[('db',tar)]*Hxxpz[(8,'db',had)]) + (h1x[('sb',tar)]*f1xp[('sb',tar)]*Hxxpz[(8,'sb',had)])
-
-        ffcs[9] = (h1x[('ub',tar)]*f1xp[('u',tar)]*Hxxpz[(9,'ub',had)]) + (h1x[('db',tar)]*f1xp[('d',tar)]*Hxxpz[(9,'db',had)]) + (h1x[('sb',tar)]*f1xp[('s',tar)]*Hxxpz[(9,'sb',had)])
-
-        ffcs[10] = (h1x[('u',tar)]*f1xp[('ub',tar)]*Hxxpz[(10,'ub',had)]) + (h1x[('d',tar)]*f1xp[('db',tar)]*Hxxpz[(10,'db',had)]) + (h1x[('s',tar)]*f1xp[('sb',tar)]*Hxxpz[(10,'sb',had)])
-
-        ffcs[11] = f1xp[('ub',tar)] * (h1x[('db',tar)]*Hxxpz[(11,'db',had)] + h1x[('sb',tar)]*Hxxpz[(11,'sb',had)]) + f1xp[('db',tar)] * (h1x[('ub',tar)]*Hxxpz[(11,'ub',had)] + h1x[('sb',tar)]*Hxxpz[(11,'sb',had)]) + f1xp[('sb',tar)] * (h1x[('ub',tar)]*Hxxpz[(11,'ub',had)] + h1x[('db',tar)]*Hxxpz[(11,'db',had)])
-
-        ffcs[12] = f1xp[('u',tar)] * (h1x[('db',tar)]*Hxxpz[(12,'db',had)] + h1x[('sb',tar)]*Hxxpz[(12,'sb',had)]) + f1xp[('d',tar)] * (h1x[('ub',tar)]*Hxxpz[(12,'ub',had)] + h1x[('sb',tar)]*Hxxpz[(12,'sb',had)]) + f1xp[('s',tar)] * (h1x[('ub',tar)]*Hxxpz[(12,'ub',had)] + h1x[('db',tar)]*Hxxpz[(12,'db',had)])
-        
-
-        ffcs = 2. * Mh * pT * numfac * np.sum(np.array([ffcs[i] for i in range(1,13)])) 
+        ffcs = 2. * Mh * pT * numfac * ffcs
         
         return ffcs
 
@@ -418,14 +408,19 @@ if __name__=='__main__':
   anthy=ANTHEORY()
 
   def test():
-    print anthy.get_sig(xF,pT,rs,tar,had,mode='gauss',nx=100,nz=100)
+    den = anthy.get_sig(xF,pT,rs,tar,had,mode='gauss',nx=100,nz=100)
+    num = anthy.get_sigST(xF,pT,rs,tar,had,mode='gauss',nx=100,nz=100)
+    
+    AN = num/den
+    print AN
+    
+  test()
 
   from timeit import Timer
   t = Timer("test()", "from __main__ import test")
   print 't elapsed ',t.timeit(number=1) 
-
-
-
+  
+  
 
   #print anthy.get_dsig(xmin(zmin),zmin,xF,pT,rs,tar,had)
   #print anthy.get_dsigST(0.3,0.6,xF,pT,rs,tar,had)
