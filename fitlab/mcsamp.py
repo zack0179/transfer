@@ -52,7 +52,8 @@ class MCSAMP:
     self.npar=len(conf['parman'].par)
     conf['nll'] = self.nll
     conf['par lims'] = self.get_par_lims()
-    conf['tol']=1e-10
+    if tol not in conf:
+      conf['tol']=1e-10
     conf['num points'] = int(self.npar*2)
     conf['method']='cov'
     conf['kappa']=1
