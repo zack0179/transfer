@@ -22,6 +22,7 @@ from qcdlib.tmdlib import WORMGEARH
 from qcdlib.aux import AUX
 from qcdlib.alphaS import ALPHAS
 from obslib.dis.stfuncs import STFUNCS as DIS_STFUNCS
+from tools.config import conf
 
 class RESIDUALS(_RESIDUALS):
 
