@@ -179,5 +179,14 @@ conf["datasets"]["sidis"]["xlsx"][3018]="../database/sidis/expdata/3018.xlsx"  #
 for k in conf['datasets']['sia']['xlsx']: conf['datasets']['sia']['norm'][k]={'value':1,'fixed':True,'min':0,'max':1} 
 for k in conf['datasets']['sidis']['xlsx']: conf['datasets']['sidis']['norm'][k]={'value':1,'fixed':True,'min':0,'max':1}
 
- 
+ # Lattice
+
+conf['datasets']['moments']={}
+conf['datasets']['moments']['filters']=[]
+
+conf['datasets']['moments']['xlsx']={}
+conf['datasets']['moments']['xlsx'][1000]='../database/lattice/1000.xlsx'
+
+conf['datasets']['moments']['norm']={}
+for k in conf['datasets']['moments']['xlsx']: conf['datasets']['moments']['norm'][k]={'value':1,'fixed':True,'min':0,'max':1} 
 
