@@ -48,25 +48,25 @@ conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.1515157972856154833
 conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.36784756168045196212e-01>>,'fixed':True,'min':0,'max':1}
 
 conf['params']['collins']={}
-conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    7.19232859343037628230e-02>>,'fixed':False,'min':0.05,'max':0.1}
+conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    7.16088644027707138529e-02>>,'fixed':False,'min':0.05,'max':0.1}
 conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    7.64900000000000024336e-02>>,'fixed':'widths0 pi+ fav','min':1e-5,'max':0.2}
 #conf['params']['collins']['widths0 pi+ unfav']   = {'value':0.07649,'fixed':False,'min':1e-5,'max':0.2}
-conf['params']['collins']['pi+ u N 1']  = {'value':<<    1.67606899743756615484e-01>>,'fixed':False,'min':0,'max':4}
-conf['params']['collins']['pi+ u a 1']  = {'value':<<   -2.34487913934317360187e+00>>,'fixed':False,'min':-0.5,'max':0}
-conf['params']['collins']['pi+ u b 1']  = {'value':<<    3.39386888313381485105e+00>>,'fixed':False,'min':3.,'max':7.}
+conf['params']['collins']['pi+ u N 1']  = {'value':<<    1.50999040267757678180e-01>>,'fixed':False,'min':0,'max':4}
+conf['params']['collins']['pi+ u a 1']  = {'value':<<   -2.36500822511993646913e+00>>,'fixed':False,'min':-0.5,'max':0}
+conf['params']['collins']['pi+ u b 1']  = {'value':<<    3.35753465549151108860e+00>>,'fixed':False,'min':3.,'max':7.}
 
-conf['params']['collins']['pi+ d N 1']  = {'value':<<   -7.76834030946873671519e-02>>,'fixed':False,'min':-15,'max':-4}
-conf['params']['collins']['pi+ d a 1']  = {'value':<<   -1.71364502387007289208e+00>>,'fixed':False,'min': 0.,'max':4.5}
-conf['params']['collins']['pi+ d b 1']  = {'value':<<    9.12304018334302968540e-01>>,'fixed':False,'min':2.5,'max':3.8}
+conf['params']['collins']['pi+ d N 1']  = {'value':<<   -6.70999855356498309256e-02>>,'fixed':False,'min':-15,'max':-4}
+conf['params']['collins']['pi+ d a 1']  = {'value':<<   -1.90807656857974383691e+00>>,'fixed':False,'min': 0.,'max':4.5}
+conf['params']['collins']['pi+ d b 1']  = {'value':<<    8.30921249196972633300e-01>>,'fixed':False,'min':2.5,'max':3.8}
 
 conf['params']['collins']['pi+ u c 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ d c 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ u d 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ d d 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 
-conf['params']['collins']['pi+ u N 2']  = {'value':<<    9.04828290386509499513e+05>>,'fixed':False,'min':1,'max':12}
-conf['params']['collins']['pi+ u a 2']  = {'value':<<    1.75039868247003767010e+01>>,'fixed':False,'min':1,'max':10}
-conf['params']['collins']['pi+ u b 2']  = {'value':<<    9.41062029335155081355e+00>>,'fixed':False,'min':3,'max':5}
+conf['params']['collins']['pi+ u N 2']  = {'value':<<    1.08440286762981396168e+06>>,'fixed':False,'min':1,'max':12}
+conf['params']['collins']['pi+ u a 2']  = {'value':<<    1.76925021445799757203e+01>>,'fixed':False,'min':1,'max':10}
+conf['params']['collins']['pi+ u b 2']  = {'value':<<    9.51040297848325444363e+00>>,'fixed':False,'min':3,'max':5}
 
 conf['params']['collins']['pi+ d N 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-20,'max':0}
 conf['params']['collins']['pi+ d a 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-1,'max':5}
@@ -78,14 +78,14 @@ conf['params']['collins']['pi+ d d 2']  = {'value':<<    0.00000000000000000000e
 
 
 conf['params']['transversity']={}
-conf['params']['transversity']['widths0 valence'] = {'value':<<    5.35202023331011744745e-01>>,'fixed':False,'min':1e-5,'max':2}
+conf['params']['transversity']['widths0 valence'] = {'value':<<    5.29540329452741875826e-01>>,'fixed':False,'min':1e-5,'max':2}
 conf['params']['transversity']['widths0 sea']     = {'value':<<    4.04126169244575006445e-01>>,'fixed':True,'min':1e-5,'max':2}
-conf['params']['transversity']['u N']             = {'value':<<    4.02328671146848471096e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['transversity']['u a']             = {'value':<<    5.02038625837164742549e-01>> ,'fixed':False,'min':-1,'max':10}
-conf['params']['transversity']['u b']             = {'value':<<    3.07512397112831292745e+00>> ,'fixed':False,'min':1e-5,'max':10}
-conf['params']['transversity']['d N']             = {'value':<<   -3.73552700180014767284e+01>> ,'fixed':False,'min':-20,'max':20}
-conf['params']['transversity']['d a']             = {'value':<<    8.64952297119300328454e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['transversity']['d b']             = {'value':<<    6.33256311465089449797e+00>> ,'fixed':False,'min':1e-5,'max':20}
+conf['params']['transversity']['u N']             = {'value':<<    5.28633964690607083270e+00>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['transversity']['u a']             = {'value':<<    5.65615717841445597713e-01>> ,'fixed':False,'min':-1,'max':10}
+conf['params']['transversity']['u b']             = {'value':<<    3.35151902380127530989e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['transversity']['d N']             = {'value':<<   -4.61667050259396845036e+01>> ,'fixed':False,'min':-20,'max':20}
+conf['params']['transversity']['d a']             = {'value':<<    9.54384073769761198669e-01>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['transversity']['d b']             = {'value':<<    7.77586710157993010739e+00>> ,'fixed':False,'min':1e-5,'max':20}
 conf['params']['transversity']['s N']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['transversity']['s a']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-1,'max':5}
 conf['params']['transversity']['s b']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':1e-5,'max':10}
