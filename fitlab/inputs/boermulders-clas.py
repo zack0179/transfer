@@ -72,10 +72,10 @@ conf['params']['boermulders']['u a']  = {'value':1.61391852452949091656e+00,'fix
 conf['params']['boermulders']['u b']  = {'value':1.13975971617359173038e+00,'fixed':False,'min':1e-5,'max':10}
 conf['params']['boermulders']['d N']  = {'value':7.33483204762133667032e+00,'fixed':False,'min':-10,'max':10}
 conf['params']['boermulders']['d a']  = {'value':1.96985180239880541819e-01,'fixed':False,'min':-1,'max':5}
-conf['params']['boermulders']['d b']  = {'value':1.00000000000000008180e-05,'fixed':False,'min':1e-5,'max':10}
-conf['params']['boermulders']['s N']  = {'value':8.22118612433044582133e+00,'fixed':False,'min':-10,'max':10}
-conf['params']['boermulders']['s a']  = {'value':1.66106323757901641613e+00,'fixed':False,'min':-1,'max':5}
-conf['params']['boermulders']['s b']  = {'value':1.00000000000000008180e-05,'fixed':False,'min':1e-5,'max':10}
+conf['params']['boermulders']['d b']  = {'value':1.00000000000000008180e-01,'fixed':False,'min':1e-5,'max':10}
+conf['params']['boermulders']['s N']  = {'value':1.00000000000000000000e+00,'fixed':False,'min':-10,'max':10}
+conf['params']['boermulders']['s a']  = {'value':1.00000000000000008180e+00,'fixed':False,'min':-1,'max':5}
+conf['params']['boermulders']['s b']  = {'value':1.00000000000000008180e+00,'fixed':False,'min':1e-5,'max':10}
 
 
 #----------------------------------------------------------------------------------------
@@ -113,6 +113,9 @@ conf['params']['collins']['pi+ u c 2']  = {'value': 0.0,'fixed':True,'min':-10,'
 conf['params']['collins']['pi+ d c 2']  = {'value': 0.0,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ u d 2']  = {'value': 0.0,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ d d 2']  = {'value': 0.0,'fixed':True,'min':-10,'max':10}
+
+
+
 ############################################################################
 # SIDIS
 
@@ -126,7 +129,7 @@ conf['datasets']['sidis']['filters'][0]={}
 conf['datasets']['sidis']['filters'][0]['idx']=[7002, 7003]
 
 # does nothing 
-conf['datasets']['sidis']['filters'][0]['filter']='z < 1.0'
+conf['datasets']['sidis']['filters'][0]['filter']='z < 1.0 and Q2>1.69'
 
 # clas measurement 
 conf['datasets']['sidis']['xlsx'][7002]='../database/sidis/expdata/7002.xlsx' # | proton   | pi- | AUUcos2 | clas 
