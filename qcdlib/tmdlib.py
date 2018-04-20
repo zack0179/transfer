@@ -4,6 +4,7 @@ import numpy as np
 import time
 from scipy.integrate import quad,fixed_quad
 from external.CJLIB.CJ import CJ
+from external.PDF.CT10 import CT10 # Alexei 4/20/2018
 from external.LSSLIB.LSS import LSS
 from external.DSSLIB.DSS import DSS
 from aux import AUX
@@ -553,9 +554,11 @@ if __name__=='__main__':
   conf['path2CJ'] ='../external/CJLIB'
   conf['path2LSS']='../external/LSSLIB'
   conf['path2DSS']='../external/DSSLIB'
+  conf['path2CT10'] ='../external/PDF'
 
   conf['order']='LO'
   conf['aux']=AUX()
+  #conf['_pdf']=CT10()
   conf['_pdf']=CJ()
   conf['_ppdf']=LSS()
   conf['_ff']=DSS()

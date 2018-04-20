@@ -7,6 +7,7 @@ import pandas as pd
 import external.CJLIB.CJ
 import external.DSSLIB.DSS
 import external.LSSLIB.LSS
+import external.PDF.CT10 # Alexei 4/20/2018
 import qcdlib.tmdlib
 import qcdlib.aux
 import qcdlib.alphaS
@@ -57,10 +58,12 @@ class RESMAN:
 
   def setup_tmds(self):
     conf['order']='LO'
+    conf['path2CT10']='%s/external/PDF'%os.environ['FITPACK']
     conf['path2CJ']='%s/external/CJLIB'%os.environ['FITPACK']
     conf['path2LSS']='%s/external/LSSLIB'%os.environ['FITPACK']
     conf['path2DSS']='%s/external/DSSLIB'%os.environ['FITPACK']
     conf['_pdf'] =external.CJLIB.CJ.CJ()
+    #conf['_pdf'] =external.PDF.CT10.CT10()
     conf['_ppdf']=external.LSSLIB.LSS.LSS()
     conf['_ff']  =external.DSSLIB.DSS.DSS()
     conf['pdf']  =qcdlib.tmdlib.PDF()
