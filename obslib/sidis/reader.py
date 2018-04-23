@@ -24,6 +24,7 @@ class READER(_READER):
     hadron=tab['hadron'][0]
     M=conf['aux'].M
     M2=conf['aux'].M**2
+    if 'h' in hadron: Mh=conf['aux'].Mpi
     if 'pi' in hadron: Mh=conf['aux'].Mpi
     if 'k' in hadron:  Mh=conf['aux'].Mk
     MhT=np.sqrt(Mh**2+pT**2)
