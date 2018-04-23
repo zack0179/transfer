@@ -64,21 +64,21 @@
 | 2509  | [link][?]    | neutron  | pi-    | AUTsivers  | solid stat | x          |
 | 2510  | [link][?]    | proton   | pi+    | AUTsivers  | solid stat | x          |
 | 2511  | [link][?]    | proton   | pi-    | AUTsivers  | solid stat | x          |
-| 3000  | [link][?]    | proton   | pi+    | AUTcollins | hermes     | x          |
-| 3003  | [link][?]    | proton   | pi+    | AUTcollins | hermes     | z          |
-| 3026  | [link][?]    | proton   | pi+    | AUTcollins | hermes     | pt         |
-| 3004  | [link][?]    | proton   | pi-    | AUTcollins | hermes     | x          |
-| 3018  | [link][?]    | proton   | pi-    | AUTcollins | hermes     | z          |
-| 3016  | [link][?]    | proton   | pi-    | AUTcollins | hermes     | pt         |
-| 3006  | [link][?]    | proton   | pi0    | AUTcollins | hermes     | z          |
-| 3014  | [link][?]    | proton   | pi0    | AUTcollins | hermes     | x          |
-| 3015  | [link][?]    | proton   | pi0    | AUTcollins | hermes     | pt         |
-| 3007  | [link][?]    | proton   | k+     | AUTcollins | hermes     | x          |
-| 3008  | [link][?]    | proton   | k+     | AUTcollins | hermes     | z          |
-| 3024  | [link][?]    | proton   | k+     | AUTcollins | hermes     | pt         |
-| 3017  | [link][?]    | proton   | k-     | AUTcollins | hermes     | x          |
-| 3023  | [link][?]    | proton   | k-     | AUTcollins | hermes     | z          |
-| 3021  | [link][?]    | proton   | k-     | AUTcollins | hermes     | pt         |
+| 3000  | [link][Collins_HERMES_2010]    | proton   | pi+    | AUTcollins | hermes     | x          |
+| 3003  | [link][Collins_HERMES_2010]    | proton   | pi+    | AUTcollins | hermes     | z          |
+| 3026  | [link][Collins_HERMES_2010]    | proton   | pi+    | AUTcollins | hermes     | pt         |
+| 3004  | [link][Collins_HERMES_2010]    | proton   | pi-    | AUTcollins | hermes     | x          |
+| 3018  | [link][Collins_HERMES_2010]    | proton   | pi-    | AUTcollins | hermes     | z          |
+| 3016  | [link][Collins_HERMES_2010]    | proton   | pi-    | AUTcollins | hermes     | pt         |
+| 3006  | [link][Collins_HERMES_2010]    | proton   | pi0    | AUTcollins | hermes     | z          |
+| 3014  | [link][Collins_HERMES_2010]    | proton   | pi0    | AUTcollins | hermes     | x          |
+| 3015  | [link][Collins_HERMES_2010]    | proton   | pi0    | AUTcollins | hermes     | pt         |
+| 3007  | [link][Collins_HERMES_2010]    | proton   | k+     | AUTcollins | hermes     | x          |
+| 3008  | [link][Collins_HERMES_2010]    | proton   | k+     | AUTcollins | hermes     | z          |
+| 3024  | [link][Collins_HERMES_2010]    | proton   | k+     | AUTcollins | hermes     | pt         |
+| 3017  | [link][Collins_HERMES_2010]    | proton   | k-     | AUTcollins | hermes     | x          |
+| 3023  | [link][Collins_HERMES_2010]    | proton   | k-     | AUTcollins | hermes     | z          |
+| 3021  | [link][Collins_HERMES_2010]    | proton   | k-     | AUTcollins | hermes     | pt         |
 | 3025  | [link][AUT_COMPASS_2014]    | proton   | pi+    | AUTcollins | compass    | x          |
 | 3010  | [link][AUT_COMPASS_2014]    | proton   | pi+    | AUTcollins | compass    | z          |
 | 3027  | [link][AUT_COMPASS_2014]    | proton   | pi+    | AUTcollins | compass    | pt         |
@@ -91,12 +91,12 @@
 | 6003  | [link][AUT_COMPASS_2014] | proton   | k+     | AUTcollins | compass    | pt         |
 | 6004  | [link][AUT_COMPASS_2014] | proton   | k+     | AUTcollins | compass    | x          |
 | 6005  | [link][AUT_COMPASS_2014] | proton   | k+     | AUTcollins | compass    | z          |
-| 3020  | [link][?]    | proton   | h+     | AUTcollins | compass    | x          |
-| 3028  | [link][?]    | proton   | h+     | AUTcollins | compass    | z          |
-| 3009  | [link][?]    | proton   | h+     | AUTcollins | compass    | pt         |
-| 3019  | [link][?]    | proton   | h-     | AUTcollins | compass    | x          |
-| 3011  | [link][?]    | proton   | h-     | AUTcollins | compass    | z          |
-| 3022  | [link][?]    | proton   | h-     | AUTcollins | compass    | pt         |
+| 3020  | [link][Collins_COMPASS_2012]    | proton   | h+     | AUTcollins | compass    | x          |
+| 3028  | [link][Collins_COMPASS_2012]    | proton   | h+     | AUTcollins | compass    | z          |
+| 3009  | [link][Collins_COMPASS_2012]    | proton   | h+     | AUTcollins | compass    | pt         |
+| 3019  | [link][Collins_COMPASS_2012]    | proton   | h-     | AUTcollins | compass    | x          |
+| 3011  | [link][Collins_COMPASS_2012]    | proton   | h-     | AUTcollins | compass    | z          |
+| 3022  | [link][Collins_COMPASS_2012]    | proton   | h-     | AUTcollins | compass    | pt         |
 | 4000  | [link][AUT_COMPASS_2008]    | deuteron | pi+    | AUTcollins | compass    | x          |
 | 4002  | [link][AUT_COMPASS_2008]    | deuteron | pi+    | AUTcollins | compass    | z          |
 | 4001  | [link][AUT_COMPASS_2008]    | deuteron | pi+    | AUTcollins | compass    | pt         |
@@ -125,6 +125,8 @@
 [AUT_COMPASS_2008]: http://inspirehep.net/record/779473
 [AUT_JLAB_2014]: http://inspirehep.net/record/1293050
 [AUT_COMPASS_2014]: http://inspirehep.net/record/1311491
+[Collins_HERMES_2010]: https://inspirehep.net/record/859154
+[Collins_COMPASS_2012]: http://inspirehep.net/record/1115720
 
 
 
