@@ -108,6 +108,9 @@ class PARMAN:
     conf['ppdf'].setup() 
   
   def set_ff_params(self):
+    if 'h+' in conf['params']['ff']:
+      conf['ff'].widths0['h+ fav']=conf['params']['ff']['widths0 h+ fav']['value']
+      conf['ff'].widths0['h+ unfav']=conf['params']['ff']['widths0 h+ unfav']['value']
     if 'pi+' in conf['params']['ff']:
       conf['ff'].widths0['pi+ fav']=conf['params']['ff']['widths0 pi+ fav']['value']
       conf['ff'].widths0['pi+ unfav']=conf['params']['ff']['widths0 pi+ unfav']['value']

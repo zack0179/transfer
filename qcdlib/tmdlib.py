@@ -144,17 +144,22 @@ class FF(CORE):
     self.widths0={}
     self.widths0['pi+ fav']  =0.12
     self.widths0['pi+ unfav']=0.12
+    self.widths0['h+ fav']  =0.12
+    self.widths0['h+ unfav']=0.12
     self.widths0['k+ fav']   =0.12
     self.widths0['k+ unfav'] =0.12
     
     self.widths={}
     self.widths['pi+']=np.ones(11)
+    self.widths['h+']=np.ones(11)
     self.widths['k+'] =np.ones(11)
 
     self.K={}
     self.K['pi+']=np.ones(11)
+    self.K['h+']=np.ones(11)
     self.K['k+'] =np.ones(11)
     self.K['pi-']=np.ones(11)
+    self.K['h-']=np.ones(11)
     self.K['k-'] =np.ones(11)
 
   def get_K(self, z, hadron):
@@ -178,12 +183,19 @@ class FF(CORE):
         self.widths['pi+'][i]=np.copy(self.widths0['pi+ unfav'])
 
     for i in range(1,11):
+      if i==1 or i==4:
+        self.widths['h+'][i]=np.copy(self.widths0['h+ fav'])
+      else: 
+        self.widths['h+'][i]=np.copy(self.widths0['h+ unfav'])
+
+    for i in range(1,11):
       if i==1 or i==6:
         self.widths['k+'][i]=np.copy(self.widths0['k+ fav'])
       else: 
         self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
 
     self.widths['pi-']=self.pip2pim(self.widths['pi+'])
+    self.widths['h-']=self.pip2pim(self.widths['h+'])
     self.widths['k-'] =self.kp2km(self.widths['k+'])
 
   def get_C(self,x,Q2,hadron='pi+'):
@@ -203,31 +215,40 @@ class COLLINS(CORE):
     self.Mh={}
     self.Mh['pi+']=self.aux.Mpi
     self.Mh['pi-']=self.aux.Mpi
+    self.Mh['h+']=self.aux.Mpi
+    self.Mh['h-']=self.aux.Mpi
     self.Mh['k+']=self.aux.Mk
     self.Mh['k-']=self.aux.Mk
 
     self.widths0={}
     self.widths0['pi+ fav']  =0.11
     self.widths0['pi+ unfav']=0.11
+    self.widths0['h+ fav']  =0.11
+    self.widths0['h+ unfav']=0.11
     self.widths0['k+ fav']   =0.11
     self.widths0['k+ unfav'] =0.11
 
     self.shape1={}
     self.shape1['pi+']=np.zeros((11,5))
+    self.shape1['h+']=np.zeros((11,5))
     self.shape1['k+']=np.zeros((11,5))
 
     self.shape2={}
     self.shape2['pi+']=np.zeros((11,5))
+    self.shape2['h+']=np.zeros((11,5))
     self.shape2['k+']=np.zeros((11,5))
     
     self.widths={}
     self.widths['pi+']=np.ones(11)
+    self.widths['h+']=np.ones(11)
     self.widths['k+'] =np.ones(11)
 
     self.K={}
     self.K['pi+']=np.ones(11)
+    self.K['h+']=np.ones(11)
     self.K['k+'] =np.ones(11)
     self.K['pi-']=np.ones(11)
+    self.K['h-']=np.ones(11)
     self.K['k-'] =np.ones(11)
 
     self.norm={}
@@ -248,6 +269,13 @@ class COLLINS(CORE):
         self.widths['pi+'][i]=np.copy(self.widths0['pi+ unfav'])
 
     for i in range(1,11):
+      if i==1 or i==4:
+        self.widths['h+'][i]=np.copy(self.widths0['h+ fav'])
+      else: 
+        self.widths['h+'][i]=np.copy(self.widths0['h+ unfav'])
+
+        
+    for i in range(1,11):
       if i==1 or i==6:
         self.widths['k+'][i]=np.copy(self.widths0['k+ fav'])
       else: 
@@ -256,13 +284,17 @@ class COLLINS(CORE):
     self.shape1['pi-']=self.pip2pim(self.shape1['pi+'])
     self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
 
+    self.shape1['h-']=self.pip2pim(self.shape1['h+'])
+    self.shape2['h-']=self.pip2pim(self.shape2['h+'])
+    
     self.shape1['k-']=self.kp2km(self.shape1['k+'])
     self.shape2['k-']=self.kp2km(self.shape2['k+'])
 
     self.widths['pi-']=self.pip2pim(self.widths['pi+'])
+    self.widths['h-']=self.pip2pim(self.widths['h+'])
     self.widths['k-']=self.kp2km(self.widths['k+'])
 
-    for hadron in ['pi+','pi-','k+','k-']:
+    for hadron in ['pi+','pi-','h+','h-','k+','k-']:
       self.norm[hadron]=self.get_norm(hadron) 
       self.K[hadron]=self.get_K(1.0,hadron) 
 
