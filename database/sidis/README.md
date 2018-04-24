@@ -29,9 +29,9 @@
 | 2014  | [link][Sivers_HERMES_2009]    | proton   | k-     | AUTsivers  | hermes     | z          |
 | 2015  | [link][AUT_JLAB_2011]    | neutron  | pi+    | AUTsivers  | jlab       | x          |
 | 2016  | [link][AUT_JLAB_2011]    | neutron  | pi-    | AUTsivers  | jlab       | x          |
-| 2017  | [link][AUT_COMPASS_2015]    | proton   | k0     | AUTsivers  | compass    | PT         |
-| 2018  | [link][AUT_COMPASS_2015]    | proton   | k0     | AUTsivers  | compass    | x          |
-| 2019  | [link][AUT_COMPASS_2015]    | proton   | k0     | AUTsivers  | compass    | z          |
+| 2017  | [link][AUT_COMPASS_2014]    | proton   | k0     | AUTsivers  | compass    | PT         |
+| 2018  | [link][AUT_COMPASS_2014]    | proton   | k0     | AUTsivers  | compass    | x          |
+| 2019  | [link][AUT_COMPASS_2014]    | proton   | k0     | AUTsivers  | compass    | z          |
 | 2020  | [link][Sivers_COMPASS_2012]    | proton   | h+     | AUTsivers  | compass    | PT         |
 | 2021  | [link][Sivers_COMPASS_2012]    | proton   | h+     | AUTsivers  | compass    | x          |
 | 2022  | [link][Sivers_COMPASS_2012]    | proton   | h+     | AUTsivers  | compass    | z          |
