@@ -29,9 +29,9 @@
 | 2014  | [link][Sivers_HERMES_2009]    | proton   | k-     | AUTsivers  | hermes     | z          |
 | 2015  | [link][AUT_JLAB_2011]    | neutron  | pi+    | AUTsivers  | jlab       | x          |
 | 2016  | [link][AUT_JLAB_2011]    | neutron  | pi-    | AUTsivers  | jlab       | x          |
-| 2017  | [link][AUT_COMPASS_2015]    | proton   | k0     | AUTsivers  | compass    | PT         |
-| 2018  | [link][AUT_COMPASS_2015]    | proton   | k0     | AUTsivers  | compass    | x          |
-| 2019  | [link][AUT_COMPASS_2015]    | proton   | k0     | AUTsivers  | compass    | z          |
+| 2017  | [link][AUT_COMPASS_2014]    | proton   | k0     | AUTsivers  | compass    | PT         |
+| 2018  | [link][AUT_COMPASS_2014]    | proton   | k0     | AUTsivers  | compass    | x          |
+| 2019  | [link][AUT_COMPASS_2014]    | proton   | k0     | AUTsivers  | compass    | z          |
 | 2020  | [link][Sivers_COMPASS_2012]    | proton   | h+     | AUTsivers  | compass    | PT         |
 | 2021  | [link][Sivers_COMPASS_2012]    | proton   | h+     | AUTsivers  | compass    | x          |
 | 2022  | [link][Sivers_COMPASS_2012]    | proton   | h+     | AUTsivers  | compass    | z          |
@@ -52,6 +52,18 @@
 | 2037  | [link][AUT_COMPASS_2008]    | deuteron | k-     | AUTsivers  | compass    | z          |
 | 2038  | [link][AUT_JLAB_2014]    | neutron  | k+     | AUTsivers  | jlab       | x          |
 | 2039  | [link][AUT_JLAB_2014]    | neutron  | k-     | AUTsivers  | jlab       | x          |
+| 2040  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTsivers  | compass       | PT (z>0.1 2040-2045) |
+| 2041  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTsivers  | compass       | x          |
+| 2042  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTsivers  | compass       | z          |
+| 2043  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTsivers  | compass       | PT          |
+| 2044  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTsivers  | compass       | x          |
+| 2045  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTsivers  | compass       | z          |
+| 2046  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTsivers  | compass       | PT (z>0.2 2046-2051) |
+| 2047  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTsivers  | compass       | x          |
+| 2048  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTsivers  | compass       | z          |
+| 2049  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTsivers  | compass       | PT          |
+| 2050  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTsivers  | compass       | x          |
+| 2051  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTsivers  | compass       | z          |
 | 2500  | [link][?]    | neutron  | pi+    | AUTsivers  | solid      | x          |
 | 2501  | [link][?]    | neutron  | pi-    | AUTsivers  | solid      | x          |
 | 2502  | [link][?]    | proton   | pi+    | AUTsivers  | solid      | x          |
@@ -127,7 +139,7 @@
 [AUT_COMPASS_2014]: http://inspirehep.net/record/1311491
 [Collins_HERMES_2010]: https://inspirehep.net/record/859154
 [Collins_COMPASS_2012]: http://inspirehep.net/record/1115720
-
+[AUT_COMPASS_2016]: https://inspirehep.net/record/1487909
 
 
 
