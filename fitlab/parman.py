@@ -108,13 +108,10 @@ class PARMAN:
     conf['ppdf'].setup() 
   
   def set_ff_params(self):
-    if 'widths0 h+ fav' in conf['params']['ff']:
-      conf['ff'].widths0['h+ fav']=conf['params']['ff']['widths0 h+ fav']['value']
-      conf['ff'].widths0['h+ unfav']=conf['params']['ff']['widths0 h+ unfav']['value']
-    if 'widths0 pi+ fav' in conf['params']['ff']:
+    if 'pi+' in conf['params']['ff']:
       conf['ff'].widths0['pi+ fav']=conf['params']['ff']['widths0 pi+ fav']['value']
       conf['ff'].widths0['pi+ unfav']=conf['params']['ff']['widths0 pi+ unfav']['value']
-    if 'widths0 k+ fav' in conf['params']['ff']:
+    if 'k+' in conf['params']['ff']:
       conf['ff'].widths0['k+ fav']=conf['params']['ff']['widths0 k+ fav']['value']
       conf['ff'].widths0['k+ unfav']=conf['params']['ff']['widths0 k+ unfav']['value']
     conf['ff'].setup() 
@@ -352,11 +349,24 @@ class PARMAN:
       conf['collins'].shape1['k+'][5][3]=conf['params']['collins']['k+ d c 1']['value']
       conf['collins'].shape1['k+'][5][4]=conf['params']['collins']['k+ d d 1']['value']
 
-      conf['collins'].shape1['k+'][6][0]=conf['params']['collins']['k+ u N 1']['value']
-      conf['collins'].shape1['k+'][6][1]=conf['params']['collins']['k+ u a 1']['value']
-      conf['collins'].shape1['k+'][6][2]=conf['params']['collins']['k+ u b 1']['value']
-      conf['collins'].shape1['k+'][6][3]=conf['params']['collins']['k+ u c 1']['value']
-      conf['collins'].shape1['k+'][6][4]=conf['params']['collins']['k+ u d 1']['value']
+      conf['collins'].shape1['k+'][6][0]=conf['params']['collins']['k+ sb N 1']['value']
+      conf['collins'].shape1['k+'][6][1]=conf['params']['collins']['k+ sb a 1']['value']
+      conf['collins'].shape1['k+'][6][2]=conf['params']['collins']['k+ sb b 1']['value']
+      conf['collins'].shape1['k+'][6][3]=conf['params']['collins']['k+ sb c 1']['value']
+      conf['collins'].shape1['k+'][6][4]=conf['params']['collins']['k+ sb d 1']['value']
+
+
+      conf['collins'].shape2['k+'][1][0]=conf['params']['collins']['k+ u N 2']['value']
+      conf['collins'].shape2['k+'][1][1]=conf['params']['collins']['k+ u a 2']['value']
+      conf['collins'].shape2['k+'][1][2]=conf['params']['collins']['k+ u b 2']['value']
+      conf['collins'].shape2['k+'][1][3]=conf['params']['collins']['k+ u c 2']['value']
+      conf['collins'].shape2['k+'][1][4]=conf['params']['collins']['k+ u d 2']['value']
+  
+      conf['collins'].shape2['k+'][6][0]=conf['params']['collins']['k+ sb N 2']['value']
+      conf['collins'].shape2['k+'][6][1]=conf['params']['collins']['k+ sb a 2']['value']
+      conf['collins'].shape2['k+'][6][2]=conf['params']['collins']['k+ sb b 2']['value']
+      conf['collins'].shape2['k+'][6][3]=conf['params']['collins']['k+ sb c 2']['value']
+      conf['collins'].shape2['k+'][6][4]=conf['params']['collins']['k+ sb d 2']['value']
 
     conf['collins'].setup() 
 

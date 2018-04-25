@@ -50,51 +50,57 @@ conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.3406265568744024641
 conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.87915286213150012351e-01>>,'fixed':True,'min':0,'max':1} 
 
 conf['params']['collins']={}
-conf['params']['collins']['widths0 k+ fav']     = {'value':<<    3.71244211144534763669e-01>>,'fixed':False,'min':1e-5,'max':1}
-conf['params']['collins']['widths0 k+ unfav']   = {'value':<<    3.13911942959768652806e-01>>,'fixed':False,'min':1e-5,'max':2}
+conf['params']['collins']['widths0 k+ fav']     = {'value':<<    1.34062655687440246410e-01>>,'fixed':False,'min':1e-5,'max':1.34062655687440246410e-01}
+conf['params']['collins']['widths0 k+ unfav']   = {'value':<<    1.34512680276650004041e-01>>,'fixed':False,'min':1e-5,'max':1.87915286213150012351e-01}
 
-conf['params']['collins']['k+ u N 1']  = {'value':<<    4.61030436110998920185e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['collins']['k+ u a 1']  = {'value':<<    3.16269974898406269759e+00>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['collins']['k+ u b 1']  = {'value':<<    5.29693687388119904824e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['collins']['k+ u N 1']  = {'value':<<   -9.27792252223626351393e-02>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['collins']['k+ u a 1']  = {'value':<<    3.05222526131174287656e-01>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['k+ u b 1']  = {'value':<<    2.35998898485642438771e+00>> ,'fixed':False,'min':1e-5,'max':10}
 conf['params']['collins']['k+ u c 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['k+ u d 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-conf['params']['collins']['k+ d N 1']  = {'value':<<   -1.28873046328637136382e-01>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['collins']['k+ d a 1']  = {'value':<<    9.54509898128390599226e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['collins']['k+ d b 1']  = {'value':<<    2.95958582064559028169e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['collins']['k+ u N 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['k+ u a 2']  = {'value':<<    1.21696249480095164408e+00>> ,'fixed':True,'min':-1,'max':5}
+conf['params']['collins']['k+ u b 2']  = {'value':<<    6.68147670605282328893e+00>> ,'fixed':True,'min':1e-5,'max':10}
+conf['params']['collins']['k+ u c 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['k+ u d 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+
+conf['params']['collins']['k+ d N 1']  = {'value':<<   -1.49537022708037779795e-02>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['collins']['k+ d a 1']  = {'value':<<    3.93293317123139063440e+00>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['k+ d b 1']  = {'value':<<    3.59807119758533300313e+00>> ,'fixed':False,'min':1e-5,'max':10}
 conf['params']['collins']['k+ d c 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['k+ d d 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-#conf['params']['collins']['k+ u N 2']  = {'value':<<    2.11150078306284516572e+00>> ,'fixed':False,'min':-10,'max':10}
-#conf['params']['collins']['k+ u a 2']  = {'value':<<    2.71508421683099232524e+00>> ,'fixed':False,'min':-1,'max':5}
-#conf['params']['collins']['k+ u b 2']  = {'value':<<    2.75387728005980081392e+00>> ,'fixed':False,'min':1e-5,'max':10}
-#conf['params']['collins']['k+ u c 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-#conf['params']['collins']['k+ u d 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-
-conf['params']['collins']['k+ sb N 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['collins']['k+ sb a 1']  = {'value':<<   -3.74873700401006981764e-01>> ,'fixed':True,'min':-3,'max':5}
-conf['params']['collins']['k+ sb b 1']  = {'value':<<    9.42469260617111004308e-01>> ,'fixed':True,'min':1e-5,'max':10}
+conf['params']['collins']['k+ sb N 1']  = {'value':<<    4.17222210491661249510e-01>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['collins']['k+ sb a 1']  = {'value':<<    2.88609314237879299725e+00>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['k+ sb b 1']  = {'value':<<    1.44296183798826760381e+00>> ,'fixed':False,'min':1e-5,'max':10}
 conf['params']['collins']['k+ sb c 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['k+ sb d 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    7.05856093163688691483e-02>>,'fixed':False,'min':1e-5,'max':1}
-conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    7.80027450772364572273e-01>>,'fixed':False,'min':1e-5,'max':2}
+conf['params']['collins']['k+ sb N 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['k+ sb a 2']  = {'value':<<    1.21696249480095164408e+00>> ,'fixed':True,'min':-1,'max':5}
+conf['params']['collins']['k+ sb b 2']  = {'value':<<    6.68147670605282328893e+00>> ,'fixed':True,'min':1e-5,'max':10}
+conf['params']['collins']['k+ sb c 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['k+ sb d 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-conf['params']['collins']['pi+ u N 1']  = {'value':<<    2.66419906235380565818e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['collins']['pi+ u a 1']  = {'value':<<    9.14965395468798847745e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['collins']['pi+ u b 1']  = {'value':<<    5.05907710815782518665e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    1.01911522797694012454e-01>>,'fixed':False,'min':1e-5,'max':1.15151579728561548333e-01}
+conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    6.92506481906012411054e-02>>,'fixed':False,'min':1e-5,'max':1.36784756168045196212e-01}
+
+conf['params']['collins']['pi+ u N 1']  = {'value':<<    4.58134401598411178380e-01>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['collins']['pi+ u a 1']  = {'value':<<    2.92113344293072429991e+00>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['pi+ u b 1']  = {'value':<<    3.97942599186246015464e+00>> ,'fixed':False,'min':1e-5,'max':10}
 conf['params']['collins']['pi+ u c 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ u d 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-conf['params']['collins']['pi+ u N 2']  = {'value':<<    3.11593975714959103840e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['collins']['pi+ u a 2']  = {'value':<<   -6.33123678789557331470e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['collins']['pi+ u b 2']  = {'value':<<    4.78411997916230724570e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['collins']['pi+ u N 2']  = {'value':<<   -7.78740867591873331399e-01>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['collins']['pi+ u a 2']  = {'value':<<    2.23855897120439584214e+00>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['collins']['pi+ u b 2']  = {'value':<<    1.72725183688345795829e+00>> ,'fixed':False,'min':1e-5,'max':10}
 conf['params']['collins']['pi+ u c 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ u d 2']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-conf['params']['collins']['pi+ d N 1']  = {'value':<<   -1.70916914256227214786e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['collins']['pi+ d a 1']  = {'value':<<    1.62481664838415840180e+00>> ,'fixed':False,'min':-3,'max':5}
-conf['params']['collins']['pi+ d b 1']  = {'value':<<    1.78083908044923333591e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['collins']['pi+ d N 1']  = {'value':<<    1.20694495562378056874e+00>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['collins']['pi+ d a 1']  = {'value':<<   -1.27521547260043188743e+00>> ,'fixed':False,'min':-3,'max':5}
+conf['params']['collins']['pi+ d b 1']  = {'value':<<    3.96759658886458410620e+00>> ,'fixed':False,'min':1e-5,'max':10}
 conf['params']['collins']['pi+ d c 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ d d 1']  = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
