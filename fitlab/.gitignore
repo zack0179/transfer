@@ -4,3 +4,9 @@ runs/*
 more/*
 outputs/*
 .ipynb_checkpoints
+
+# profiling files
+*.lprof
+*.prof
+*.profile
+
