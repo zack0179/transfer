@@ -66,6 +66,8 @@ class STFUNCS:
     self.D[21]={'k1':'pretzelosity','k2':'collins'}
     self.D[22] ={'k1':'pdf','k2':'ff'}
 
+    if 'basis' not in conf: conf['basis']='default'
+
   def get_K(self,i,x,Q2,z,pT,wq,k1,k2,target,hadron):
     if   i==1: return x
     elif i==2: return 0
@@ -96,6 +98,20 @@ class STFUNCS:
   def get_gauss(self,z,pT,wq):
     return np.exp(-pT**2/wq)/(np.pi*wq)
 
+  def combine(self,K,F,D,gauss):
+    if conf['basis'] == 'default':
+      return np.sum(self.e2*K*F*D*gauss)
+    elif conf['basis']=='valence':
+      # g  u ub  d db  s sb  c cb  b bb
+      # 0  1  2  3  4  5  6  7  8  9 10
+      #return np.sum(self.e2*K*F*D*gauss)
+      _F=np.copy(F)
+      _F[1]-=_F[2]
+      _F[3]-=_F[4]
+      out=np.sum(self.e2*K*_F*D*gauss)
+      out+=self.e2[1]*_F[2]*D[1]*gauss[4]+self.e2[3]*_F[4]*D[3]*gauss[2]
+      return out
+
   def get_FX(self,i,x,z,Q2,pT,target,hadron):
     k1=self.D[i]['k1']
     k2=self.D[i]['k2']
@@ -106,7 +122,8 @@ class STFUNCS:
     wq=self.get_wq(z,k1,k2,target,hadron)
     gauss=self.get_gauss(z,pT,wq) 
     K=self.get_K(i,x,Q2,z,pT,wq,k1,k2,target,hadron)
-    return np.sum(self.e2*K*F*D*gauss)
+    #return np.sum(self.e2*K*F*D*gauss)
+    return self.combine(K,F,D,gauss)
 
   def dcs(self,x,Q2,y,z,pT,sangle,hangle,target,hadron):
     coupling=1.0/137
