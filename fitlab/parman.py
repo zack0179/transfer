@@ -97,26 +97,38 @@ class PARMAN:
     if 'pretzelosity' in semaphore and semaphore['pretzelosity']==1:  self.set_pretzelosity_params()
     if 'soft' in semaphore and semaphore['soft']==1: self.set_soft_params()
 
+  def set_constraits(self,parkind):
+
+    for k in conf['params'][parkind]:
+      if conf['params'][parkind][k]['fixed']==True: continue
+      if conf['params'][parkind][k]['fixed']==False: continue
+      ref_par=conf['params'][parkind][k]['fixed']
+      conf['params'][parkind][k]['value']=conf['params'][parkind][ref_par]['value']
+
   def set_pdf_params(self):
+    self.set_constraits('pdf')
     conf['pdf'].widths0['valence']=conf['params']['pdf']['widths0 valence']['value']
     conf['pdf'].widths0['sea']=conf['params']['pdf']['widths0 sea']['value']
     conf['pdf'].setup() 
 
   def set_ppdf_params(self):
+    self.set_constraits('ppdf')
     conf['ppdf'].widths0['valence']=conf['params']['ppdf']['widths0 valence']['value']
     conf['ppdf'].widths0['sea']=conf['params']['ppdf']['widths0 sea']['value']
     conf['ppdf'].setup() 
   
   def set_ff_params(self):
-    if 'pi+' in conf['params']['ff']:
+    self.set_constraits('ff')
+    if 'widths0 pi+ fav' in conf['params']['ff']:
       conf['ff'].widths0['pi+ fav']=conf['params']['ff']['widths0 pi+ fav']['value']
       conf['ff'].widths0['pi+ unfav']=conf['params']['ff']['widths0 pi+ unfav']['value']
-    if 'k+' in conf['params']['ff']:
+    if 'widths0 k+ fav' in conf['params']['ff']:
       conf['ff'].widths0['k+ fav']=conf['params']['ff']['widths0 k+ fav']['value']
       conf['ff'].widths0['k+ unfav']=conf['params']['ff']['widths0 k+ unfav']['value']
     conf['ff'].setup() 
 
   def set_sivers_params(self):
+    self.set_constraits('sivers')
 
     conf['sivers'].widths0['valence']=conf['params']['sivers']['widths0 valence']['value']
     conf['sivers'].widths0['sea']=conf['params']['sivers']['widths0 sea']['value']
@@ -160,6 +172,8 @@ class PARMAN:
     conf['sivers'].setup() 
 
   def set_transversity_params(self):
+    self.set_constraits('transversity')
+
     conf['transversity'].widths0['valence']=conf['params']['transversity']['widths0 valence']['value']
     conf['transversity'].widths0['sea']=conf['params']['transversity']['widths0 sea']['value']
 
@@ -207,6 +221,7 @@ class PARMAN:
     value of the s quark parameters. 
     '''
 
+    self.set_constraits('boermulders')
     conf['boermulders'].widths0['valence']=conf['params']['boermulders']['widths0 valence']['value']
     conf['boermulders'].widths0['sea']=conf['params']['boermulders']['widths0 sea']['value']
     conf['boermulders'].shape['p'][1][0]=conf['params']['boermulders']['u N']['value']
@@ -235,6 +250,7 @@ class PARMAN:
     value of the s quark parameters. 
     '''
 
+    self.set_constraits('pretzelosity')
     conf['pretzelosity'].widths0['valence']=conf['params']['pretzelosity']['widths0 valence']['value']
     conf['pretzelosity'].widths0['sea']=conf['params']['pretzelosity']['widths0 sea']['value']
     conf['pretzelosity'].shape['p'][1][0]=conf['params']['pretzelosity']['u N']['value']
@@ -259,6 +275,7 @@ class PARMAN:
 
   def set_collins_params(self):
 
+    self.set_constraits('collins')
     if 'pi+ u N 1' in conf['params']['collins']: 
 
       conf['collins'].widths0['pi+ fav']     = conf['params']['collins']['widths0 pi+ fav']['value']
