@@ -55,12 +55,12 @@ conf['basis']='valence'
 conf['params']={}
 
 conf['params']['pdf']={}
-conf['params']['pdf']['widths0 valence']  = {'value':<<    6.69376617782450544780e+00>>,'fixed':False,'min':0,'max':1}
-conf['params']['pdf']['widths0 sea']      = {'value':<<    9.02650040509450746207e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['pdf']['widths0 valence']  = {'value':<<    5.93088113927334625863e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['pdf']['widths0 sea']      = {'value':<<    6.25100922124211866304e-01>>,'fixed':False,'min':0,'max':1}
 
 conf['params']['ff']={}
-conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    5.59079484034325515661e-08>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.08031175236472570811e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.14889636144469120538e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.36874759499704290455e-01>>,'fixed':False,'min':0,'max':1}
 conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.34062655687440218655e-01>>,'fixed':True,'min':0,'max':1}
 conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.87915286213149984595e-01>>,'fixed':True,'min':0,'max':1}
 

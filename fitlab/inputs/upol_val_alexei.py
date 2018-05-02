@@ -22,30 +22,6 @@ conf['num points factor']=10
 
 
 ############################################################################
-# paths to external
-
-conf['path2CJ'] ='../external/CJLIB'
-conf['path2LSS']='../external/LSSLIB'
-conf['path2DSS']='../external/DSSLIB'
-
-############################################################################
-# params
-
-conf['params']={}
-
-conf['params']['pdf']={}
-conf['params']['pdf']['widths0 valence']  = {'value':<<    5.23508703744966830129e-01>>,'fixed':False,'min':0,'max':10}
-conf['params']['pdf']['widths0 sea']      = {'value':<<    5.78733857240026239310e-01>>,'fixed':False,'min':0,'max':10}
-
-conf['params']['ff']={}
-conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.24073130491562877431e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.43621984397136914779e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.34348931138761895632e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.99645490295190630725e-01>>,'fixed':False,'min':0,'max':1}
-
-
-
-############################################################################
 # set data sets
 
 conf['datasets']={}
@@ -58,9 +34,7 @@ conf['datasets']['sidis']={}
 conf['datasets']['sidis']['filters']={}
 conf['datasets']['sidis']['filters'][0]={}
 conf['datasets']['sidis']['filters'][0]['idx']=[1000,1001,1004,1005,1002,1003,1006,1007]
-#conf['datasets']['sidis']['filters'][0]['filter']="z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9" # npts    = 978 chi2    = 1206.873681
-#conf['datasets']['sidis']['filters'][0]['filter']="z>0.2 and z<0.6 and Q2>1.69 and (pT/z)**2<0.25*Q2" # rapidity Gunar wrote z< 0.2 and z>0.8 are padding bins
-conf['datasets']['sidis']['filters'][0]['filter']="Q2>1.69 and z>0.2 and z<0.6 and pT>0.2 and pT<0.9" 
+conf['datasets']['sidis']['filters'][0]['filter']="z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9" # npts    = 978 chi2    = 1206.873681
 
 conf['datasets']['sidis']['xlsx']={}
 
@@ -77,6 +51,23 @@ conf['datasets']['sidis']['xlsx'][1007]='../database/sidis/expdata/1007.xlsx'  #
 conf['datasets']['sidis']['norm']={}
 for k in conf['datasets']['sidis']['xlsx']: conf['datasets']['sidis']['norm'][k]={'value':1,'fixed':True,'min':0,'max':1} 
 
+############################################################################
+# params
+
+conf['basis']='valence'
+
+
+conf['params']={}
+
+conf['params']['pdf']={}
+conf['params']['pdf']['widths0 valence']  = {'value':<<    5.75483677159601580975e-01>>,'fixed':True,'min':0,'max':1}
+conf['params']['pdf']['widths0 sea']      = {'value':<<    6.30400014642998662850e-01>>,'fixed':True,'min':0,'max':1}
+
+conf['params']['ff']={}
+conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.16456890374787902509e-01>>,'fixed':True,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.37021893867207644746e-01>>,'fixed':True,'min':0,'max':1}
+conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.32443065142343607832e-01>>,'fixed':True,'min':0,'max':1}
+conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.85469819652109901842e-01>>,'fixed':True,'min':0,'max':1}
 
 
 

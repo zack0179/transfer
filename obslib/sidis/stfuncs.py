@@ -108,8 +108,9 @@ class STFUNCS:
       _F=np.copy(F)
       _F[1]-=_F[2]
       _F[3]-=_F[4]
-      out=np.sum(self.e2*K*_F*D*gauss)
-      out+=self.e2[1]*_F[2]*D[1]*gauss[4]+self.e2[3]*_F[4]*D[3]*gauss[2]
+      out=np.sum(self.e2*_F*D*gauss)
+      out+=self.e2[1]*_F[2]*D[1]*gauss[1]+self.e2[3]*_F[4]*D[3]*gauss[3]
+      out *= K
       return out
 
   def get_FX(self,i,x,z,Q2,pT,target,hadron):
