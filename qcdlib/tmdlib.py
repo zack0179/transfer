@@ -100,6 +100,7 @@ class CORE:
 class PDF(CORE):
 
   def __init__(self):
+    if 'basis' not in conf: conf['basis']='default'
     self.aux=conf['aux']
     self.set_default_params()
     self.setup()
