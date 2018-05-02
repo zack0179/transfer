@@ -25,18 +25,19 @@ conf['num points factor']=10
  
 ############################################################################
 # params
+conf['basis']='default'
 
 conf['params']={}
 
 conf['params']['pdf']={}
-conf['params']['pdf']['widths0 valence']  = {'value':<<    5.75483677159601580975e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['pdf']['widths0 sea']      = {'value':<<    6.30400014642998662850e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['pdf']['widths0 valence']  = {'value':<<    5.75418240211457820976e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['pdf']['widths0 sea']      = {'value':<<    6.30535707461141070596e-01>>,'fixed':False,'min':0,'max':1}
 
 conf['params']['ff']={}
-conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.16456890374787902509e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.37021893867207644746e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.32443065142343607832e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.85469819652109901842e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.16464053204002493391e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.37029936320591183563e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.32408527214641857928e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.85490734511449040234e-01>>,'fixed':False,'min':0,'max':1}
 
 ############################################################################
 # set data sets

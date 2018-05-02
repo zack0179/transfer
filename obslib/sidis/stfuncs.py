@@ -109,7 +109,7 @@ class STFUNCS:
       _F[1]-=_F[2]
       _F[3]-=_F[4]
       out=np.sum(self.e2*_F*D*gauss)
-      out+=self.e2[1]*_F[2]*D[1]*gauss[1]+self.e2[3]*_F[4]*D[3]*gauss[3]
+      out+=self.e2[1]*_F[2]*D[1]*gauss[2]+self.e2[3]*_F[4]*D[3]*gauss[4]
       out *= K
       return out
 

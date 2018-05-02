@@ -107,8 +107,13 @@ class PARMAN:
 
   def set_pdf_params(self):
     self.set_constraits('pdf')
-    conf['pdf'].widths0['valence']=conf['params']['pdf']['widths0 valence']['value']
-    conf['pdf'].widths0['sea']=conf['params']['pdf']['widths0 sea']['value']
+    if conf['basis'] == 'default':
+      conf['pdf'].widths0['valence']=conf['params']['pdf']['widths0 valence']['value']
+      conf['pdf'].widths0['sea']=conf['params']['pdf']['widths0 sea']['value']
+    elif conf['basis'] == 'valence':  
+      conf['pdf'].widths0['uv']=conf['params']['pdf']['widths0 uv']['value']
+      conf['pdf'].widths0['dv']=conf['params']['pdf']['widths0 dv']['value']
+      conf['pdf'].widths0['sea']=conf['params']['pdf']['widths0 sea']['value']
     conf['pdf'].setup() 
 
   def set_ppdf_params(self):

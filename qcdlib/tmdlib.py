@@ -107,8 +107,13 @@ class PDF(CORE):
   def set_default_params(self):
 
     self.widths0={}
-    self.widths0['valence']=0.3
-    self.widths0['sea']=0.3
+    if conf['basis'] == 'default':
+      self.widths0['valence']=0.3
+      self.widths0['sea']=0.3
+    if conf['basis'] == 'valence':
+      self.widths0['uv']=0.3
+      self.widths0['dv']=0.3
+      self.widths0['sea']=0.3
 
     self.widths={}
     self.widths['p']=np.ones(11)
@@ -118,13 +123,22 @@ class PDF(CORE):
     self.K['n']=np.ones(11)
 
   def setup(self):
-    for i in range(11):
-      if i==1 or i==3:
-        self.widths['p'][i]=self.widths0['valence']
-      else:
-        self.widths['p'][i]=self.widths0['sea']
-
-    self.widths['n']=self.p2n(self.widths['p'])
+    if conf['basis'] == 'default':
+      for i in range(11):
+        if i==1 or i==3:
+          self.widths['p'][i]=self.widths0['valence']
+        else:
+          self.widths['p'][i]=self.widths0['sea']
+      self.widths['n']=self.p2n(self.widths['p'])
+    elif conf['basis'] == 'valence':
+      for i in range(11):
+        if i==1:
+          self.widths['p'][i]=self.widths0['uv']
+        if i==3:
+          self.widths['p'][i]=self.widths0['dv']
+        else:
+          self.widths['p'][i]=self.widths0['sea']
+      self.widths['n']=self.p2n(self.widths['p'])
 
   def get_C(self,x,Q2,target='p'):
     C=conf['_pdf'].get_f(x,Q2)
@@ -567,6 +581,7 @@ class WORMGEARH(CORE):
         self.widths['p'][i]=self.widths0['valence']
       else:
         self.widths['p'][i]=self.widths0['sea']
+
     self.widths['n']=self.p2n(self.widths['p'])
 
   def trans(self,i,x,Q2,target):
