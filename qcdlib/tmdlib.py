@@ -135,7 +135,7 @@ class PDF(CORE):
       for i in range(11):
         if i==1:
           self.widths['p'][i]=self.widths0['uv']
-        if i==3:
+        elif i==3:
           self.widths['p'][i]=self.widths0['dv']
         else:
           self.widths['p'][i]=self.widths0['sea']
