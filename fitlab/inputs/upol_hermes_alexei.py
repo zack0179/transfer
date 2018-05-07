@@ -22,26 +22,23 @@ conf['num points factor']=10
 
 
 ############################################################################
-# paths to external
-
-conf['path2CJ'] ='../external/CJLIB'
-conf['path2LSS']='../external/LSSLIB'
-conf['path2DSS']='../external/DSSLIB'
-
+ 
 ############################################################################
 # params
 
 conf['params']={}
+conf['basis']='default'
+
 
 conf['params']['pdf']={}
-conf['params']['pdf']['widths0 valence']  = {'value':<<    5.23539918849998286987e-01>>,'fixed':False,'min':0,'max':10}
-conf['params']['pdf']['widths0 sea']      = {'value':<<    5.79236316159216002575e-01>>,'fixed':False,'min':0,'max':10}
+conf['params']['pdf']['widths0 valence']  = {'value':<<    5.23523918223824935581e-01>>,'fixed':False,'min':0,'max':10}
+conf['params']['pdf']['widths0 sea']      = {'value':<<    5.79273020469429411605e-01>>,'fixed':False,'min':0,'max':10}
 
 conf['params']['ff']={}
-conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.24066109541097757685e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.43607205474450716487e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.34327906715348388555e-01>>,'fixed':False,'min':0,'max':1}
-conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.99544286058903397318e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.24066193903772603591e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.43611123581781130465e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 k+ fav']    = {'value':<<    1.34331864217538732298e-01>>,'fixed':False,'min':0,'max':1}
+conf['params']['ff']['widths0 k+ unfav']  = {'value':<<    1.99535003651564291083e-01>>,'fixed':False,'min':0,'max':1}
 
 
 
