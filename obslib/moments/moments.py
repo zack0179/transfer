@@ -32,15 +32,19 @@ class MOMENTS:
 
   def get_flav(self,flav):
     shape=conf['transversity'].shape['p']
-    if flav=='u': return self.get_moment(shape[1])
-    if flav=='d': return self.get_moment(shape[3])
-    if flav=='uv': return self.get_moment(shape[1])-self.get_moment(shape[2])
-    if flav=='dv': return self.get_moment(shape[3])-self.get_moment(shape[4])
+    if flav=='u': return self.get_moment(shape[1])-self.get_moment(shape[2])
+    if flav=='d': return self.get_moment(shape[3])-self.get_moment(shape[4])
+    #if flav=='uv': return self.get_moment(shape[1])-self.get_moment(shape[2])
+    #if flav=='dv': return self.get_moment(shape[3])-self.get_moment(shape[4])
+    if flav=='s': return self.get_moment(shape[5])-self.get_moment(shape[6])
+    if flav=='c': return self.get_moment(shape[7])-self.get_moment(shape[8])
 
   def get_gT(self):
     shape=conf['transversity'].shape['p']
-    mom_u=self.get_moment(shape[1])
-    mom_d=self.get_moment(shape[3])
+    #mom_u=self.get_moment(shape[1])
+    #mom_d=self.get_moment(shape[3])
+    mom_u=self.get_flav('u')
+    mom_d=self.get_flav('d')   
     return mom_u - mom_d
 
 if __name__=='__main__':
