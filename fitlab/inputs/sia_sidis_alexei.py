@@ -11,12 +11,10 @@ conf['sample size']= 10000
 
 ############################################################################
 # resouce allocation
-
-conf['ncpus']=1
+conf['ncpus']=4
 
 ############################################################################
 # maxlike setup
-
 conf['screen mode']='plain'
 #conf['screen mode']='curses'
 
@@ -30,11 +28,6 @@ conf['kde bw']=None
 conf['num points factor']=10
 
 ############################################################################
-# paths to external
-
-conf['path2CJ'] ='../external/CJLIB'
-conf['path2LSS']='../external/LSSLIB'
-conf['path2DSS']='../external/DSSLIB'
 
 ############################################################################
 # params
@@ -44,29 +37,31 @@ conf['shape'] = 1
 conf['params']={}
 
 conf['params']['ff']={}
-conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.15151579728561548333e-01>>,'fixed':True,'min':0,'max':1}
-conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.36784756168045196212e-01>>,'fixed':True,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ fav']   = {'value':<<    1.24049999999999993605e-01>>,'fixed':True,'min':0,'max':1}
+conf['params']['ff']['widths0 pi+ unfav'] = {'value':<<    1.43729999999999996652e-01>>,'fixed':True,'min':0,'max':1}
+conf['params']['ff']['widths0 k+ fav']   = {'value':<<    1.33839999999999986757e-01>>,'fixed':True,'min':0,'max':1}
+conf['params']['ff']['widths0 k+ unfav'] = {'value':<<    2.02660000000000006803e-01>>,'fixed':True,'min':0,'max':1}
+
 
 conf['params']['collins']={}
-conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    7.16088644027707138529e-02>>,'fixed':False,'min':0.05,'max':0.1}
-conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    7.64900000000000024336e-02>>,'fixed':'widths0 pi+ fav','min':1e-5,'max':0.2}
-#conf['params']['collins']['widths0 pi+ unfav']   = {'value':0.07649,'fixed':False,'min':1e-5,'max':0.2}
-conf['params']['collins']['pi+ u N 1']  = {'value':<<    1.50999040267757678180e-01>>,'fixed':False,'min':0,'max':4}
-conf['params']['collins']['pi+ u a 1']  = {'value':<<   -2.36500822511993646913e+00>>,'fixed':False,'min':-0.5,'max':0}
-conf['params']['collins']['pi+ u b 1']  = {'value':<<    3.35753465549151108860e+00>>,'fixed':False,'min':3.,'max':7.}
+conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    7.89948325614949486972e-02>>,'fixed':False,'min':0.05,'max':1.24049999999999993605e-01}
+conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    8.71471547299302318201e-02>>,'fixed':False,'min':1e-5,'max':1.43729999999999996652e-01}
+conf['params']['collins']['pi+ u N 1']  = {'value':<<    5.81920635737186442427e-01>>,'fixed':False,'min':0,'max':4}
+conf['params']['collins']['pi+ u a 1']  = {'value':<<   -1.87181074968330851682e+00>>,'fixed':False,'min':-2.5,'max':0}
+conf['params']['collins']['pi+ u b 1']  = {'value':<<    4.20468423590315865113e+00>>,'fixed':False,'min':3.,'max':7.}
 
-conf['params']['collins']['pi+ d N 1']  = {'value':<<   -6.70999855356498309256e-02>>,'fixed':False,'min':-15,'max':-4}
-conf['params']['collins']['pi+ d a 1']  = {'value':<<   -1.90807656857974383691e+00>>,'fixed':False,'min': 0.,'max':4.5}
-conf['params']['collins']['pi+ d b 1']  = {'value':<<    8.30921249196972633300e-01>>,'fixed':False,'min':2.5,'max':3.8}
+conf['params']['collins']['pi+ d N 1']  = {'value':<<   -5.48621948929032665632e+00>>,'fixed':False,'min':-15,'max':-4}
+conf['params']['collins']['pi+ d a 1']  = {'value':<<    2.36383924138170131712e+00>>,'fixed':False,'min': 0.,'max':4.5}
+conf['params']['collins']['pi+ d b 1']  = {'value':<<    3.16862990104727071383e+00>>,'fixed':False,'min':2.5,'max':3.8}
 
 conf['params']['collins']['pi+ u c 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ d c 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ u d 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 conf['params']['collins']['pi+ d d 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 
-conf['params']['collins']['pi+ u N 2']  = {'value':<<    1.08440286762981396168e+06>>,'fixed':False,'min':1,'max':12}
-conf['params']['collins']['pi+ u a 2']  = {'value':<<    1.76925021445799757203e+01>>,'fixed':False,'min':1,'max':10}
-conf['params']['collins']['pi+ u b 2']  = {'value':<<    9.51040297848325444363e+00>>,'fixed':False,'min':3,'max':5}
+conf['params']['collins']['pi+ u N 2']  = {'value':<<    6.98282163568065250558e+00>>,'fixed':False,'min':1,'max':12}
+conf['params']['collins']['pi+ u a 2']  = {'value':<<    7.50302100023152718222e+00>>,'fixed':False,'min':1,'max':10}
+conf['params']['collins']['pi+ u b 2']  = {'value':<<    3.00000000000000000000e+00>>,'fixed':False,'min':3,'max':5}
 
 conf['params']['collins']['pi+ d N 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-20,'max':0}
 conf['params']['collins']['pi+ d a 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-1,'max':5}
@@ -78,14 +73,14 @@ conf['params']['collins']['pi+ d d 2']  = {'value':<<    0.00000000000000000000e
 
 
 conf['params']['transversity']={}
-conf['params']['transversity']['widths0 valence'] = {'value':<<    5.29540329452741875826e-01>>,'fixed':False,'min':1e-5,'max':2}
-conf['params']['transversity']['widths0 sea']     = {'value':<<    4.04126169244575006445e-01>>,'fixed':True,'min':1e-5,'max':2}
-conf['params']['transversity']['u N']             = {'value':<<    5.28633964690607083270e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['transversity']['u a']             = {'value':<<    5.65615717841445597713e-01>> ,'fixed':False,'min':-1,'max':10}
-conf['params']['transversity']['u b']             = {'value':<<    3.35151902380127530989e+00>> ,'fixed':False,'min':1e-5,'max':10}
-conf['params']['transversity']['d N']             = {'value':<<   -4.61667050259396845036e+01>> ,'fixed':False,'min':-20,'max':20}
-conf['params']['transversity']['d a']             = {'value':<<    9.54384073769761198669e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['transversity']['d b']             = {'value':<<    7.77586710157993010739e+00>> ,'fixed':False,'min':1e-5,'max':20}
+conf['params']['transversity']['widths0 valence'] = {'value':<<    5.24140000000000050306e-01>>,'fixed':False,'min':1e-5,'max':0.52414}
+conf['params']['transversity']['widths0 sea']     = {'value':<<    4.04126169244575006445e-01>>,'fixed':True,'min':1e-5,'max':0.58465}
+conf['params']['transversity']['u N']             = {'value':<<    6.68767013412672195471e+00>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['transversity']['u a']             = {'value':<<    6.89005967986425549299e-01>> ,'fixed':False,'min':-1,'max':10}
+conf['params']['transversity']['u b']             = {'value':<<    4.39279905410814031086e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['transversity']['d N']             = {'value':<<   -1.48315773055624049448e+01>> ,'fixed':False,'min':-20,'max':20}
+conf['params']['transversity']['d a']             = {'value':<<    5.86780058432668560897e-01>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['transversity']['d b']             = {'value':<<    3.88085188633216127130e+00>> ,'fixed':False,'min':1e-5,'max':20}
 conf['params']['transversity']['s N']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 conf['params']['transversity']['s a']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-1,'max':5}
 conf['params']['transversity']['s b']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':1e-5,'max':10}
@@ -137,7 +132,7 @@ conf['datasets']['sidis']['filters']={}
 
 conf['datasets']['sidis']['filters'][0]={}
 conf['datasets']['sidis']['filters'][0]['idx']=[4001,4000,4002,4004,4003,4005,3027,3025,3010,3012,3005,3013,3026,3000,3003,3016,3004,3018]
-conf['datasets']['sidis']['filters'][0]['filter']="z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9"
+conf['datasets']['sidis']['filters'][0]['filter']="z>0.2 and z<0.6 and Q2>1.69 and pT>0.2 and pT<0.9"
 
 #conf["datasets"]["sidis"]["xlsx"][4007]="../database/sidis/expdata/4007.xlsx"  #  compass  deuteron   k+   pT
 #conf["datasets"]["sidis"]["xlsx"][4006]="../database/sidis/expdata/4006.xlsx"  #  compass  deuteron   k+    x
