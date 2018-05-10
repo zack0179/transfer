@@ -466,10 +466,12 @@ def example2():
 
   print 
   print 'Nested Sampling:'
-  conf={}
+  #  conf={}
+
+  from tools.config import conf
   conf['nll'] = nll
   conf['par lims'] =[[-20,20],[-20,20]]
-  conf['tol']=1e-4
+  conf['tol']=1e-2
   conf['num points'] = 100
 
 
@@ -480,8 +482,9 @@ def example2():
   #conf['kde bw']=None
   ##conf['itmax']=None
 
-  conf['sample size']= N
-  print 'N=',N
+  conf['sample size']= 20
+  conf['data size']= 20
+  print 'N=', 20
   NEST(conf).run()
 
   #print 
@@ -494,7 +497,7 @@ def example2():
 
 if __name__=='__main__':
 
-  example1()
+  example2()
 
 
 
