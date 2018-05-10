@@ -27,8 +27,15 @@ class MOMENTS:
     return gamma(a)*gamma(b)/gamma(a+b)
 
   def get_moment(self,params):
-    N,a,b,c,d=params
-    return N*(self.beta(1+a,b+1)+c*self.beta(1+0.5+a,b+1)+d*self.beta(1+1+a,b+1))
+
+    if conf['shape']==0:
+      N,a,b,c,d=params
+      return N*(self.beta(1+a,b+1)+c*self.beta(1+0.5+a,b+1)+d*self.beta(1+1+a,b+1))
+
+    if conf['shape']==1:
+      p=params
+      norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
+      return (self.beta(1+a,b+1)+c*self.beta(1+0.5+a,b+1)+d*self.beta(1+1+a,b+1))/norm
 
   def get_flav(self,flav):
     shape=conf['transversity'].shape['p']
