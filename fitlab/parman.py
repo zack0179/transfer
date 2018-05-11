@@ -182,37 +182,38 @@ class PARMAN:
     conf['transversity'].widths0['valence']=conf['params']['transversity']['widths0 valence']['value']
     conf['transversity'].widths0['sea']=conf['params']['transversity']['widths0 sea']['value']
 
-    conf['transversity'].shape['p'][1][0]=conf['params']['transversity']['u N']['value']
+    conf['transversity'].shape['p'][1][0]=conf['params']['transversity']['u N']['value'] #u
     conf['transversity'].shape['p'][1][1]=conf['params']['transversity']['u a']['value']
     conf['transversity'].shape['p'][1][2]=conf['params']['transversity']['u b']['value']
     conf['transversity'].shape['p'][1][3]=conf['params']['transversity']['u c']['value']
     conf['transversity'].shape['p'][1][4]=conf['params']['transversity']['u d']['value']
 
-    conf['transversity'].shape['p'][3][0]=conf['params']['transversity']['d N']['value']
+    conf['transversity'].shape['p'][3][0]=conf['params']['transversity']['d N']['value'] #d
     conf['transversity'].shape['p'][3][1]=conf['params']['transversity']['d a']['value']
     conf['transversity'].shape['p'][3][2]=conf['params']['transversity']['d b']['value']
     conf['transversity'].shape['p'][3][3]=conf['params']['transversity']['d c']['value']
     conf['transversity'].shape['p'][3][4]=conf['params']['transversity']['d d']['value']
 
-    conf['transversity'].shape['p'][5][0]=conf['params']['transversity']['s N']['value']
+    # the model is all sea quark transversiries are equal to s quark transversity
+    conf['transversity'].shape['p'][5][0]=conf['params']['transversity']['s N']['value'] #s
     conf['transversity'].shape['p'][5][1]=conf['params']['transversity']['s a']['value']
     conf['transversity'].shape['p'][5][2]=conf['params']['transversity']['s b']['value']
     conf['transversity'].shape['p'][5][3]=conf['params']['transversity']['s c']['value']
     conf['transversity'].shape['p'][5][4]=conf['params']['transversity']['s d']['value']
 
-    conf['transversity'].shape['p'][2][0]=conf['params']['transversity']['s N']['value']
+    conf['transversity'].shape['p'][2][0]=conf['params']['transversity']['s N']['value'] #ub
     conf['transversity'].shape['p'][2][1]=conf['params']['transversity']['s a']['value']
     conf['transversity'].shape['p'][2][2]=conf['params']['transversity']['s b']['value']
     conf['transversity'].shape['p'][2][3]=conf['params']['transversity']['s c']['value']
     conf['transversity'].shape['p'][2][4]=conf['params']['transversity']['s d']['value']
 
-    conf['transversity'].shape['p'][4][0]=conf['params']['transversity']['s N']['value']
+    conf['transversity'].shape['p'][4][0]=conf['params']['transversity']['s N']['value'] #db
     conf['transversity'].shape['p'][4][1]=conf['params']['transversity']['s a']['value']
     conf['transversity'].shape['p'][4][2]=conf['params']['transversity']['s b']['value']
     conf['transversity'].shape['p'][4][3]=conf['params']['transversity']['s c']['value']
     conf['transversity'].shape['p'][4][4]=conf['params']['transversity']['s d']['value']
 
-    conf['transversity'].shape['p'][6][0]=conf['params']['transversity']['s N']['value']
+    conf['transversity'].shape['p'][6][0]=conf['params']['transversity']['s N']['value'] #sb
     conf['transversity'].shape['p'][6][1]=conf['params']['transversity']['s a']['value']
     conf['transversity'].shape['p'][6][2]=conf['params']['transversity']['s b']['value']
     conf['transversity'].shape['p'][6][3]=conf['params']['transversity']['s c']['value']

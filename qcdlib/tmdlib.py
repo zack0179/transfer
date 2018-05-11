@@ -366,8 +366,14 @@ class TRANSVERSITY(CORE):
     conf['shape']=0
     self.shape={}
     self.shape['p']=np.zeros((11,5))
-    self.shape['p'][1]=[0.46,1.11,3.64,0,0]
-    self.shape['p'][3]=[-1,1.11,3.64,0,0]
+    self.shape['p'][1]=[0.46,1.11,3.64,0,0] #u
+    self.shape['p'][3]=[-1,1.11,3.64,0,0] #d
+    self.shape['p'][2]=[0.,1.,1.,0,0] #ub
+    self.shape['p'][4]=[0.,1.,1.,0,0] #db
+    self.shape['p'][5]=[0.,1.,1.,0,0] #s
+    self.shape['p'][6]=[0.,1.,1.,0,0] #sb
+    self.shape['p'][7]=[0.,1.,1.,0,0] #c
+    self.shape['p'][8]=[0.,1.,1.,0,0] #cb
 
     self.widths0={}
     self.widths0['valence']=0.26
