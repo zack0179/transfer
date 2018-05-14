@@ -37,8 +37,19 @@ class RESIDUALS(_RESIDUALS):
     obs=self.tabs[k]['obs'][i].strip()
 
     if obs=='gT': 
-
       thy=self.moments.get_gT()
+    elif obs=='gTu': 
+      thy=self.moments.get_flav('u')
+    elif obs=='gTd': 
+      thy=self.moments.get_flav('d')
+    elif obs=='gTs': 
+      thy=self.moments.get_flav('s')
+    elif obs=='gTc': 
+      thy=self.moments.get_flav('c')
+    elif obs=='gT(u-d)': 
+      thy=self.moments.get_gT()
+    elif obs=='gT(u+d)': 
+      thy=self.moments.get_flav('u')+self.moments.get_flav('d')
 
     return k,i,thy
 
