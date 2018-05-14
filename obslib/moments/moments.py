@@ -35,7 +35,7 @@ class MOMENTS:
     if conf['shape']==1:
       p=params
       norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
-      return (self.beta(1+a,b+1)+c*self.beta(1+0.5+a,b+1)+d*self.beta(1+1+a,b+1))/norm
+      return (self.beta(1+p[1],p[2]+1)+c*self.beta(1+0.5+p[1],p[2]+1)+d*self.beta(1+1+p[1],p[2]+1))/norm
 
   def get_flav(self,flav):
     shape=conf['transversity'].shape['p']
