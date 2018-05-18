@@ -8,8 +8,8 @@ import nest
 class MCSAMP:
     
   def __init__(self):
-      pass
-
+    pass
+    
   def get_residuals(self,par):
     res,rres,nres=conf['resman'].get_residuals(par)
     if len(rres)!=0: res=np.append(res,rres)
@@ -52,8 +52,10 @@ class MCSAMP:
     self.npar=len(conf['parman'].par)
     conf['nll'] = self.nll
     conf['par lims'] = self.get_par_lims()
-    if tol not in conf:
+
+    if 'tol' not in conf.keys():
       conf['tol']=1e-10
+
     conf['num points'] = int(self.npar*2)
     conf['method']='cov'
     conf['kappa']=1
@@ -66,17 +68,21 @@ class MCSAMP:
     results=nest.NEST().run()
     save(results,'%s/nest%d'%(outputdir,conf['args'].idx))
 
-  def single_run(self,path,factor,tol=1e-10):
+  def single_run(self,path,factor):
 
     self.npar=len(conf['parman'].par)
     conf['nll'] = self.nll
     conf['par lims'] = self.get_par_lims()
-    conf['tol']=tol
     conf['num points'] = int(self.npar*factor)
     conf['method']='cov'
     conf['kappa']=1
     conf['sample size']= 1000
 
+    # Setting default value here
+    # instead of passing it in.
+    if 'tol' not in conf.keys():
+      conf['tol'] = 1e-10
+    
     par=conf['parman'].par
     res=self.get_residuals(par)
     conf['data size']=len(res) 

@@ -100,6 +100,7 @@ class CORE:
 class PDF(CORE):
 
   def __init__(self):
+    if 'basis' not in conf: conf['basis']='default'
     self.aux=conf['aux']
     self.set_default_params()
     self.setup()
@@ -107,8 +108,13 @@ class PDF(CORE):
   def set_default_params(self):
 
     self.widths0={}
-    self.widths0['valence']=0.3
-    self.widths0['sea']=0.3
+    if conf['basis'] == 'default':
+      self.widths0['valence']=0.3
+      self.widths0['sea']=0.3
+    if conf['basis'] == 'valence':
+      self.widths0['uv']=0.3
+      self.widths0['dv']=0.3
+      self.widths0['sea']=0.3
 
     self.widths={}
     self.widths['p']=np.ones(11)
@@ -118,13 +124,22 @@ class PDF(CORE):
     self.K['n']=np.ones(11)
 
   def setup(self):
-    for i in range(11):
-      if i==1 or i==3:
-        self.widths['p'][i]=self.widths0['valence']
-      else:
-        self.widths['p'][i]=self.widths0['sea']
-
-    self.widths['n']=self.p2n(self.widths['p'])
+    if conf['basis'] == 'default':
+      for i in range(11):
+        if i==1 or i==3:
+          self.widths['p'][i]=self.widths0['valence']
+        else:
+          self.widths['p'][i]=self.widths0['sea']
+      self.widths['n']=self.p2n(self.widths['p'])
+    elif conf['basis'] == 'valence':
+      for i in range(11):
+        if i==1:
+          self.widths['p'][i]=self.widths0['uv']
+        elif i==3:
+          self.widths['p'][i]=self.widths0['dv']
+        else:
+          self.widths['p'][i]=self.widths0['sea']
+      self.widths['n']=self.p2n(self.widths['p'])
 
   def get_C(self,x,Q2,target='p'):
     C=conf['_pdf'].get_f(x,Q2)
@@ -351,8 +366,14 @@ class TRANSVERSITY(CORE):
     conf['shape']=0
     self.shape={}
     self.shape['p']=np.zeros((11,5))
-    self.shape['p'][1]=[0.46,1.11,3.64,0,0]
-    self.shape['p'][3]=[-1,1.11,3.64,0,0]
+    self.shape['p'][1]=[0.46,1.11,3.64,0,0] #u
+    self.shape['p'][3]=[-1,1.11,3.64,0,0] #d
+    self.shape['p'][2]=[0.,1.,1.,0,0] #ub
+    self.shape['p'][4]=[0.,1.,1.,0,0] #db
+    self.shape['p'][5]=[0.,1.,1.,0,0] #s
+    self.shape['p'][6]=[0.,1.,1.,0,0] #sb
+    self.shape['p'][7]=[0.,1.,1.,0,0] #c
+    self.shape['p'][8]=[0.,1.,1.,0,0] #cb
 
     self.widths0={}
     self.widths0['valence']=0.26
@@ -567,6 +588,7 @@ class WORMGEARH(CORE):
         self.widths['p'][i]=self.widths0['valence']
       else:
         self.widths['p'][i]=self.widths0['sea']
+
     self.widths['n']=self.p2n(self.widths['p'])
 
   def trans(self,i,x,Q2,target):

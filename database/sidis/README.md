@@ -97,6 +97,18 @@
 | 3005  | [link][AUT_COMPASS_2014]    | proton   | pi-    | AUTcollins | compass    | x          |
 | 3013  | [link][AUT_COMPASS_2014]    | proton   | pi-    | AUTcollins | compass    | z          |
 | 3012  | [link][AUT_COMPASS_2014]    | proton   | pi-    | AUTcollins | compass    | pt         |
+| 3040  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTcollins  | compass       | PT (z>0.1 2040-2045) |
+| 3041  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTcollins | compass       | x          |
+| 3042  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTcollins  | compass       | z          |
+| 3043  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTcollins  | compass       | PT          |
+| 3044  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTcollins  | compass       | x          |
+| 3045  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTcollins | compass       | z          |
+| 3046  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTcollins  | compass       | PT (z>0.2 2046-2051) |
+| 3047  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTcollins  | compass       | x          |
+| 3048  | [link][AUT_COMPASS_2016]    | proton  | h-     | AUTcollins  | compass       | z          |
+| 3049  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTcollins  | compass       | PT          |
+| 3050  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTcollins  | compass       | x          |
+| 3051  | [link][AUT_COMPASS_2016]    | proton  | h+     | AUTcollins  | compass       | z          |
 | 6000  | [link][AUT_COMPASS_2014] | proton   | k-     | AUTcollins | compass    | pt         |
 | 6001  | [link][AUT_COMPASS_2014] | proton   | k-     | AUTcollins | compass    | x          |
 | 6002  | [link][AUT_COMPASS_2014] | proton   | k-     | AUTcollins | compass    | z          |
