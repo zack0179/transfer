@@ -37,6 +37,18 @@ class CORE:
     pim[4] = d
     return pim
 
+  def pip2piz(self,pip):
+    piz=np.copy(pip)
+    u  =pip[1]
+    ub =pip[2]
+    d  =pip[3]
+    db =pip[4]
+    piz[1] = 0.5*(u+ub)
+    piz[2] = 0.5*(u+ub)
+    piz[3] = 0.5*(d+db)
+    piz[4] = 0.5*(d+db)
+    return piz
+
   def kp2km(self,kp):
     km=np.copy(kp)
     u  =kp[1]
@@ -53,33 +65,31 @@ class CORE:
     return gamma(a)*gamma(b)/gamma(a+b)
 
   def get_shape(self,x,p):
-
     if conf['shape']==0:
-
         return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
-
     elif conf['shape']==1:
-
-       norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
-       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
-
+        norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
+        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
     elif conf['shape']==2:
-        
-       norm=self.beta(1+p[1],1+p[2])+p[3]*self.beta(1+p[1]+1,1+p[2])+p[4]*self.beta(1+p[1],1+p[2])*(psi(p[1]+p[2]+2)-psi(p[1]+1))
-       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*np.log(1/x))/norm
-
-    elif conf['shape'] == 3:
-      norm = np.pow((p[1]+p[2]),p[1]+p[2])/(np.pow(p[1],p[1])*np.pow(p[2],p[2]))
-      return  norm*p[0]*x**p[1]*(1-x)**p[2]
-
+        norm=self.beta(1+p[1],1+p[2])+p[3]*self.beta(1+p[1]+1,1+p[2])+p[4]*self.beta(1+p[1],1+p[2])*(psi(p[1]+p[2]+2)-psi(p[1]+1))
+        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*np.log(1/x))/norm
+    elif conf['shape']==3:
+        norm = np.pow((p[1]+p[2]),p[1]+p[2])/(np.pow(p[1],p[1])*np.pow(p[2],p[2]))
+        return  norm*p[0]*x**p[1]*(1-x)**p[2]
     elif conf['shape']==4:
+        norm=self.beta(2+p[1],p[2]+1)+p[3]*self.beta(2+p[1]+1,p[2]+1)+p[4]*self.beta(2+p[1]+2,p[2]+1)
+        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
 
-       norm=self.beta(2+p[1],p[2]+1)+p[3]*self.beta(2+p[1]+1,p[2]+1)+p[4]*self.beta(2+p[1]+2,p[2]+1)
-       return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
+  def get_dshape(self,x,p):
+    if conf['shape']==0:
+        return  p[0]*x**p[1]*(1-x)**p[2]*(p[3]+2.*p[4]*x+(1+p[3]*x+p[4]*x**2)*(p[1]/x-p[2]/(1.-x)))
+    if conf['shape']==1:
+        norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
+        return  p[0]*x**p[1]*(1-x)**p[2]*(p[3]+2.*p[4]*x+(1+p[3]*x+p[4]*x**2)*(p[1]/x-p[2]/(1.-x)))/norm
 
   def get_collinear(self,x,hadron):
     N=np.zeros(11)
-    for i in range(11): 
+    for i in range(11):
       if 'shape' in self.__dict__:
         N[i]=self.get_shape(x,self.shape[hadron][i])
       if 'shape1' in self.__dict__:
@@ -89,8 +99,20 @@ class CORE:
 
     return N
 
+  def get_dcollinear(self,x,hadron): #Derivative of the collinear piece
+    N=np.zeros(11)
+    for i in range(11):
+      if 'shape' in self.__dict__:
+        N[i]=self.get_dshape(x,self.shape[hadron][i])
+      if 'shape1' in self.__dict__:
+        N[i]=self.get_dshape(x,self.shape1[hadron][i])
+      if 'shape2' in self.__dict__:
+        N[i]+=self.get_dshape(x,self.shape2[hadron][i])
+
+    return N
+
   def get_gauss(self,kT2,hadron):
-    return np.exp(-kT2/self.widths[hadron])/np.pi/self.widths[hadron] 
+    return np.exp(-kT2/self.widths[hadron])/np.pi/self.widths[hadron]
 
   def get_tmd(self,x,Q2,kT2,hadron):
     C=self.get_C(x,Q2,hadron)
@@ -143,7 +165,7 @@ class PDF(CORE):
 
   def get_C(self,x,Q2,target='p'):
     C=conf['_pdf'].get_f(x,Q2)
-    C[0]=0 # glue is not supported
+    #C[0]=0 # glue is not supported
     if target=='n': C=self.p2n(C)
     return C
 
@@ -163,7 +185,7 @@ class FF(CORE):
     self.widths0['h+ unfav']=0.12
     self.widths0['k+ fav']   =0.12
     self.widths0['k+ unfav'] =0.12
-    
+
     self.widths={}
     self.widths['pi+']=np.ones(11)
     self.widths['h+']=np.ones(11)
@@ -194,19 +216,19 @@ class FF(CORE):
     for i in range(1,11):
       if i==1 or i==4:
         self.widths['pi+'][i]=np.copy(self.widths0['pi+ fav'])
-      else: 
+      else:
         self.widths['pi+'][i]=np.copy(self.widths0['pi+ unfav'])
 
     for i in range(1,11):
       if i==1 or i==4:
         self.widths['h+'][i]=np.copy(self.widths0['h+ fav'])
-      else: 
+      else:
         self.widths['h+'][i]=np.copy(self.widths0['h+ unfav'])
 
     for i in range(1,11):
       if i==1 or i==6:
         self.widths['k+'][i]=np.copy(self.widths0['k+ fav'])
-      else: 
+      else:
         self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
 
     self.widths['pi-']=self.pip2pim(self.widths['pi+'])
@@ -215,10 +237,117 @@ class FF(CORE):
 
   def get_C(self,x,Q2,hadron='pi+'):
     C=conf['_ff'].get_f(x,Q2,hadron)
-    C[0]=0 # glue is not supported
+    #C[0]=0 # glue is not supported
+    if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
 
 class COLLINS(CORE):
+
+  def __init__(self):
+    self.aux=conf['aux']
+    self.set_default_params()
+    self.setup()
+
+  def set_default_params(self):
+
+    self.Mh={}
+    self.Mh['pi+']=self.aux.Mpi
+    self.Mh['pi-']=self.aux.Mpi
+    self.Mh['pi0']=self.aux.Mpi
+    self.Mh['h+']=self.aux.Mpi
+    self.Mh['h-']=self.aux.Mpi
+    self.Mh['k+']=self.aux.Mk
+    self.Mh['k-']=self.aux.Mk
+
+    self.widths0={}
+    self.widths0['pi+ fav']  =0.11
+    self.widths0['pi+ unfav']=0.11
+    self.widths0['h+ fav']  =0.11
+    self.widths0['h+ unfav']=0.11
+    self.widths0['k+ fav']   =0.11
+    self.widths0['k+ unfav'] =0.11
+
+    self.shape1={}
+    self.shape1['pi+']=np.zeros((11,5))
+    self.shape1['h+']=np.zeros((11,5))
+    self.shape1['k+']=np.zeros((11,5))
+
+    self.shape2={}
+    self.shape2['pi+']=np.zeros((11,5))
+    self.shape2['h+']=np.zeros((11,5))
+    self.shape2['k+']=np.zeros((11,5))
+
+    self.widths={}
+    self.widths['pi+']=np.ones(11)
+    self.widths['h+']=np.ones(11)
+    self.widths['k+'] =np.ones(11)
+
+    self.K={}
+    self.K['pi+']=np.ones(11)
+    self.K['h+']=np.ones(11)
+    self.K['k+'] =np.ones(11)
+    self.K['pi-']=np.ones(11)
+    self.K['h-']=np.ones(11)
+    self.K['k-'] =np.ones(11)
+
+    self.norm={}
+
+  def get_norm(self,hadron):
+    return 1#np.sqrt(np.exp(1)/2)*self.widths[hadron]*self.M[hadron]**3/(self.Mh[hadron]*(self.M[hadron]**2+self.widths[hadron])**2)
+
+  def get_K(self,z,hadron):
+    return 2*z**2*self.Mh[hadron]**2/self.widths[hadron]
+
+  def setup(self):
+    # 1,  2,  3,  4,  5,  6,  7,  8,  9, 10
+    # u, ub,  d, db,  s, sb,  c, cb,  b, bb
+    for i in range(1,11):
+      if i==1 or i==4:
+        self.widths['pi+'][i]=np.copy(self.widths0['pi+ fav'])
+      else:
+        self.widths['pi+'][i]=np.copy(self.widths0['pi+ unfav'])
+
+    for i in range(1,11):
+      if i==1 or i==4:
+        self.widths['h+'][i]=np.copy(self.widths0['h+ fav'])
+      else:
+        self.widths['h+'][i]=np.copy(self.widths0['h+ unfav'])
+
+
+    for i in range(1,11):
+      if i==1 or i==6:
+        self.widths['k+'][i]=np.copy(self.widths0['k+ fav'])
+      else:
+        self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
+
+    self.shape1['pi-']=self.pip2pim(self.shape1['pi+'])
+    self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
+
+    self.shape1['pi0']=self.pip2piz(self.shape1['pi+'])
+    self.shape2['pi0']=self.pip2piz(self.shape2['pi+'])
+
+    self.shape1['h-']=self.pip2pim(self.shape1['h+'])
+    self.shape2['h-']=self.pip2pim(self.shape2['h+'])
+
+    self.shape1['k-']=self.kp2km(self.shape1['k+'])
+    self.shape2['k-']=self.kp2km(self.shape2['k+'])
+
+    self.widths['pi-']=self.pip2pim(self.widths['pi+'])
+    self.widths['h-']=self.pip2pim(self.widths['h+'])
+    self.widths['k-']=self.kp2km(self.widths['k+'])
+
+    for hadron in ['pi+','pi-','h+','h-','k+','k-']:
+      self.norm[hadron]=self.get_norm(hadron)
+      self.K[hadron]=self.get_K(1.0,hadron)
+
+  def get_C(self,z,Q2,hadron='pi+'):
+    #ff=conf['_ff'].get_f(z,Q2,hadron)
+    C=self.get_collinear(z,hadron)#*ff
+    C[0]=0 # glue is not supported
+    if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
+    return C
+
+class DCOLLINSDZ(CORE):
 
   def __init__(self):
     self.aux=conf['aux']
@@ -252,7 +381,7 @@ class COLLINS(CORE):
     self.shape2['pi+']=np.zeros((11,5))
     self.shape2['h+']=np.zeros((11,5))
     self.shape2['k+']=np.zeros((11,5))
-    
+
     self.widths={}
     self.widths['pi+']=np.ones(11)
     self.widths['h+']=np.ones(11)
@@ -280,28 +409,31 @@ class COLLINS(CORE):
     for i in range(1,11):
       if i==1 or i==4:
         self.widths['pi+'][i]=np.copy(self.widths0['pi+ fav'])
-      else: 
+      else:
         self.widths['pi+'][i]=np.copy(self.widths0['pi+ unfav'])
 
     for i in range(1,11):
       if i==1 or i==4:
         self.widths['h+'][i]=np.copy(self.widths0['h+ fav'])
-      else: 
+      else:
         self.widths['h+'][i]=np.copy(self.widths0['h+ unfav'])
 
-        
+
     for i in range(1,11):
       if i==1 or i==6:
         self.widths['k+'][i]=np.copy(self.widths0['k+ fav'])
-      else: 
+      else:
         self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
 
     self.shape1['pi-']=self.pip2pim(self.shape1['pi+'])
     self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
 
+    self.shape1['pi0']=self.pip2piz(self.shape1['pi+'])
+    self.shape2['pi0']=self.pip2piz(self.shape2['pi+'])
+
     self.shape1['h-']=self.pip2pim(self.shape1['h+'])
     self.shape2['h-']=self.pip2pim(self.shape2['h+'])
-    
+
     self.shape1['k-']=self.kp2km(self.shape1['k+'])
     self.shape2['k-']=self.kp2km(self.shape2['k+'])
 
@@ -310,13 +442,120 @@ class COLLINS(CORE):
     self.widths['k-']=self.kp2km(self.widths['k+'])
 
     for hadron in ['pi+','pi-','h+','h-','k+','k-']:
-      self.norm[hadron]=self.get_norm(hadron) 
-      self.K[hadron]=self.get_K(1.0,hadron) 
+      self.norm[hadron]=self.get_norm(hadron)
+      self.K[hadron]=self.get_K(1.0,hadron)
+
+  def get_C(self,z,Q2,hadron='pi+'):
+    #ff=conf['_ff'].get_f(z,Q2,hadron)
+    C=self.get_dcollinear(z,hadron)#*ff
+    C[0]=0 # glue is not supported
+    if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
+    return C
+
+class HTILDE(CORE): #Htilde has same form as Collins
+
+  def __init__(self):
+    self.aux=conf['aux']
+    self.set_default_params()
+    self.setup()
+
+  def set_default_params(self):
+
+    self.Mh={}
+    self.Mh['pi+']=self.aux.Mpi
+    self.Mh['pi-']=self.aux.Mpi
+    self.Mh['h+']=self.aux.Mpi
+    self.Mh['h-']=self.aux.Mpi
+    self.Mh['k+']=self.aux.Mk
+    self.Mh['k-']=self.aux.Mk
+
+    self.widths0={}
+    self.widths0['pi+ fav']  =0.11
+    self.widths0['pi+ unfav']=0.11
+    self.widths0['h+ fav']  =0.11
+    self.widths0['h+ unfav']=0.11
+    self.widths0['k+ fav']   =0.11
+    self.widths0['k+ unfav'] =0.11
+
+    self.shape1={}
+    self.shape1['pi+']=np.zeros((11,5))
+    self.shape1['h+']=np.zeros((11,5))
+    self.shape1['k+']=np.zeros((11,5))
+
+    self.shape2={}
+    self.shape2['pi+']=np.zeros((11,5))
+    self.shape2['h+']=np.zeros((11,5))
+    self.shape2['k+']=np.zeros((11,5))
+
+    self.widths={}
+    self.widths['pi+']=np.ones(11)
+    self.widths['h+']=np.ones(11)
+    self.widths['k+'] =np.ones(11)
+
+    self.K={}
+    self.K['pi+']=np.ones(11)
+    self.K['h+']=np.ones(11)
+    self.K['k+'] =np.ones(11)
+    self.K['pi-']=np.ones(11)
+    self.K['h-']=np.ones(11)
+    self.K['k-'] =np.ones(11)
+
+    self.norm={}
+
+  def get_norm(self,hadron):
+    return 1#np.sqrt(np.exp(1)/2)*self.widths[hadron]*self.M[hadron]**3/(self.Mh[hadron]*(self.M[hadron]**2+self.widths[hadron])**2)
+
+  def get_K(self,z,hadron):
+    return 2*z**2*self.Mh[hadron]**2/self.widths[hadron]
+
+  def setup(self):
+    # 1,  2,  3,  4,  5,  6,  7,  8,  9, 10
+    # u, ub,  d, db,  s, sb,  c, cb,  b, bb
+    for i in range(1,11):
+      if i==1 or i==4:
+        self.widths['pi+'][i]=np.copy(self.widths0['pi+ fav'])
+      else:
+        self.widths['pi+'][i]=np.copy(self.widths0['pi+ unfav'])
+
+    for i in range(1,11):
+      if i==1 or i==4:
+        self.widths['h+'][i]=np.copy(self.widths0['h+ fav'])
+      else:
+        self.widths['h+'][i]=np.copy(self.widths0['h+ unfav'])
+
+
+    for i in range(1,11):
+      if i==1 or i==6:
+        self.widths['k+'][i]=np.copy(self.widths0['k+ fav'])
+      else:
+        self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
+
+    self.shape1['pi-']=self.pip2pim(self.shape1['pi+'])
+    self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
+
+    self.shape1['pi0']=self.pip2piz(self.shape1['pi+'])
+    self.shape2['pi0']=self.pip2piz(self.shape2['pi+'])
+
+    self.shape1['h-']=self.pip2pim(self.shape1['h+'])
+    self.shape2['h-']=self.pip2pim(self.shape2['h+'])
+
+    self.shape1['k-']=self.kp2km(self.shape1['k+'])
+    self.shape2['k-']=self.kp2km(self.shape2['k+'])
+
+    self.widths['pi-']=self.pip2pim(self.widths['pi+'])
+    self.widths['h-']=self.pip2pim(self.widths['h+'])
+    self.widths['k-']=self.kp2km(self.widths['k+'])
+
+    for hadron in ['pi+','pi-','h+','h-','k+','k-']:
+      self.norm[hadron]=self.get_norm(hadron)
+      self.K[hadron]=self.get_K(1.0,hadron)
 
   def get_C(self,z,Q2,hadron='pi+'):
     #ff=conf['_ff'].get_f(z,Q2,hadron)
     C=self.get_collinear(z,hadron)#*ff
+    C=np.zeros(11)
     C[0]=0 # glue is not supported
+    if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
 
 class SIVERS(CORE):
@@ -552,14 +791,14 @@ class WORMGEARG(CORE):
         self.widths['p'][i]=self.widths0['sea']
     self.widths['n']=self.p2n(self.widths['p'])
 
-  def pol(self,i,x,Q2,target): 
+  def pol(self,i,x,Q2,target):
     return conf['_ppdf'].get_f(x,Q2)[i]
- 
+
   def get_C(self,x,Q2,target='p'):
     #C = np.array([x*quad(lambda y: self.pol(i,x,Q2,target)/y,x,1)[0] for i in range(11)])
     #C = np.array([x*fixed_quad(np.vectorize(lambda y: self.pol(i,x,Q2,target)/y),x,1)[0] for i in range(11)])
     C=np.zeros(11)
-    C[0]=0 # glue is not supported!!!  
+    C[0]=0 # glue is not supported!!!
     if target=='n': C=self.p2n(C)
     return C
 
@@ -598,7 +837,7 @@ class WORMGEARH(CORE):
     #C = np.array([x*quad(lambda y: self.trans(i,x,Q2,target)/y,x,1)[0] for i in range(11)])
     #C = np.array([x*fixed_quad(np.vectorize(lambda y: self.trans(i,x,Q2,target)/y),x,1)[0] for i in range(11)])
     C=np.zeros(11)
-    C[0]=0 # glue is not supported!!!  
+    C[0]=0 # glue is not supported!!!
     if target=='n': C=self.p2n(C)
     return C
 
@@ -628,16 +867,13 @@ if __name__=='__main__':
   conf['wormgearg']=WORMGEARG()
   conf['wormgearh']=WORMGEARH()
   conf['collins']=COLLINS()
+  conf['dcollinsdz']=DCOLLINSDZ()
+  conf['Htilde']=HTILDE()
 
   x=0.15
   Q2=2.4
   dist=['pdf','ppdf','ff','transversity','sivers','boermulders']
-  dist.extend(['pretzelosity','wormgearg','wormgearh','collins'])
+  dist.extend(['pretzelosity','wormgearg','wormgearh','collins','dcollinsdz','Htilde'])
   for k in dist:
     print k
     print conf[k].get_C(x,Q2)
-
-
-
-
-
