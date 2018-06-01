@@ -86,7 +86,7 @@ class RESIDUALS(_RESIDUALS):
     col=self.tabs[k]['col'][i].strip().upper()
 
     if obs=='xsec':
-      phi_h=0
+      phi_h=self.tabs[k]['phi'][i]
       phi_S=0
       Sperp=0
       Spar=0
