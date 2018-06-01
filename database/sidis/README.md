@@ -138,6 +138,10 @@
 | 9000  | [link][?]    | proton   | pi+    | ALL        | clas       | PT         |
 | 9001  | [link][?]    | proton   | pi-    | ALL        | clas       | PT         |
 | 9002  | [link][?]    | proton   | pi0    | ALL        | clas       | PT         |
+| 9011  | [link][9011] | COMPASS    |  h+   | AUTsinphiS-z>0.2 |     | z          |
+| 9022  | [link][9022] | COMPASS    |  h-   | AUTsinphiS-z>0.2 |     | z          |
+| 9033  | [link][9033] | COMPASS    |  h+   | AUTsinphiS-z>0.2 |     | x          |
+| 9044  | [link][9044] | COMPASS    |  h-   | AUTsinphiS-z>0.2 |     | x          |
 
 
 [?]: http://inspirehep.net/

@@ -6,7 +6,7 @@ import time
 from scipy.optimize import leastsq,minimize
 import copy
 from tools.config import conf
- 
+
 class ML:
 
   def __init__(self):
@@ -17,7 +17,7 @@ class ML:
     self.PARAMS=[]
     self.TOT=[]
 
-    if 'screen mode' not in conf: 
+    if 'screen mode' not in conf:
       conf['screen mode']='plain'
 
   def get_stats(self,res,rres,nres,delay):
@@ -31,7 +31,7 @@ class ML:
     nchi2=np.sum(nres**2)
     chi2tot=chi2+rchi2+nchi2
     dchi2=chi2tot-self.chi2tot
-    if shifts>2: 
+    if shifts>2:
       if chi2tot<self.chi2tot:
         self.dchi2=self.chi2tot-chi2tot
         self.chi2tot=chi2tot
@@ -84,7 +84,7 @@ class ML:
     elif conf['screen mode']=='plain':
       for i in range(len(self.status)): print self.status[i]
       for i in range(len(parstatus)): print parstatus[i]
-      if delay==True: 
+      if delay==True:
         self.gen_output()
         sys.exit()
 
@@ -142,9 +142,9 @@ class ML:
     for entry in order:
       i,k,kk=entry
       if i==1:
-        bounds.append([conf['params'][k][kk]['min'],conf['params'][k][kk]['max']])
+          bounds.append([conf['params'][k][kk]['min'],conf['params'][k][kk]['max']])
       elif i==2:
-        bounds.append([None,None])
+          bounds.append([None,None])
 
     if conf['screen mode']=='curses':
       conf['screen']=curses.initscr()
@@ -214,4 +214,3 @@ class ML:
       par=self.run_leastsq(gen_output=False)
       PAR[_dy]=par
     save(PAR,'maxlike/rap_fits.dat')
-

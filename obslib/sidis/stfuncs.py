@@ -20,8 +20,8 @@ from tools.config import conf
 class STFUNCS:
 
   def __init__(self):
-    self.aux=conf['aux']  
-    eu2,ed2=4/9.,1/9. 
+    self.aux=conf['aux']
+    eu2,ed2=4/9.,1/9.
     self.e2=[]
     self.e2.append(0)   # g
     self.e2.append(eu2) # u
@@ -64,7 +64,8 @@ class STFUNCS:
     self.D[19]={'k1':'transversity','k2':'collins'}
     self.D[20]={'k1':'sivers','k2':'ff'}
     self.D[21]={'k1':'pretzelosity','k2':'collins'}
-    self.D[22] ={'k1':'pdf','k2':'ff'}
+    self.D[22]={'k1':'pdf','k2':'ff'}
+    self.D[23]={'k1':'transversity','k2':'Htilde'} #This is for collinear!
 
     if 'basis' not in conf: conf['basis']='default'
 
@@ -91,6 +92,7 @@ class STFUNCS:
     elif i==20: return -2*self.aux.M**3/np.sqrt(Q2)*x*conf[k1].widths[target]/wq**2
     elif i==21: return -8*self.aux.M**2*self.Mh[hadron]/np.sqrt(Q2)*x*z**2*pT**2/wq**2
     elif i==22: return 2*x*z**2*pT**2/Q2*conf[k1].widths[target]**2/wq**2
+    elif i==23: return -2.0*(x/z)*self.Mh[hadron]/np.sqrt(Q2)
 
   def get_wq(self,z,k1,k2,target,hadron):
     return z**2*np.abs(conf[k1].widths[target]) + np.abs(conf[k2].widths[hadron])
@@ -113,7 +115,7 @@ class STFUNCS:
       out *= K
       return out
 
-  def get_FX(self,i,x,z,Q2,pT,target,hadron):
+  def get_FX(self,i,x,z,Q2,pT,target,hadron,obs):
     k1=self.D[i]['k1']
     k2=self.D[i]['k2']
     if k1==None or k2==None: return 0
@@ -121,7 +123,8 @@ class STFUNCS:
     F=conf[k1].get_C(x,mu2,target)
     D=conf[k2].get_C(z,mu2,hadron)
     wq=self.get_wq(z,k1,k2,target,hadron)
-    gauss=self.get_gauss(z,pT,wq) 
+    if obs=='AUTsinphiS': gauss = 1 #AUTsinphiS is collinear
+    else: gauss=self.get_gauss(z,pT,wq)
     K=self.get_K(i,x,Q2,z,pT,wq,k1,k2,target,hadron)
     #return np.sum(self.e2*K*F*D*gauss)
     return self.combine(K,F,D,gauss)
@@ -154,7 +157,7 @@ class STFUNCS:
     helicity=1.0
     factor=coupling**2/(x*y*Q2)*(1-y+y**2)
     cs = factor*(self.get_FX(1,x,z,Q2,pT,target,hadron)+math.cos(2*hangle)*p1*self.get_FX(7,x,z,Q2,pT,target,hadron)+math.cos(hangle)*p3*(self.get_FX(16,x,z,Q2,pT,target,hadron)+self.get_FX(17,x,z,Q2,pT,target,hadron)))
-    
+
     return cs/(2*0.938*11.0*x)
 
   def get_xsec(self,x,z,y,Q2,pT,phi_h,phi_S,Sperp,Spar,le,target,hadron):
@@ -192,7 +195,7 @@ class STFUNCS:
     prefactor=(alfa2/x/y/Q2) * (y**2/2/(1-eps))
     xsec= prefactor* np.sum(beta*F)
     if xsec<0:
-      print '\nerr: unphysical xsec\n' 
+      print '\nerr: unphysical xsec\n'
       print 'xsec      = %10.2e'%(xsec)
       print 'prefactor = %10.2e'%(prefactor)
       for i in range(1,19):
@@ -240,7 +243,7 @@ if __name__=='__main__':
   sangle=math.pi*0.0
   hangle=math.pi/2
   target='p'
-  hadron='pi+' 
+  hadron='pi+'
   for i in range(1,22): print i,stfuncs.get_FX(i,x,z,Q2,pT,target,hadron)
   print stfuncs.dcs(x,Q2,y,z,pT,sangle,hangle,target,hadron)
   print stfuncs.unpolarizedCS(x,Q2,y,z,pT,sangle,hangle,target,hadron)
@@ -252,4 +255,3 @@ if __name__=='__main__':
   plt.title('WW-type Approximation for $Q^2=3.6$')
 
   plt.show()
-  

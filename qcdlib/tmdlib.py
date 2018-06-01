@@ -347,105 +347,7 @@ class COLLINS(CORE):
     if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
 
-class DCOLLINSDZ(CORE):
-
-  def __init__(self):
-    self.aux=conf['aux']
-    self.set_default_params()
-    self.setup()
-
-  def set_default_params(self):
-
-    self.Mh={}
-    self.Mh['pi+']=self.aux.Mpi
-    self.Mh['pi-']=self.aux.Mpi
-    self.Mh['h+']=self.aux.Mpi
-    self.Mh['h-']=self.aux.Mpi
-    self.Mh['k+']=self.aux.Mk
-    self.Mh['k-']=self.aux.Mk
-
-    self.widths0={}
-    self.widths0['pi+ fav']  =0.11
-    self.widths0['pi+ unfav']=0.11
-    self.widths0['h+ fav']  =0.11
-    self.widths0['h+ unfav']=0.11
-    self.widths0['k+ fav']   =0.11
-    self.widths0['k+ unfav'] =0.11
-
-    self.shape1={}
-    self.shape1['pi+']=np.zeros((11,5))
-    self.shape1['h+']=np.zeros((11,5))
-    self.shape1['k+']=np.zeros((11,5))
-
-    self.shape2={}
-    self.shape2['pi+']=np.zeros((11,5))
-    self.shape2['h+']=np.zeros((11,5))
-    self.shape2['k+']=np.zeros((11,5))
-
-    self.widths={}
-    self.widths['pi+']=np.ones(11)
-    self.widths['h+']=np.ones(11)
-    self.widths['k+'] =np.ones(11)
-
-    self.K={}
-    self.K['pi+']=np.ones(11)
-    self.K['h+']=np.ones(11)
-    self.K['k+'] =np.ones(11)
-    self.K['pi-']=np.ones(11)
-    self.K['h-']=np.ones(11)
-    self.K['k-'] =np.ones(11)
-
-    self.norm={}
-
-  def get_norm(self,hadron):
-    return 1#np.sqrt(np.exp(1)/2)*self.widths[hadron]*self.M[hadron]**3/(self.Mh[hadron]*(self.M[hadron]**2+self.widths[hadron])**2)
-
-  def get_K(self,z,hadron):
-    return 2*z**2*self.Mh[hadron]**2/self.widths[hadron]
-
-  def setup(self):
-    # 1,  2,  3,  4,  5,  6,  7,  8,  9, 10
-    # u, ub,  d, db,  s, sb,  c, cb,  b, bb
-    for i in range(1,11):
-      if i==1 or i==4:
-        self.widths['pi+'][i]=np.copy(self.widths0['pi+ fav'])
-      else:
-        self.widths['pi+'][i]=np.copy(self.widths0['pi+ unfav'])
-
-    for i in range(1,11):
-      if i==1 or i==4:
-        self.widths['h+'][i]=np.copy(self.widths0['h+ fav'])
-      else:
-        self.widths['h+'][i]=np.copy(self.widths0['h+ unfav'])
-
-
-    for i in range(1,11):
-      if i==1 or i==6:
-        self.widths['k+'][i]=np.copy(self.widths0['k+ fav'])
-      else:
-        self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
-
-    self.shape1['pi-']=self.pip2pim(self.shape1['pi+'])
-    self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
-
-    self.shape1['pi0']=self.pip2piz(self.shape1['pi+'])
-    self.shape2['pi0']=self.pip2piz(self.shape2['pi+'])
-
-    self.shape1['h-']=self.pip2pim(self.shape1['h+'])
-    self.shape2['h-']=self.pip2pim(self.shape2['h+'])
-
-    self.shape1['k-']=self.kp2km(self.shape1['k+'])
-    self.shape2['k-']=self.kp2km(self.shape2['k+'])
-
-    self.widths['pi-']=self.pip2pim(self.widths['pi+'])
-    self.widths['h-']=self.pip2pim(self.widths['h+'])
-    self.widths['k-']=self.kp2km(self.widths['k+'])
-
-    for hadron in ['pi+','pi-','h+','h-','k+','k-']:
-      self.norm[hadron]=self.get_norm(hadron)
-      self.K[hadron]=self.get_K(1.0,hadron)
-
-  def get_C(self,z,Q2,hadron='pi+'):
+  def get_dC(self,z,Q2,hadron='pi+'):
     #ff=conf['_ff'].get_f(z,Q2,hadron)
     C=self.get_dcollinear(z,hadron)#*ff
     C[0]=0 # glue is not supported
@@ -464,6 +366,7 @@ class HTILDE(CORE): #Htilde has same form as Collins
     self.Mh={}
     self.Mh['pi+']=self.aux.Mpi
     self.Mh['pi-']=self.aux.Mpi
+    self.Mh['pi0']=self.aux.Mpi
     self.Mh['h+']=self.aux.Mpi
     self.Mh['h-']=self.aux.Mpi
     self.Mh['k+']=self.aux.Mk
@@ -482,10 +385,10 @@ class HTILDE(CORE): #Htilde has same form as Collins
     self.shape1['h+']=np.zeros((11,5))
     self.shape1['k+']=np.zeros((11,5))
 
-    self.shape2={}
-    self.shape2['pi+']=np.zeros((11,5))
-    self.shape2['h+']=np.zeros((11,5))
-    self.shape2['k+']=np.zeros((11,5))
+    #self.shape2={}
+    #self.shape2['pi+']=np.zeros((11,5))
+    #self.shape2['h+']=np.zeros((11,5))
+    #self.shape2['k+']=np.zeros((11,5))
 
     self.widths={}
     self.widths['pi+']=np.ones(11)
@@ -531,16 +434,16 @@ class HTILDE(CORE): #Htilde has same form as Collins
         self.widths['k+'][i]=np.copy(self.widths0['k+ unfav'])
 
     self.shape1['pi-']=self.pip2pim(self.shape1['pi+'])
-    self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
+    #self.shape2['pi-']=self.pip2pim(self.shape2['pi+'])
 
     self.shape1['pi0']=self.pip2piz(self.shape1['pi+'])
-    self.shape2['pi0']=self.pip2piz(self.shape2['pi+'])
+    #self.shape2['pi0']=self.pip2piz(self.shape2['pi+'])
 
     self.shape1['h-']=self.pip2pim(self.shape1['h+'])
-    self.shape2['h-']=self.pip2pim(self.shape2['h+'])
+    #self.shape2['h-']=self.pip2pim(self.shape2['h+'])
 
     self.shape1['k-']=self.kp2km(self.shape1['k+'])
-    self.shape2['k-']=self.kp2km(self.shape2['k+'])
+    #self.shape2['k-']=self.kp2km(self.shape2['k+'])
 
     self.widths['pi-']=self.pip2pim(self.widths['pi+'])
     self.widths['h-']=self.pip2pim(self.widths['h+'])
@@ -553,7 +456,6 @@ class HTILDE(CORE): #Htilde has same form as Collins
   def get_C(self,z,Q2,hadron='pi+'):
     #ff=conf['_ff'].get_f(z,Q2,hadron)
     C=self.get_collinear(z,hadron)#*ff
-    C=np.zeros(11)
     C[0]=0 # glue is not supported
     if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C

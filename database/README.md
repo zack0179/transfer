@@ -4,13 +4,16 @@
 
 - SIDIS:
   + HERMES M
-  + HERMS AUT Sivers
-  + HERMS AUT Collins
+  + HERMES AUT Sivers
+  + HERMES AUT Collins
 
 - SIA:
-
   + Belle 
   + BaBar 
   + to be added BESIII
+
+- AN pp
+  +BRAHMS pip, pim
+  +STAR pi0
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys,os
-import numpy as np 
+import numpy as np
 from numpy.random import choice,randn,uniform
 from tools.config import conf,load_config
 import pandas as pd
@@ -15,6 +15,7 @@ from qcdlib.tmdlib import PRETZELOSITY
 from qcdlib.tmdlib import COLLINS
 from qcdlib.tmdlib import WORMGEARG
 from qcdlib.tmdlib import WORMGEARH
+from qcdlib.tmdlib import HTILDE
 from qcdlib.aux import AUX
 from qcdlib.alphaS import ALPHAS
 from obslib.dis.stfuncs import STFUNCS as DIS_STFUNCS
@@ -51,7 +52,7 @@ class PARMAN:
     semaphore={}
 
     for i in range(len(self.order)):
-      ii,k,kk=self.order[i]  
+      ii,k,kk=self.order[i]
       if ii==1:
         if k not in semaphore: semaphore[k]=0
         if conf['params'][k][kk]['value']!=parnew[i]:
@@ -73,7 +74,7 @@ class PARMAN:
 
     for k in conf['params']:
       for kk in sorted(conf['params'][k]):
-        if conf['params'][k][kk]['fixed']==False: 
+        if conf['params'][k][kk]['fixed']==False:
           if conf['params'][k][kk]['value']<0:
             L.append('%-10s  %-20s  %10.5e'%(k,kk,conf['params'][k][kk]['value']))
           else:
@@ -81,7 +82,7 @@ class PARMAN:
 
     for k in conf['datasets']:
       for kk in conf['datasets'][k]['norm']:
-        if conf['datasets'][k]['norm'][kk]['fixed']==False: 
+        if conf['datasets'][k]['norm'][kk]['fixed']==False:
           L.append('%10s %10s %10d  %10.5e'%('norm',k,kk,conf['datasets'][k]['norm'][kk]['value']))
     return L
 
@@ -96,6 +97,7 @@ class PARMAN:
     if 'boermulders' in semaphore and semaphore['boermulders']==1:  self.set_boermulders_params()
     if 'pretzelosity' in semaphore and semaphore['pretzelosity']==1:  self.set_pretzelosity_params()
     if 'soft' in semaphore and semaphore['soft']==1: self.set_soft_params()
+    if 'Htilde' in semaphore and semaphore['Htilde']==1:  self.set_Htilde_params()
 
   def set_constraits(self,parkind):
 
@@ -110,18 +112,18 @@ class PARMAN:
     if conf['basis'] == 'default':
       conf['pdf'].widths0['valence']=conf['params']['pdf']['widths0 valence']['value']
       conf['pdf'].widths0['sea']=conf['params']['pdf']['widths0 sea']['value']
-    elif conf['basis'] == 'valence':  
+    elif conf['basis'] == 'valence':
       conf['pdf'].widths0['uv']=conf['params']['pdf']['widths0 uv']['value']
       conf['pdf'].widths0['dv']=conf['params']['pdf']['widths0 dv']['value']
       conf['pdf'].widths0['sea']=conf['params']['pdf']['widths0 sea']['value']
-    conf['pdf'].setup() 
+    conf['pdf'].setup()
 
   def set_ppdf_params(self):
     self.set_constraits('ppdf')
     conf['ppdf'].widths0['valence']=conf['params']['ppdf']['widths0 valence']['value']
     conf['ppdf'].widths0['sea']=conf['params']['ppdf']['widths0 sea']['value']
-    conf['ppdf'].setup() 
-  
+    conf['ppdf'].setup()
+
   def set_ff_params(self):
     self.set_constraits('ff')
     if 'widths0 pi+ fav' in conf['params']['ff']:
@@ -130,7 +132,7 @@ class PARMAN:
     if 'widths0 k+ fav' in conf['params']['ff']:
       conf['ff'].widths0['k+ fav']=conf['params']['ff']['widths0 k+ fav']['value']
       conf['ff'].widths0['k+ unfav']=conf['params']['ff']['widths0 k+ unfav']['value']
-    conf['ff'].setup() 
+    conf['ff'].setup()
 
   def set_sivers_params(self):
     self.set_constraits('sivers')
@@ -174,7 +176,7 @@ class PARMAN:
     conf['sivers'].shape['p'][6][3]=conf['params']['sivers']['sb c']['value']
     conf['sivers'].shape['p'][6][4]=conf['params']['sivers']['sb d']['value']
 
-    conf['sivers'].setup() 
+    conf['sivers'].setup()
 
   def set_transversity_params(self):
     self.set_constraits('transversity')
@@ -219,12 +221,12 @@ class PARMAN:
     conf['transversity'].shape['p'][6][3]=conf['params']['transversity']['s c']['value']
     conf['transversity'].shape['p'][6][4]=conf['params']['transversity']['s d']['value']
 
-    conf['transversity'].setup() 
+    conf['transversity'].setup()
 
   def set_boermulders_params(self):
-    ''' Currently we're using the symmetric sea approximation 
-    where below, all sea quark parameters are set based on the 
-    value of the s quark parameters. 
+    ''' Currently we're using the symmetric sea approximation
+    where below, all sea quark parameters are set based on the
+    value of the s quark parameters.
     '''
 
     self.set_constraits('boermulders')
@@ -248,12 +250,12 @@ class PARMAN:
     conf['boermulders'].shape['p'][2][0]=conf['params']['boermulders']['s N']['value']
     conf['boermulders'].shape['p'][2][1]=conf['params']['boermulders']['s a']['value']
     conf['boermulders'].shape['p'][2][2]=conf['params']['boermulders']['s b']['value']
-    conf['boermulders'].setup() 
+    conf['boermulders'].setup()
 
   def set_pretzelosity_params(self):
-    ''' Currently we're using the symmetric sea approximation 
-    where below, all sea quark parameters are set based on the 
-    value of the s quark parameters. 
+    ''' Currently we're using the symmetric sea approximation
+    where below, all sea quark parameters are set based on the
+    value of the s quark parameters.
     '''
 
     self.set_constraits('pretzelosity')
@@ -277,12 +279,12 @@ class PARMAN:
     conf['pretzelosity'].shape['p'][2][0]=conf['params']['pretzelosity']['s N']['value']
     conf['pretzelosity'].shape['p'][2][1]=conf['params']['pretzelosity']['s a']['value']
     conf['pretzelosity'].shape['p'][2][2]=conf['params']['pretzelosity']['s b']['value']
-    conf['pretzelosity'].setup() 
+    conf['pretzelosity'].setup()
 
   def set_collins_params(self):
 
     self.set_constraits('collins')
-    if 'pi+ u N 1' in conf['params']['collins']: 
+    if 'pi+ u N 1' in conf['params']['collins']:
 
       conf['collins'].widths0['pi+ fav']     = conf['params']['collins']['widths0 pi+ fav']['value']
       conf['collins'].widths0['pi+ unfav']   = conf['params']['collins']['widths0 pi+ unfav']['value']
@@ -338,7 +340,7 @@ class PARMAN:
       conf['collins'].shape2['pi+'][4][4]=conf['params']['collins']['pi+ u d 2']['value']
 
 
-    if 'k+ u N 1' in conf['params']['collins']: 
+    if 'k+ u N 1' in conf['params']['collins']:
       conf['collins'].widths0['k+ fav']     = conf['params']['collins']['widths0 k+ fav']['value']
       conf['collins'].widths0['k+ unfav']   = conf['params']['collins']['widths0 k+ unfav']['value']
 
@@ -384,14 +386,128 @@ class PARMAN:
       conf['collins'].shape2['k+'][1][2]=conf['params']['collins']['k+ u b 2']['value']
       conf['collins'].shape2['k+'][1][3]=conf['params']['collins']['k+ u c 2']['value']
       conf['collins'].shape2['k+'][1][4]=conf['params']['collins']['k+ u d 2']['value']
-  
+
       conf['collins'].shape2['k+'][6][0]=conf['params']['collins']['k+ sb N 2']['value']
       conf['collins'].shape2['k+'][6][1]=conf['params']['collins']['k+ sb a 2']['value']
       conf['collins'].shape2['k+'][6][2]=conf['params']['collins']['k+ sb b 2']['value']
       conf['collins'].shape2['k+'][6][3]=conf['params']['collins']['k+ sb c 2']['value']
       conf['collins'].shape2['k+'][6][4]=conf['params']['collins']['k+ sb d 2']['value']
 
-    conf['collins'].setup() 
+    conf['collins'].setup()
+
+  def set_Htilde_params(self):
+
+    self.set_constraits('Htilde')
+    if 'pi+ u N 1' in conf['params']['Htilde']:
+
+      conf['Htilde'].widths0['pi+ fav']     = conf['params']['Htilde']['widths0 pi+ fav']['value']
+      conf['Htilde'].widths0['pi+ unfav']   = conf['params']['Htilde']['widths0 pi+ unfav']['value']
+
+      conf['Htilde'].shape1['pi+'][1][0]=conf['params']['Htilde']['pi+ u N 1']['value']
+      conf['Htilde'].shape1['pi+'][1][1]=conf['params']['Htilde']['pi+ u a 1']['value']
+      conf['Htilde'].shape1['pi+'][1][2]=conf['params']['Htilde']['pi+ u b 1']['value']
+      conf['Htilde'].shape1['pi+'][1][3]=conf['params']['Htilde']['pi+ u c 1']['value']
+      conf['Htilde'].shape1['pi+'][1][4]=conf['params']['Htilde']['pi+ u d 1']['value']
+
+      conf['Htilde'].shape1['pi+'][2][0]=conf['params']['Htilde']['pi+ d N 1']['value']
+      conf['Htilde'].shape1['pi+'][2][1]=conf['params']['Htilde']['pi+ d a 1']['value']
+      conf['Htilde'].shape1['pi+'][2][2]=conf['params']['Htilde']['pi+ d b 1']['value']
+      conf['Htilde'].shape1['pi+'][2][3]=conf['params']['Htilde']['pi+ d c 1']['value']
+      conf['Htilde'].shape1['pi+'][2][4]=conf['params']['Htilde']['pi+ d d 1']['value']
+
+      conf['Htilde'].shape1['pi+'][3][0]=conf['params']['Htilde']['pi+ d N 1']['value']
+      conf['Htilde'].shape1['pi+'][3][1]=conf['params']['Htilde']['pi+ d a 1']['value']
+      conf['Htilde'].shape1['pi+'][3][2]=conf['params']['Htilde']['pi+ d b 1']['value']
+      conf['Htilde'].shape1['pi+'][3][3]=conf['params']['Htilde']['pi+ d c 1']['value']
+      conf['Htilde'].shape1['pi+'][3][4]=conf['params']['Htilde']['pi+ d d 1']['value']
+
+      conf['Htilde'].shape1['pi+'][4][0]=conf['params']['Htilde']['pi+ u N 1']['value']
+      conf['Htilde'].shape1['pi+'][4][1]=conf['params']['Htilde']['pi+ u a 1']['value']
+      conf['Htilde'].shape1['pi+'][4][2]=conf['params']['Htilde']['pi+ u b 1']['value']
+      conf['Htilde'].shape1['pi+'][4][3]=conf['params']['Htilde']['pi+ u c 1']['value']
+      conf['Htilde'].shape1['pi+'][4][4]=conf['params']['Htilde']['pi+ u d 1']['value']
+
+      conf['Htilde'].shape1['pi+'][5][0]=conf['params']['Htilde']['pi+ d N 1']['value']
+      conf['Htilde'].shape1['pi+'][5][1]=conf['params']['Htilde']['pi+ d a 1']['value']
+      conf['Htilde'].shape1['pi+'][5][2]=conf['params']['Htilde']['pi+ d b 1']['value']
+      conf['Htilde'].shape1['pi+'][5][3]=conf['params']['Htilde']['pi+ d c 1']['value']
+      conf['Htilde'].shape1['pi+'][5][4]=conf['params']['Htilde']['pi+ d d 1']['value']
+
+      conf['Htilde'].shape1['pi+'][6][0]=conf['params']['Htilde']['pi+ d N 1']['value']
+      conf['Htilde'].shape1['pi+'][6][1]=conf['params']['Htilde']['pi+ d a 1']['value']
+      conf['Htilde'].shape1['pi+'][6][2]=conf['params']['Htilde']['pi+ d b 1']['value']
+      conf['Htilde'].shape1['pi+'][6][3]=conf['params']['Htilde']['pi+ d c 1']['value']
+      conf['Htilde'].shape1['pi+'][6][4]=conf['params']['Htilde']['pi+ d d 1']['value']
+
+      #------------------
+
+      #conf['Htilde'].shape2['pi+'][1][0]=conf['params']['Htilde']['pi+ u N 2']['value']
+      #conf['Htilde'].shape2['pi+'][1][1]=conf['params']['Htilde']['pi+ u a 2']['value']
+      #conf['Htilde'].shape2['pi+'][1][2]=conf['params']['Htilde']['pi+ u b 2']['value']
+      #conf['Htilde'].shape2['pi+'][1][3]=conf['params']['Htilde']['pi+ u c 2']['value']
+      #conf['Htilde'].shape2['pi+'][1][4]=conf['params']['Htilde']['pi+ u d 2']['value']
+
+      #conf['Htilde'].shape2['pi+'][4][0]=conf['params']['Htilde']['pi+ u N 2']['value']
+      #conf['Htilde'].shape2['pi+'][4][1]=conf['params']['Htilde']['pi+ u a 2']['value']
+      #conf['Htilde'].shape2['pi+'][4][2]=conf['params']['Htilde']['pi+ u b 2']['value']
+      #conf['Htilde'].shape2['pi+'][4][3]=conf['params']['Htilde']['pi+ u c 2']['value']
+      #conf['Htilde'].shape2['pi+'][4][4]=conf['params']['Htilde']['pi+ u d 2']['value']
+
+
+    if 'k+ u N 1' in conf['params']['Htilde']:
+      conf['Htilde'].widths0['k+ fav']     = conf['params']['Htilde']['widths0 k+ fav']['value']
+      conf['Htilde'].widths0['k+ unfav']   = conf['params']['Htilde']['widths0 k+ unfav']['value']
+
+      conf['Htilde'].shape1['k+'][1][0]=conf['params']['Htilde']['k+ u N 1']['value']
+      conf['Htilde'].shape1['k+'][1][1]=conf['params']['Htilde']['k+ u a 1']['value']
+      conf['Htilde'].shape1['k+'][1][2]=conf['params']['Htilde']['k+ u b 1']['value']
+      conf['Htilde'].shape1['k+'][1][3]=conf['params']['Htilde']['k+ u c 1']['value']
+      conf['Htilde'].shape1['k+'][1][4]=conf['params']['Htilde']['k+ u d 1']['value']
+
+      conf['Htilde'].shape1['k+'][2][0]=conf['params']['Htilde']['k+ d N 1']['value']
+      conf['Htilde'].shape1['k+'][2][1]=conf['params']['Htilde']['k+ d a 1']['value']
+      conf['Htilde'].shape1['k+'][2][2]=conf['params']['Htilde']['k+ d b 1']['value']
+      conf['Htilde'].shape1['k+'][2][3]=conf['params']['Htilde']['k+ d c 1']['value']
+      conf['Htilde'].shape1['k+'][2][4]=conf['params']['Htilde']['k+ d d 1']['value']
+
+      conf['Htilde'].shape1['k+'][3][0]=conf['params']['Htilde']['k+ d N 1']['value']
+      conf['Htilde'].shape1['k+'][3][1]=conf['params']['Htilde']['k+ d a 1']['value']
+      conf['Htilde'].shape1['k+'][3][2]=conf['params']['Htilde']['k+ d b 1']['value']
+      conf['Htilde'].shape1['k+'][3][3]=conf['params']['Htilde']['k+ d c 1']['value']
+      conf['Htilde'].shape1['k+'][3][4]=conf['params']['Htilde']['k+ d d 1']['value']
+
+      conf['Htilde'].shape1['k+'][4][0]=conf['params']['Htilde']['k+ d N 1']['value']
+      conf['Htilde'].shape1['k+'][4][1]=conf['params']['Htilde']['k+ d a 1']['value']
+      conf['Htilde'].shape1['k+'][4][2]=conf['params']['Htilde']['k+ d b 1']['value']
+      conf['Htilde'].shape1['k+'][4][3]=conf['params']['Htilde']['k+ d c 1']['value']
+      conf['Htilde'].shape1['k+'][4][4]=conf['params']['Htilde']['k+ d d 1']['value']
+
+      conf['Htilde'].shape1['k+'][5][0]=conf['params']['Htilde']['k+ d N 1']['value']
+      conf['Htilde'].shape1['k+'][5][1]=conf['params']['Htilde']['k+ d a 1']['value']
+      conf['Htilde'].shape1['k+'][5][2]=conf['params']['Htilde']['k+ d b 1']['value']
+      conf['Htilde'].shape1['k+'][5][3]=conf['params']['Htilde']['k+ d c 1']['value']
+      conf['Htilde'].shape1['k+'][5][4]=conf['params']['Htilde']['k+ d d 1']['value']
+
+      conf['Htilde'].shape1['k+'][6][0]=conf['params']['Htilde']['k+ sb N 1']['value']
+      conf['Htilde'].shape1['k+'][6][1]=conf['params']['Htilde']['k+ sb a 1']['value']
+      conf['Htilde'].shape1['k+'][6][2]=conf['params']['Htilde']['k+ sb b 1']['value']
+      conf['Htilde'].shape1['k+'][6][3]=conf['params']['Htilde']['k+ sb c 1']['value']
+      conf['Htilde'].shape1['k+'][6][4]=conf['params']['Htilde']['k+ sb d 1']['value']
+
+
+      #conf['Htilde'].shape2['k+'][1][0]=conf['params']['Htilde']['k+ u N 2']['value']
+      #conf['Htilde'].shape2['k+'][1][1]=conf['params']['Htilde']['k+ u a 2']['value']
+      #conf['Htilde'].shape2['k+'][1][2]=conf['params']['Htilde']['k+ u b 2']['value']
+      #conf['Htilde'].shape2['k+'][1][3]=conf['params']['Htilde']['k+ u c 2']['value']
+      #conf['Htilde'].shape2['k+'][1][4]=conf['params']['Htilde']['k+ u d 2']['value']
+
+      #conf['Htilde'].shape2['k+'][6][0]=conf['params']['Htilde']['k+ sb N 2']['value']
+      #conf['Htilde'].shape2['k+'][6][1]=conf['params']['Htilde']['k+ sb a 2']['value']
+      #conf['Htilde'].shape2['k+'][6][2]=conf['params']['Htilde']['k+ sb b 2']['value']
+      #conf['Htilde'].shape2['k+'][6][3]=conf['params']['Htilde']['k+ sb c 2']['value']
+      #conf['Htilde'].shape2['k+'][6][4]=conf['params']['Htilde']['k+ sb d 2']['value']
+
+    conf['Htilde'].setup()
 
   def set_soft_params(self):
     for k in conf['params']['soft']:
@@ -432,7 +548,3 @@ if __name__=='__main__':
   conf['sidis residuals']=SIDIS_RESIDUALS()
 
   parman=PARMAN()
-
-
-
-

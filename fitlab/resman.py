@@ -18,9 +18,12 @@ import obslib.sidis.reader
 import obslib.sia.stfuncs
 import obslib.sia.residuals
 import obslib.sia.reader
-import obslib.moments.reader 
+import obslib.moments.reader
 import obslib.moments.moments
 import obslib.moments.residuals
+import obslib.AN_pp.AN_theory
+import obslib.AN_pp.residuals
+import obslib.AN_pp.reader
 from parman import PARMAN
 from speedtest import SPEEDTEST
 from mcsamp import MCSAMP
@@ -46,6 +49,8 @@ class RESMAN:
       self.setup_sia()
     if 'moments' in conf['datasets']:
       self.setup_moments()
+    if 'AN' in conf['datasets']:
+      self.setup_AN()
 
   def setup_dis(self):
     conf['alphaSmode']='backward'
@@ -76,7 +81,8 @@ class RESMAN:
     conf['wormgearg']   =qcdlib.tmdlib.WORMGEARG()
     conf['wormgearh']   =qcdlib.tmdlib.WORMGEARH()
     conf['collins']     =qcdlib.tmdlib.COLLINS()
-    
+    conf['Htilde']     =qcdlib.tmdlib.HTILDE()
+
   def setup_sidis(self):
     conf['sidis tabs']      =obslib.sidis.reader.READER().load_data_sets('sidis')
     conf['sidis stfuncs']   =obslib.sidis.stfuncs.STFUNCS()
@@ -99,19 +105,28 @@ class RESMAN:
     res,rres,nres=self.momres.get_residuals()
     self.npts+=res.size
 
+  def setup_AN(self):
+    conf['AN tabs']      =obslib.AN_pp.reader.READER().load_data_sets('AN')
+    conf['AN theory']   =obslib.AN_pp.AN_theory.ANTHEORY()
+    self.ANres=obslib.AN_pp.residuals.RESIDUALS()
+    conf['ANres']=self.ANres
+    res,rres,nres=self.ANres.get_residuals()
+    self.npts+=res.size
+
   def _get_residuals(self,func,res,rres,nres):
     _res,_rres,_nres=func()
     res=np.append(res,_res)
     rres=np.append(rres,_rres)
     nres=np.append(nres,_nres)
     return res,rres,nres
-    
+
   def get_residuals(self,par):
     conf['parman'].set_new_params(par)
     res,rres,nres=[],[],[]
     if 'sidis'   in conf['datasets']: res,rres,nres=self._get_residuals(self.sidisres.get_residuals,res,rres,nres)
     if 'sia'     in conf['datasets']: res,rres,nres=self._get_residuals(self.siares.get_residuals,res,rres,nres)
     if 'moments' in conf['datasets']: res,rres,nres=self._get_residuals(self.momres.get_residuals,res,rres,nres)
+    if 'AN' in conf['datasets']: res,rres,nres=self._get_residuals(self.ANres.get_residuals,res,rres,nres)
     return res,rres,nres
 
   def gen_report(self,verb=0,level=0):
@@ -119,6 +134,7 @@ class RESMAN:
     if 'sidis'   in conf['datasets']: L.extend(self.sidisres.gen_report(verb,level))
     if 'sia'     in conf['datasets']: L.extend(self.siares.gen_report(verb,level))
     if 'moments' in conf['datasets']: L.extend(self.momres.gen_report(verb,level))
+    if 'AN' in conf['datasets']: L.extend(self.ANres.gen_report(verb,level))
     return L
 
 if __name__=='__main__':
@@ -140,7 +156,7 @@ if __name__=='__main__':
   ap.add_argument('-r','--reaction',type=str,help=" e.g.: sidis, sia ",default='sidis')
   args = ap.parse_args()
 
-  
+
   load_config(args.config)
   conf['args']=args
   conf['resman']=RESMAN()
@@ -155,5 +171,3 @@ if __name__=='__main__':
   elif args.task==7: MCSAMP().simulation2()
   elif args.task==8: ML().analysis()
   elif args.task==9: ML().rap_fits()
-
-

@@ -36,11 +36,11 @@ class _RESIDUALS:
   def get_alpha(self):
     for k in self.tabs:
       npts=len(self.tabs[k]['value'])
-      alpha2=np.zeros(npts) 
+      alpha2=np.zeros(npts)
       ucorr = [x for x in self.tabs[k] if '_u' in x and '%' not in x]
-      for kk in ucorr: 
+      for kk in ucorr:
         alpha2+=self.tabs[k][kk]**2
-      
+
       self.tabs[k]['alpha']=alpha2**0.5
 
   def retrieve_norm_uncertainty(self):
@@ -54,15 +54,15 @@ class _RESIDUALS:
           conf['datasets'][self.reaction]['norm'][k]['dN']=dN
 
   def setup_rparams(self):
-    if 'rparams' not in conf: 
+    if 'rparams' not in conf:
       conf['rparams']={}
-    if self.reaction not in conf['rparams']: 
+    if self.reaction not in conf['rparams']:
       conf['rparams'][self.reaction]={}
     for k in self.tabs:
       if k not in conf['rparams'][self.reaction]:
         conf['rparams'][self.reaction][k]={}
       corr = [x for x in self.tabs[k] if '_c' in x and '%' not in x]
-      for c in corr: 
+      for c in corr:
         conf['rparams'][self.reaction][k][c]={'value':0.0,'registered':False}
 
   def prepare_multiprocess(self):
@@ -72,13 +72,13 @@ class _RESIDUALS:
         data.append([k,i])
     if 'ncpus' in conf:
       ncpus=conf['ncpus']
-    else: 
+    else:
       ncpus=1
     print '\nmultiprocess setup: ncpus=%d / observable'%ncpus
     self.mproc=MULTIPROC(ncpus,self._get_theory,data)
 
   # routines for IMC analysis
- 
+
   def select_training_sets(self,tab):
     for k in tab:
       key=self.tabs[k].leys()[0]
@@ -87,7 +87,7 @@ class _RESIDUALS:
       if npts>5:
         nptsT = int(conf['training frac']*npts)
         iT=choice(npts,nptsT,replace=False)
-        for i in iT: tab[k]['iT'][i]=1       
+        for i in iT: tab[k]['iT'][i]=1
 
   def resample(self,tab):
     for k in tab:
@@ -169,14 +169,14 @@ class _RESIDUALS:
 
   def get_npts(self):
     npts=0
-    for k in self.tabs: 
+    for k in self.tabs:
       npts+=len(self.tabs[k]['value'])
     return npts
 
   def get_residuals(self):
     res,rres,nres=[],[],[]
     self.get_theory()
-    for k in self.tabs: 
+    for k in self.tabs:
       res=np.append(res  ,self._get_residuals(k))
       rres=np.append(rres,self._get_rres(k))
       nres=np.append(nres,self._get_nres(k))
@@ -189,7 +189,7 @@ class _RESIDUALS:
     verb = 0: Do not print on screen. Only return list of strings
     verv = 1: print on screen the report
     level= 0: only the total chi2s
-    level= 1: include point by point 
+    level= 1: include point by point
     """
 
     L=[]
@@ -200,7 +200,7 @@ class _RESIDUALS:
       res =self._get_residuals(k)
       rres=self._get_rres(k)
       nres=self._get_nres(k)
-      
+
       chi2=np.sum(res**2)
       rchi2=np.sum(rres**2)
       nchi2=nres**2
@@ -210,9 +210,9 @@ class _RESIDUALS:
       L.append('%7d %10s %10s %5d %10.2f %10.2f %10.2f'%(k,tar,col,npts,chi2,rchi2,nchi2))
 
     if level==1:
-      L.append('-'*100)  
+      L.append('-'*100)
       for k in conf['sidistab']:
-        if len(conf['sidistab'][k].index)==0: continue 
+        if len(conf['sidistab'][k].index)==0: continue
         for i in range(len(conf['sidistab'][k].index)):
           x=conf['sidistab'][k]['x'].values[i]
           obs=conf['sidistab'][k]['obs'].values[i]
@@ -236,5 +236,3 @@ class _RESIDUALS:
 
   def ___save_results(self,path):
     save(self.tabs,path)
-
-

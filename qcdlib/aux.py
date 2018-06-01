@@ -17,7 +17,7 @@ class AUX:
     self.CF=4.0/3.0
     self.TR=0.5
     self.TF=0.5
-    self.euler=fp.euler 
+    self.euler=fp.euler
 
     # soft factors
     self.soft={}
@@ -35,20 +35,20 @@ class AUX:
     self.mZ   = 91.1876
     self.mW   = 80.398
     self.M    = 0.93891897
-    self.Mpi  = 0.135 
-    self.Mk   = 0.497 
+    self.Mpi  = 0.135
+    self.Mk   = 0.497
 
-    self.me2   = self.me**2 
-    self.mmu2  = self.mmu**2 
+    self.me2   = self.me**2
+    self.mmu2  = self.mmu**2
     self.mtau2 = self.mtau**2
-    self.mu2   = self.mu**2  
-    self.md2   = self.md**2  
-    self.ms2   = self.ms**2  
-    self.mc2   = self.mc**2  
-    self.mb2   = self.mb**2  
-    self.mZ2   = self.mZ**2  
-    self.mW2   = self.mW**2  
-    self.M2    = self.M**2  
+    self.mu2   = self.mu**2
+    self.md2   = self.md**2
+    self.ms2   = self.ms**2
+    self.mc2   = self.mc**2
+    self.mb2   = self.mb**2
+    self.mZ2   = self.mZ**2
+    self.mW2   = self.mW**2
+    self.M2    = self.M**2
     self.Mpi2  = self.Mpi**2
 
   def set_couplings(self):
@@ -58,7 +58,3 @@ class AUX:
     self.s2wMZ = 0.23116
     self.alfa  = 1/137.036
     self.alphaSMZ = 0.118
-  
-
-
-
