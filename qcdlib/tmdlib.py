@@ -64,12 +64,25 @@ class CORE:
   def beta(self,a,b):
     return gamma(a)*gamma(b)/gamma(a+b)
 
-  def get_shape(self,x,p):
+  def get_shape(self,x,p,Q2):
     if conf['shape']==0:
-        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
+        if conf['evo']=='yes':
+            lam2=conf['lam2evo']
+            Q02=conf['Q02evo']
+            s=np.log(np.log(Q2/lam2)/np.log(Q02/lam2))
+            return (p[0]+p[1]*s)*x**(p[2]+p[3]*s)*(1-x)**(p[4]+p[5]*s)*(1+(p[6]+p[7]*s)*x+(p[8]+p[9]*s)*x**2)
+        else: return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
     elif conf['shape']==1:
-        norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
-        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
+        if conf['evo']=='yes':
+            lam2=conf['lam2evo']
+            Q02=conf['Q02evo']
+            s=np.log(np.log(Q2/lam2)/np.log(Q02/lam2))
+            norm=self.beta(1+(p[2]+p[3]*s),(p[4]+p[5]*s)+1)+(p[6]+p[7]*s)*self.beta(1+(p[2]+p[3]*s)+1,(p[4]+p[5]*s)+1) \
+            +(p[8]+p[9]*s)*self.beta(1+(p[2]+p[3]*s)+2,(p[4]+p[5]*s)+1)
+            return (p[0]+p[1]*s)*x**(p[2]+p[3]*s)*(1-x)**(p[4]+p[5]*s)*(1+(p[6]+p[7]*s)*x+(p[8]+p[9]*s)*x**2)/norm
+        else:
+            norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
+            return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
     elif conf['shape']==2:
         norm=self.beta(1+p[1],1+p[2])+p[3]*self.beta(1+p[1]+1,1+p[2])+p[4]*self.beta(1+p[1],1+p[2])*(psi(p[1]+p[2]+2)-psi(p[1]+1))
         return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*np.log(1/x))/norm
@@ -80,34 +93,49 @@ class CORE:
         norm=self.beta(2+p[1],p[2]+1)+p[3]*self.beta(2+p[1]+1,p[2]+1)+p[4]*self.beta(2+p[1]+2,p[2]+1)
         return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
 
-  def get_dshape(self,x,p):
+  def get_dshape(self,x,p,Q2):
     if conf['shape']==0:
-        return  p[0]*x**p[1]*(1-x)**p[2]*(p[3]+2.*p[4]*x+(1+p[3]*x+p[4]*x**2)*(p[1]/x-p[2]/(1.-x)))
+        if conf['evo']=='yes':
+            lam2=conf['lam2evo']
+            Q02=conf['Q02evo']
+            s=np.log(np.log(Q2/lam2)/np.log(Q02/lam2))
+            return (p[0]+p[1]*s)*x**(p[2]+p[3]*s)*(1-x)**(p[4]+p[5]*s)*((p[6]+p[7]*s)+2.*(p[8]+p[9]*s)*x \
+            +(1+(p[6]+p[7]*s)*x+(p[8]+p[9]*s)*x**2)*((p[2]+p[3]*s)/x-(p[4]+p[5]*s)/(1.-x)))
+        else: return  p[0]*x**p[1]*(1-x)**p[2]*(p[3]+2.*p[4]*x+(1+p[3]*x+p[4]*x**2)*(p[1]/x-p[2]/(1.-x)))
     if conf['shape']==1:
-        norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
-        return  p[0]*x**p[1]*(1-x)**p[2]*(p[3]+2.*p[4]*x+(1+p[3]*x+p[4]*x**2)*(p[1]/x-p[2]/(1.-x)))/norm
+        if conf['evo']=='yes':
+            lam2=conf['lam2evo']
+            Q02=conf['Q02evo']
+            s=np.log(np.log(Q2/lam2)/np.log(Q02/lam2))
+            norm=self.beta(1+(p[2]+p[3]*s),(p[4]+p[5]*s)+1)+(p[6]+p[7]*s)*self.beta(1+(p[2]+p[3]*s)+1,(p[4]+p[5]*s)+1) \
+            +(p[8]+p[9]*s)*self.beta(1+(p[2]+p[3]*s)+2,(p[4]+p[5]*s)+1)
+            return (p[0]+p[1]*s)*x**(p[2]+p[3]*s)*(1-x)**(p[4]+p[5]*s)*((p[6]+p[7]*s)+2.*(p[8]+p[9]*s)*x \
+            +(1+(p[6]+p[7]*s)*x+(p[8]+p[9]*s)*x**2)*((p[2]+p[3]*s)/x-(p[4]+p[5]*s)/(1.-x)))/norm
+        else:
+            norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
+            return  p[0]*x**p[1]*(1-x)**p[2]*(p[3]+2.*p[4]*x+(1+p[3]*x+p[4]*x**2)*(p[1]/x-p[2]/(1.-x)))/norm
 
-  def get_collinear(self,x,hadron):
+  def get_collinear(self,x,hadron,Q2):
     N=np.zeros(11)
     for i in range(11):
       if 'shape' in self.__dict__:
-        N[i]=self.get_shape(x,self.shape[hadron][i])
+        N[i]=self.get_shape(x,self.shape[hadron][i],Q2)
       if 'shape1' in self.__dict__:
-        N[i]=self.get_shape(x,self.shape1[hadron][i])
+        N[i]=self.get_shape(x,self.shape1[hadron][i],Q2)
       if 'shape2' in self.__dict__:
-        N[i]+=self.get_shape(x,self.shape2[hadron][i])
+        N[i]+=self.get_shape(x,self.shape2[hadron][i],Q2)
 
     return N
 
-  def get_dcollinear(self,x,hadron): #Derivative of the collinear piece
+  def get_dcollinear(self,x,hadron,Q2): #Derivative of the collinear piece
     N=np.zeros(11)
     for i in range(11):
       if 'shape' in self.__dict__:
-        N[i]=self.get_dshape(x,self.shape[hadron][i])
+        N[i]=self.get_dshape(x,self.shape[hadron][i],Q2)
       if 'shape1' in self.__dict__:
-        N[i]=self.get_dshape(x,self.shape1[hadron][i])
+        N[i]=self.get_dshape(x,self.shape1[hadron][i],Q2)
       if 'shape2' in self.__dict__:
-        N[i]+=self.get_dshape(x,self.shape2[hadron][i])
+        N[i]+=self.get_dshape(x,self.shape2[hadron][i],Q2)
 
     return N
 
@@ -268,14 +296,14 @@ class COLLINS(CORE):
     self.widths0['k+ unfav'] =0.11
 
     self.shape1={}
-    self.shape1['pi+']=np.zeros((11,5))
-    self.shape1['h+']=np.zeros((11,5))
-    self.shape1['k+']=np.zeros((11,5))
+    self.shape1['pi+']=np.zeros((11,10))
+    self.shape1['h+']=np.zeros((11,10))
+    self.shape1['k+']=np.zeros((11,10))
 
     self.shape2={}
-    self.shape2['pi+']=np.zeros((11,5))
-    self.shape2['h+']=np.zeros((11,5))
-    self.shape2['k+']=np.zeros((11,5))
+    self.shape2['pi+']=np.zeros((11,10))
+    self.shape2['h+']=np.zeros((11,10))
+    self.shape2['k+']=np.zeros((11,10))
 
     self.widths={}
     self.widths['pi+']=np.ones(11)
@@ -342,14 +370,14 @@ class COLLINS(CORE):
 
   def get_C(self,z,Q2,hadron='pi+'):
     #ff=conf['_ff'].get_f(z,Q2,hadron)
-    C=self.get_collinear(z,hadron)#*ff
+    C=self.get_collinear(z,hadron,Q2)#*ff
     C[0]=0 # glue is not supported
     if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
 
   def get_dC(self,z,Q2,hadron='pi+'):
     #ff=conf['_ff'].get_f(z,Q2,hadron)
-    C=self.get_dcollinear(z,hadron)#*ff
+    C=self.get_dcollinear(z,hadron,Q2)#*ff
     C[0]=0 # glue is not supported
     if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
@@ -381,9 +409,9 @@ class HTILDE(CORE): #Htilde has same form as Collins
     self.widths0['k+ unfav'] =0.11
 
     self.shape1={}
-    self.shape1['pi+']=np.zeros((11,5))
-    self.shape1['h+']=np.zeros((11,5))
-    self.shape1['k+']=np.zeros((11,5))
+    self.shape1['pi+']=np.zeros((11,10))
+    self.shape1['h+']=np.zeros((11,10))
+    self.shape1['k+']=np.zeros((11,10))
 
     #self.shape2={}
     #self.shape2['pi+']=np.zeros((11,5))
@@ -455,7 +483,7 @@ class HTILDE(CORE): #Htilde has same form as Collins
 
   def get_C(self,z,Q2,hadron='pi+'):
     #ff=conf['_ff'].get_f(z,Q2,hadron)
-    C=self.get_collinear(z,hadron)#*ff
+    C=self.get_collinear(z,hadron,Q2)#*ff
     C[0]=0 # glue is not supported
     if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
@@ -491,7 +519,7 @@ class SIVERS(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
 
   def get_C(self,x,Q2,target='p'):
-    C=self.get_collinear(x,target)
+    C=self.get_collinear(x,target,Q2)
     if target=='n': C=self.p2n(C)
     return C
 
@@ -506,15 +534,15 @@ class TRANSVERSITY(CORE):
 
     conf['shape']=0
     self.shape={}
-    self.shape['p']=np.zeros((11,5))
-    self.shape['p'][1]=[0.46,1.11,3.64,0,0] #u
-    self.shape['p'][3]=[-1,1.11,3.64,0,0] #d
-    self.shape['p'][2]=[0.,1.,1.,0,0] #ub
-    self.shape['p'][4]=[0.,1.,1.,0,0] #db
-    self.shape['p'][5]=[0.,1.,1.,0,0] #s
-    self.shape['p'][6]=[0.,1.,1.,0,0] #sb
-    self.shape['p'][7]=[0.,1.,1.,0,0] #c
-    self.shape['p'][8]=[0.,1.,1.,0,0] #cb
+    self.shape['p']=np.zeros((11,10))
+    self.shape['p'][1]=[0.46,0,1.11,0,3.64,0,0,0,0,0] #u
+    self.shape['p'][3]=[-1,0,1.11,0,3.64,0,0,0,0,0] #d
+    self.shape['p'][2]=[0.,0,1.,0,1.,0,0,0,0,0] #ub
+    self.shape['p'][4]=[0.,0,1.,0,1.,0,0,0,0,0] #db
+    self.shape['p'][5]=[0.,0,1.,0,1.,0,0,0,0,0] #s
+    self.shape['p'][6]=[0.,0,1.,0,1.,0,0,0,0,0] #sb
+    self.shape['p'][7]=[0.,0,1.,0,1.,0,0,0,0,0] #c
+    self.shape['p'][8]=[0.,0,1.,0,1.,0,0,0,0,0] #cb
 
     self.widths0={}
     self.widths0['valence']=0.26
@@ -533,7 +561,7 @@ class TRANSVERSITY(CORE):
     self.widths['n']=self.p2n(self.widths['p'])
 
   def get_C(self,x,Q2,target='p'):
-    C=self.get_collinear(x,target)
+    C=self.get_collinear(x,target,Q2)
     if target=='n': C=self.p2n(C)
     return C
 
@@ -615,7 +643,7 @@ class BOERMULDERS(CORE):
       self.K[hadron]=self.get_K(1.0,hadron)
 
   def get_C(self,x,Q2,target='p'):
-    C=self.get_collinear(x,target)
+    C=self.get_collinear(x,target,Q2)
     if target=='n': C=self.p2n(C)
     return C
 
@@ -662,7 +690,7 @@ class PRETZELOSITY(CORE):
       self.K[hadron]=self.get_K(1.0,hadron)
 
   def get_C(self,x,Q2,target='p'):
-    C=self.get_collinear(x,target)
+    C=self.get_collinear(x,target,Q2)
     if target=='n': C=self.p2n(C)
     return C
 
