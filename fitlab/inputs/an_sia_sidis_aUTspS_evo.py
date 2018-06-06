@@ -146,11 +146,11 @@ conf['params']['Htilde']['widths0 pi+ fav']     = {'value':<<    0.0000000000000
 conf['params']['Htilde']['widths0 pi+ unfav']   = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':1e-5,'max':1.43729999999999996652e-01}
 conf['params']['Htilde']['pi+ u N0 1']  = {'value':<<   -7.63627e-01>>,'fixed':False,'min':-15,'max':15}
 conf['params']['Htilde']['pi+ u a0 1']  = {'value':<<    6.13814e-01>>,'fixed':False,'min':-1,'max':5}
-conf['params']['Htilde']['pi+ u b0 1']  = {'value':<<    4.64564e+00>>,'fixed':False,'min':2,'max':10}
+conf['params']['Htilde']['pi+ u b0 1']  = {'value':<<    4.64564e+00>>,'fixed':False,'min':0,'max':10}
 
 conf['params']['Htilde']['pi+ d N0 1']  = {'value':<<    1.45281e+01>>,'fixed':False,'min':-15,'max':15}
 conf['params']['Htilde']['pi+ d a0 1']  = {'value':<<    3.98995e+00>>,'fixed':False,'min': -1,'max':5}
-conf['params']['Htilde']['pi+ d b0 1']  = {'value':<<    2.16931e+00>>,'fixed':False,'min':2,'max':10}
+conf['params']['Htilde']['pi+ d b0 1']  = {'value':<<    2.16931e+00>>,'fixed':False,'min':0,'max':10}
 
 conf['params']['Htilde']['pi+ u c0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 conf['params']['Htilde']['pi+ d c0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
@@ -159,11 +159,11 @@ conf['params']['Htilde']['pi+ d d0 1']  = {'value':<<    0.00000000000000000000e
 
 conf['params']['Htilde']['pi+ u N1 1']  = {'value':<<   1.01593e+00>>,'fixed':False,'min':-10,'max':10}
 conf['params']['Htilde']['pi+ u a1 1']  = {'value':<<   3.31280e-01>>,'fixed':False,'min':-10,'max':10}
-conf['params']['Htilde']['pi+ u b1 1']  = {'value':<<   -3.81085e-01>>,'fixed':False,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ u b1 1']  = {'value':<<   -1.09872e-01>>,'fixed':False,'min':-10,'max':10}
 
 conf['params']['Htilde']['pi+ d N1 1']  = {'value':<<   -5.88387e-01>>,'fixed':False,'min':-10,'max':10}
 conf['params']['Htilde']['pi+ d a1 1']  = {'value':<<   3.31412e+00>>,'fixed':False,'min': -10,'max':10}
-conf['params']['Htilde']['pi+ d b1 1']  = {'value':<<   -1.09872e-01>>,'fixed':False,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ d b1 1']  = {'value':<<   4.02593e+00>>,'fixed':False,'min':-10,'max':10}
 
 conf['params']['Htilde']['pi+ u c1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
 conf['params']['Htilde']['pi+ d c1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
