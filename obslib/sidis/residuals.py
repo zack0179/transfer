@@ -331,6 +331,7 @@ class RESIDUALS(_RESIDUALS):
       msg+='had=%7s,  '
       msg+='obs=%7s,  '
       if 'dependence' in self.tabs[k]: msg+='dep=%7s,  '
+      if 'Dependence' in self.tabs[k]: msg+='dep=%7s,  '
       msg+='x=%10.3e,  '
       msg+='z=%10.3e,  '
       msg+='pT=%10.3e,  '
@@ -354,6 +355,7 @@ class RESIDUALS(_RESIDUALS):
           row.append(self.tabs[k]['hadron'][i])
           row.append(self.tabs[k]['obs'][i])
           if 'dependence' in  self.tabs[k]: row.append(self.tabs[k]['dependence'][i].strip())
+          if 'Dependence' in  self.tabs[k]: row.append(self.tabs[k]['Dependence'][i].strip())
           row.append(self.tabs[k]['x'][i])
           row.append(self.tabs[k]['z'][i])
           row.append(self.tabs[k]['pT'][i])
