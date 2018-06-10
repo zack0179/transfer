@@ -1,0 +1,151 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{\textbf{Installation}}
+%------------------------------------------------------------
+\begin{textblock}{110}(5,12) 
+
+\begin{itemize}
+\item \textbf{step 1:}
+  \begin{itemize}
+  \item[+] Install python2 scipy stack. e.g. anaconda (python2) 
+  \item[+] From the commandline:  
+     \begin{itemize}
+     \item[] \textbf{\texttt{cd external \&\& ./install}}
+     \end{itemize}
+  \end{itemize}
+
+\item \textbf{step 2:}
+  \begin{itemize}
+     \item[+] Enviroment variables needs to be set in your
+     terminal session. 
+     \item[+] For \texttt{bash} they are
+        \begin{itemize}
+        \item[] \textbf{\texttt{export FITPACK=path2fitpack}}
+        \item[] \textbf{\texttt{PYTHONPATH=\$FITPACK:\$PYTHONPATH}}
+        \item[] \textbf{\texttt{export PATH=\$FITPACK/bin:\$PATH}}
+        \end{itemize}
+     \item[+] Alternatively you can source the setup files:
+        \begin{itemize}
+        \item[] \textbf{\texttt{source  setup.bash}}
+        \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\end{textblock}
+%------------------------------------------------------------
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{\textbf{Workflow}}
+%------------------------------------------------------------
+\begin{textblock}{110}(5,12) 
+\begin{itemize}
+\item \textbf{General}
+      \begin{itemize}
+      \item[+] There are various ways in which  \texttt{fitpack} can be used 
+      \item[+] The enviroment variables allows you to run the code
+               from anywhere in your system. In other words, there is no need 
+               to work within the same folder of \texttt{fitpack}
+      \item[+] As a good practice, create dedicated folders for a
+               given analysis you want to study 
+      \end{itemize}
+\item \textbf{Using the terminal }
+      \begin{itemize}
+      \item[+] There are dedicated scripts that can be executed from
+               commandline. They are located at \texttt{fitpack/bin/}
+      \item[+] The main script is called \texttt{jam3d}. This is
+               useful for running the \texttt{jam3d} codes to generate TMD MC 
+               parameters via nested sampling. The code can be
+               packaged into  containers and be deployed in cluster 
+               environments. 
+      \end{itemize}
+
+\end{itemize}
+
+\end{textblock}
+%------------------------------------------------------------
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{\textbf{Workflow}}
+%------------------------------------------------------------
+\begin{textblock}{110}(5,12) 
+
+\begin{itemize}
+\item \textbf{Using the Jupyer notebooks}
+      \begin{itemize}
+      \item[+] The core libraries can also be loaded from jupyer notebooks
+      \item[+] The notebooks are more useful for visualization task
+               such as plotting data or TMDs. 
+      \item[+] This is ideal to share the software via \texttt{jupter-hub}
+               servers. 
+      \end{itemize}
+
+\item \textbf{Terminal or jupyter }
+      \begin{itemize}
+      \item[+] In principle all the workflow can be set inside a
+               jupyter notebook without ever need to run programs 
+               from the commandline. 
+      \item[+] However at the beginning of any analysis where one
+               needs to know if a particular implementation of the
+               theory works by fitting the data, it is simpler to check  
+               from commandline if the setup works
+      \item[+] Moreover, for more complex problem where many parameters 
+               are involved in the analysis or a MC sampling is
+               desired, is best to proceed via terminal (specially for
+               very long runs)and use  jupyter-notebooks to post-process the results
+      \end{itemize}
+\end{itemize}
+
+\end{textblock}
+%------------------------------------------------------------
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{\textbf{Tutorial 1: fits of unpolarized TMDs}}
+%------------------------------------------------------------
+\begin{textblock}{110}(5,12) 
+
+\begin{itemize}
+\item \textbf{Using the Jupyer notebooks}
+  \begin{itemize}
+  \item[+] The core libraries can also be loaded from jupyer notebooks
+  \item[+] The notebooks are more useful for visualization task
+           such as plotting data or TMDs. 
+  \item[+] This is ideal to share the software via \texttt{jupter-hub}
+           servers. 
+  \end{itemize}
+
+\end{itemize}
+
+\end{textblock}
+%------------------------------------------------------------
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

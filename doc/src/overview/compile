@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+import sys,os
+
+class BEAMER:
+
+  def __init__(self,orderfile):
+    self.orderfile=orderfile
+    self.code=[]
+    self.load_slides()
+    self.fix_path4gallery()
+    self.compile()
+  
+  def load_code(self,fname):
+    F=open(fname)
+    self.code.extend(F.readlines())
+    F.close()
+
+  def load_slides(self):
+    self.load_code('headers.tex')
+    self.code.append(r'\begin{document}')
+    L=open(self.orderfile).readlines()
+    L=[l for l in L if l.strip()!='']
+    L=[l.strip() for l in L if l.startswith('#')==False]
+    for l in L: self.load_code(l)
+    self.code.append(r'\end{document}')
+
+  def fix_path4gallery(self):
+    for i in range(len(self.code)):
+      if 'gallery/' in self.code[i]:
+        self.code[i]=self.code[i].replace('gallery/','../gallery/')
+
+  def compile(self):
+    path='.slides'
+    if not os.path.exists(path): 
+      os.makedirs(path)
+    F=open(path+'/slides.tex','w')
+    F.writelines(self.code)
+    F.close()
+    os.system('cd .slides && pdflatex slides.tex && cd -')
+    os.system('mv .slides/slides.pdf ../../overview.pdf ')
+
+if __name__=='__main__':
+
+  beamer=BEAMER('order')
+  
+
+
+
+
+
+
+
+
+
+
+
+
