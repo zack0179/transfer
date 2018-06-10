@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import sys,os
 import numpy as np
 from numpy.random import rand,randn,uniform
@@ -374,7 +373,6 @@ class NEST:
   
     self.active_nll.append(_nll)
     self.active_p.append(_p)
-  
 
   def next(self,t_elapsed):
     self.gen_sample()
@@ -413,7 +411,6 @@ class NEST:
       print 
       print 'max block size reached. flushing'
       self.status='flush'
-
 
   def results(self,fname,cmd=None):
 
