@@ -14,6 +14,8 @@ warnings.filterwarnings('ignore')
 from timeit import default_timer as timer
 from numpy import linalg as la
 from tools.config import conf
+from tools.tools import load,save
+import copy
 # aux funcs
 
 def lprint(msg):
@@ -187,28 +189,42 @@ class NEST:
     self.V0=np.prod(self.dp)
     self.Vk=self.V0
     self.msg=''
+    
+    ##########################################################
+    #if 'nestout' not in conf:  conf['nestout']=None
 
-    if 'nestout' not in conf:
-      self.samples_p=[]
-      self.samples_x=[1]
-      self.samples_l=[0]
-      self.samples_nll=[]
-      self.logz=[]
-      self.cnt=0 # counter
-      self.attempts1=None
-      self.attempts2=None
-      self.set_active_sets(self.N)
-    else:
-      self.active_p=conf['nestout']['active p']
-      self.active_nll=conf['nestout']['active nll']
-      self.samples_p=conf['nestout']['samples'][::-1]
-      self.samples_x=conf['nestout']['x'][::-1]
-      self.samples_l=conf['nestout']['l'][::-1]
-      self.samples_nll=[-np.log(l) for l in self.samples_l]
-      self.logz=conf['nestout']['logz']
-      self.cnt=len(self.samples_l) # counter
-      self.attempts1=None
-      self.attempts2=None
+    #if conf['nestout']==None:
+    #  self.samples_p=[]
+    #  self.samples_x=[1]
+    #  self.samples_l=[0]
+    #  self.samples_nll=[]
+    #  self.logz=[]
+    #  self.cnt=0 # counter
+    #  self.attempts1=None
+    #  self.attempts2=None
+    #  self.set_active_sets(self.N)
+    #else:
+    #  self.active_p=conf['nestout']['active p']
+    #  self.active_nll=conf['nestout']['active nll']
+    #  self.samples_p=conf['nestout']['samples'][::-1]
+    #  self.samples_x=conf['nestout']['x'][::-1]
+    #  self.samples_l=conf['nestout']['l'][::-1]
+    #  self.samples_nll=[-np.log(l) for l in self.samples_l]
+    #  self.logz=conf['nestout']['logz']
+    #  self.cnt=len(self.samples_l) # counter
+    #  conf['itmax']+=self.cnt
+    #  self.attempts1=None
+    #  self.attempts2=None
+
+    ##########################################################
+    self.samples_p=[]
+    self.samples_nll=[]
+    self.cnt=0  # global counter i.e total number of samples
+    self.block_cnt=0  # block counter i.e numer of blocks that has been generated
+    self.block_size=0 # number of samples in the current block 
+    self.attempts1=None
+    self.attempts2=None
+    self.set_active_sets(self.N)
 
     self.status='ready'
 
@@ -314,36 +330,10 @@ class NEST:
     return p,_nll
 
   # nested sampling routines
-  
-  def gen_sample(self):
-  
-    # remove entry from active arrays
-    imax=np.argmax(self.active_nll)
-    nll=self.active_nll.pop(imax)
-    p=self.active_p.pop(imax)
 
-    # update samples 
-    self.samples_nll.append(nll)
-    self.samples_l.append(np.exp(-nll))
-    if len(self.samples_p)==0:
-      self.samples_p=[p]
-    else:
-      self.samples_p=np.concatenate((self.samples_p,[p]),axis=0)
-    self.samples_x.append(self.samples_x[-1]*self.factor)  
-    self.cnt+=1
-  
-    #_p,_nll=self.gen_par_flat(nll)
-    _p,_nll=self.gen_par_cov(nll,p)
-    #if self.cnt<conf['burn size']:
-    #  _p,_nll=self.gen_par_flat(nll)
-    #else:
-  
-    self.active_nll.append(_nll)
-    self.active_p.append(_p)
-  
-  def get_logz(self):
+  def get_logz_deprecated(self):
     return np.log(np.trapz(self.samples_l[::-1],self.samples_x[::-1])*self.jac)
-  
+
   def set_active_sets(self,N):
     self.active_p=[]
     self.active_nll=[]
@@ -356,151 +346,126 @@ class NEST:
       self.active_p.append(p)
       self.active_nll.append(nll)
       if cnt_active==N: break
+  
+  def gen_sample(self):
+  
+    # remove entry from active arrays
+    imax=np.argmax(self.active_nll)
+    nll=self.active_nll.pop(imax)
+    p=self.active_p.pop(imax)
+
+    # update samples 
+    self.samples_nll=np.append(self.samples_nll,nll)
+    if len(self.samples_p)==0:
+      self.samples_p=[p]
+    else:
+      self.samples_p=np.concatenate((self.samples_p,[p]),axis=0)
+
+    #self.samples_l.append(np.exp(-nll))
+    #self.samples_x.append(self.samples_x[-1]*self.factor)  
+
+    self.cnt+=1
+    self.block_size+=1
+  
+    _p,_nll=self.gen_par_cov(nll,p)
+    #_p,_nll=self.gen_par_flat(nll)
+    #if self.cnt<conf['burn size']:
+    #  _p,_nll=self.gen_par_flat(nll)
+  
+    self.active_nll.append(_nll)
+    self.active_p.append(_p)
+  
 
   def next(self,t_elapsed):
     self.gen_sample()
-    self.logz.append(self.get_logz())
-    if self.cnt>2: 
-      #z_past=np.average([np.exp(self.logz[-2]),np.exp(self.logz[-3]),np.exp(self.logz[-4])])
-      std=np.std(np.array(self.active_nll)+conf['data size'])
-      mean=np.mean(np.array(self.active_nll)+conf['data size'])
-      #z_current=np.exp(self.logz[-1])
-      #rel = np.abs(1-z_past/z_current)
-      rel = std/mean
-      dchi2max=2*np.amax(self.active_nll)
-      dchi2min=2*np.amin(self.active_nll)
-      msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed=%.3e  dchi2min=%.3e dchi2max=%0.3e'
-      msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,dchi2min,dchi2max)
-      if self.verb: lprint(msg)
-      # stopping criterion
-      if 'itmax' in conf and self.cnt==conf['itmax']: 
-        self.status='stop'
-      if self.logz[-1]>-1e10  and conf['tol']!=None:
-        if rel<conf['tol']: self.status='stop'
-      if np.isinf(self.logz[-1]) and self.cnt>1000: 
-        if rel<conf['tol']: self.status='stop'
+    #self.logz.append(self.get_logz())
 
-  def results(self):
-    dx=0.5*(np.array(self.samples_x[:-1])-np.array(self.samples_x[1:]))
-    log_l=np.log(self.samples_l[1:])
-    log_w=np.log(dx*self.jac)+log_l
-    weights=np.exp(log_w)
-    weights/=np.sum(weights)
-  
+    # construct relative relative error for active nll 
+    std=np.std(np.array(self.active_nll)-conf['nll shift'])
+    mean=np.mean(np.array(self.active_nll)-conf['nll shift'])
+    rel = abs(std/mean)
+
+    # get range dchi2 range of active range
+    dchi2max=2*np.amax(self.active_nll)
+    dchi2min=2*np.amin(self.active_nll)
+
+    # screen printout
+    #msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed(h)=%.3e  dchi2min=%.3e dchi2max=%0.3e  attemps1=%10d  attemps2=%10d Vk/V0=%0.3e  %s  '
+    #msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,dchi2min,dchi2max,self.attempts1,self.attempts2,self.Vk/self.V0,self.msg)
+    msg='iter=%d  bs=%d rel-err=%.3e  t-elapsed(h)=%.3e  dchi2min=%.3e dchi2max=%0.3e  attemps1=%10d  attemps2=%10d Vk/V0=%0.3e  %s  '
+    msg=msg%(self.cnt,self.block_size,rel,t_elapsed,dchi2min,dchi2max,self.attempts1,self.attempts2,self.Vk/self.V0,self.msg)
+    if self.verb: lprint(msg)
+
+
+    # stopping criterion
+
+    if self.cnt==conf['itmax']: 
+      print 
+      print 'itmax reached'
+      self.status='stop'
+
+    elif conf['tol']!=None and rel<conf['tol']: 
+      print 
+      print 'tolernce %f reached'%conf['tol']
+      self.status='stop'
+
+    elif self.block_size==conf['block size']: 
+      print 
+      print 'max block size reached. flushing'
+      self.status='flush'
+
+
+  def results(self,fname,cmd=None):
+
+    ##########################################  
+    #dx=0.5*(np.array(self.samples_x[:-1])-np.array(self.samples_x[1:]))
+    #log_l=np.log(self.samples_l[1:])
+    #log_w=np.log(dx*self.jac)+log_l
+    #weights=np.exp(log_w)
+    #weights/=np.sum(weights)
+    #data={}
+    #data['samples']=self.samples_p[::-1]
+    #data['x']=self.samples_x[1:][::-1]
+    #data['l']=self.samples_l[1:][::-1]
+    #data['nll']=self.samples_nll[::-1]
+    #data['logz']=self.logz
+    #data['weights']=weights[::-1]
+    #data['active p']=self.active_p
+    #data['active nll']=self.active_nll
+    #return data
+    ##########################################  
     data={}
-    data['samples']=self.samples_p[::-1]
-    data['x']=self.samples_x[1:][::-1]
-    data['l']=self.samples_l[1:][::-1]
-    data['logz']=self.logz
-    data['weights']=weights[::-1]
-    data['active p']=self.active_p
-    data['active nll']=self.active_nll
-    return data
+    data['nll']=copy.copy(self.samples_nll)
+    data['samples']=copy.copy(self.samples_p)
+    data['num active points']=conf['num points']
 
-  def run(self):
+    self.samples_nll=[]
+    self.samples_p=[]
+    save(data,fname)  
+
+    self.block_cnt+=1
+    self.block_size=0
+    self.status='ready'
+
+    if cmd!=None: 
+      #print
+      #print fname 
+      #print cmd.replace('fname',fname)
+      os.system(cmd.replace('fname',fname))
+
+  def run(self,fname,cmd):
   
     t1=timer()
-    #print 
+    print 
     while 1:
       t2=timer()
-      self.next(t2-t1)
-      if self.status=='stop': break
-    return self.results() 
-
-def example1():
-
-  dim=5
-  sigma=np.ones(dim)
-  mean=np.zeros(dim)*0.1
-  def likelihood(p):
-    norm=1/np.prod(np.sqrt(2*np.pi*sigma**2))
-    return norm * np.exp(-0.5*np.sum((p-mean)**2/sigma**2))
-
-  nll=lambda p: -np.log(likelihood(p))
-
-
-  print 'True:'
-  print 'logz=',np.log(1)
-  print 'min nll=',nll(np.zeros(dim))
-  print 
-  #print 'VEGAS:'
-  #import vegas
-  #integ = vegas.Integrator([[-5, 5] for i in range(dim)])
-  #result = integ(likelihood, nitn=10, neval=1000)
-  #print result.summary() 
-  #print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
-
-  print 
-  print 'Nested Sampling:'
-  conf={}
-  conf['nll'] = nll
-  conf['par lims'] =[[-5,5] for i in range(dim)]
-  conf['tol']=1e-10
-  conf['num points'] = 50
-
-  conf['method']='cov'
-  conf['kappa']=1.0
-  conf['sample size']= 100
-
-  #conf['method']='kde'
-  #conf['kde bw']=None
-
-  NEST(conf).run()
-
-def example2():
-
-  shift1=np.array([1, 1])
-  shift2=np.array([1,-1])
-  widths=[1,1,1,1]
-  def likelihood(a):
-    return 1./(2*np.pi*widths[0]**2)* np.exp(-np.sum((a-shift1)**2/2/widths[0]**2))\
-         + 1./(2*np.pi*widths[1]**2)* np.exp(-np.sum((a+shift1)**2/2/widths[1]**2))\
-         + 1./(2*np.pi*widths[2]**2)* np.exp(-np.sum((a-shift2)**2/2/widths[2]**2))\
-         + 1./(2*np.pi*widths[3]**2)* np.exp(-np.sum((a+shift2)**2/2/widths[3]**2))
-  nll=lambda p: -np.log(likelihood(p))
-
-
-  print 'True:'
-  print 'logz=',np.log(4)
-
-
-  print 
-  print 'Nested Sampling:'
-  #  conf={}
-
-  from tools.config import conf
-  conf['nll'] = nll
-  conf['par lims'] =[[-20,20],[-20,20]]
-  conf['tol']=1e-2
-  conf['num points'] = 100
-
-
-  conf['method']='cov'
-  conf['kappa']=1
-
-  #conf['method']='kde'
-  #conf['kde bw']=None
-  ##conf['itmax']=None
-
-  conf['sample size']= 20
-  conf['data size']= 20
-  print 'N=', 20
-  NEST(conf).run()
-
-  #print 
-  #print 'VEGAS:'
-  #import vegas
-  #integ = vegas.Integrator([[-20, 20], [-20, 20]])
-  #result = integ(likelihood, nitn=10, neval=1000)
-  #print result.summary() 
-  #print 'logz = %s    Q = %.2f' % (np.log(result), result.Q)
-
-if __name__=='__main__':
-
-  example2()
-
-
-
+      self.next((t2-t1)/(60*60))
+      if self.status=='flush': 
+        self.results('%s-%d.mc'%(fname,self.block_cnt),cmd) 
+      if self.status=='stop':
+        self.results('%s-%d.mc'%(fname,self.block_cnt),cmd) 
+        break
+    print 
 
 
 

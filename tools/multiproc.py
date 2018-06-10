@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-import sys,os
-from multiprocessing import Process,Queue,Pool,Pipe
+from multiprocessing import Process,Pipe
 
 class MULTIPROC:
 

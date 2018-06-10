@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import sys,os
 import numpy as np
 from timeit import default_timer as timer

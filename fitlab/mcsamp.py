@@ -2,14 +2,15 @@ import os
 import numpy as np
 from tools.tools import load,save,checkdir
 from tools.config import conf
-from multiprocessing import Process,Queue,Pool,Pipe
+from tools.randomstr import id_generator
 import nest
+from multiprocessing import Process,Queue,Pool,Pipe
 
 class MCSAMP:
     
   def __init__(self):
-    pass
-    
+      pass
+
   def get_residuals(self,par):
     res,rres,nres=conf['resman'].get_residuals(par)
     if len(rres)!=0: res=np.append(res,rres)
@@ -21,7 +22,7 @@ class MCSAMP:
 
   def nll(self,par):
     res=self.get_residuals(par)
-    return 0.5*(np.sum(res**2)-res.size)
+    return 0.5*(np.sum(res**2))
 
   def linmap(self,q,pmin,pmax): 
     return (pmax-pmin)*q+pmin 
@@ -39,80 +40,69 @@ class MCSAMP:
       plims.append([pmin,pmax])
     return plims
 
-  def _run(self):
+  def single_run(self,path,nestout,factor=2,kappa=1,tol=1e-10,itmax=10,sample_size=1000,method='cov',nll_shift=0):
 
-    # construct workname
-    workname=conf['args'].config.split('/')[-1].replace('.py','')
-    outputdir='%s/outputs/%s'%(conf['args'].outdir,workname)
-    checkdir(outputdir)
+    # set nest params if not specified in conf
+    if 'factor'       not in conf:  conf['factor']=factor
+    if 'tol'          not in conf:  conf['tol']=tol
+    if 'itmax'        not in conf:  conf['itmax']=itmax
+    if 'kappa'        not in conf:  conf['kappa']=kappa
+    if 'method'       not in conf:  conf['method']=method
+    if 'sample size'  not in conf:  conf['sample size']=sample_size
+    if 'nll shift'    not in conf:  conf['nll shift']=nll_shift
 
-    # cp the inputfile to outputdir
-    os.system('cp %s %s/'%(conf['args'].config,outputdir))
+    conf['nestout']=nestout
 
-    self.npar=len(conf['parman'].par)
+    npar=len(conf['parman'].par)
     conf['nll'] = self.nll
     conf['par lims'] = self.get_par_lims()
+    conf['num points'] = int(npar*conf['factor'])
 
-    if 'tol' not in conf.keys():
-      conf['tol']=1e-10
-
-    conf['num points'] = int(self.npar*2)
-    conf['method']='cov'
-    conf['kappa']=1
-    conf['sample size']= 1000
-
-    checkdir('mcdata')
     par=conf['parman'].par
     res=self.get_residuals(par)
-    conf['data size']=len(res) 
-    results=nest.NEST().run()
-    save(results,'%s/nest%d'%(outputdir,conf['args'].idx))
+    conf['nll shift']=0#0.5*(len(res)+conf['nll shift'])
 
-  def single_run(self,path,factor):
+    if 's3 cmd' in conf:  cmd=conf['s3 cmd']
+    else:  cmd=None
+    nest.NEST().run(path,cmd)
 
-    self.npar=len(conf['parman'].par)
-    conf['nll'] = self.nll
-    conf['par lims'] = self.get_par_lims()
-    conf['num points'] = int(self.npar*factor)
-    conf['method']='cov'
-    conf['kappa']=1
-    conf['sample size']= 1000
+    #results=nest.NEST().run()
+    #save(results,path)
 
-    # Setting default value here
-    # instead of passing it in.
-    if 'tol' not in conf.keys():
-      conf['tol'] = 1e-10
-    
-    par=conf['parman'].par
-    res=self.get_residuals(par)
-    conf['data size']=len(res) 
-    results=nest.NEST().run()
-    save(results,path)
+  def run(self,nruns=1):
 
-  def run(self,path=None,size=10,factor=4):
+    if 'nruns' in conf: nruns=conf['nruns']
 
-    if 'size' in conf: size=conf['size']
-    if 'factor' in conf: factor=conf['factor']
-
+    # set outputdir
     if 'args' in conf:
       outputdir='%s/mcdata'%conf['args'].config.split('/')[-1].replace('.py','')
-    elif path!=None:
-      outputdir='%s/mcdata'%path
     else:
       outputdir='mcdata'
-
     checkdir(outputdir)
+
+    # get exisiting runs
     idx=[int(x.replace('.dat','')) for x in os.listdir(outputdir)]
 
     if len(idx)==0:
-        nruns=range(size)
+        fname   =['%s/%i.dat'%(outputdir,i) for i in range(nruns)]
+        nestout =[None  for i in range(nruns)]
     else:
-        ini=np.amax(idx)+1
-        nruns=range(ini,ini+size)
-        
-    P = [Process(target=self.single_run, args=('%s/%i.dat'%(outputdir,i),factor,)) for i  in nruns]
-    for p in P: p.start()
-    for p in P: p.join()
+        fname   =['%s/%s'%(outputdir,_) for _ in os.listdir(outputdir)]
+        nestout =[load('%s/%s'%(outputdir,_)) for _ in os.listdir(outputdir)]
+    
+    for i in range(nruns):
+      print 'run ',i
+      self.single_run(fname[i],nestout[i])
+
+    #P = [Process(target=self.single_run, args=(fname[i],nestout[i])) for i  in range(nruns)]
+    #for p in P: p.start()
+    #for p in P: p.join()
+
+  def run2(self):
+      nruns=conf['nruns']
+      for i in range(nruns):
+        fname=id_generator(size=6)
+        self.single_run(fname,None)
 
   def get_MC_samples(self,mcpath):
     F=os.listdir(mcpath)

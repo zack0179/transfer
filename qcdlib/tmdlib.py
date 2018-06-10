@@ -197,6 +197,12 @@ class PDF(CORE):
     if target=='n': C=self.p2n(C)
     return C
 
+  def get_state(self):
+    return self.widths
+
+  def set_state(self,state):
+    self.widths=state
+
 class FF(CORE):
 
   def __init__(self):
@@ -268,6 +274,12 @@ class FF(CORE):
     #C[0]=0 # glue is not supported
     if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
+
+  def get_state(self):
+    return self.widths
+
+  def set_state(self,state):
+    self.widths=state
 
 class COLLINS(CORE):
 

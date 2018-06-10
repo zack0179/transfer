@@ -1,11 +1,9 @@
-#!/usr/bin/env python
-import sys,os
+from numpy.random import choice, randn
 import numpy as np
-import time
-from numpy.random import choice,randn
-from multiproc import MULTIPROC
-import pandas as pd
-from config import conf
+from .multiproc import MULTIPROC
+from .config import conf
+from .tools import save
+import copy
 
 class _RESIDUALS:
 
@@ -18,7 +16,7 @@ class _RESIDUALS:
       if len(ucorr)!=0:
         for name in ucorr:
           mod_name=name.replace('%','')
-          self.tabs[k][mod_name]=self.tabs[k]['value'] * self.tabs[k][name]
+          self.tabs[k][mod_name]=self.tabs[k]['value'] * self.tabs[k][name]/100.0
       if len(corr)!=0:
         for name in corr:
           mod_name=name.replace('%','')
@@ -36,33 +34,39 @@ class _RESIDUALS:
   def get_alpha(self):
     for k in self.tabs:
       npts=len(self.tabs[k]['value'])
-      alpha2=np.zeros(npts)
+      alpha2=np.zeros(npts) 
       ucorr = [x for x in self.tabs[k] if '_u' in x and '%' not in x]
-      for kk in ucorr:
-        alpha2+=self.tabs[k][kk]**2
-
+      for kk in ucorr: alpha2+=self.tabs[k][kk]**2
       self.tabs[k]['alpha']=alpha2**0.5
+      if 'fattening' in conf: self.tabs[k]['alpha']*=conf['fattening']
+
 
   def retrieve_norm_uncertainty(self):
+
     for k in self.tabs:
-      norm  = [x for x in self.tabs[k] if '_c' in x and 'norm' in x]
+      if k not in conf['datasets'][self.reaction]['norm']: continue
+      norm  = [x for x in self.tabs[k] if '_c' in x and 'norm' in x and '%' not in x]
       if len(norm)>1:
-        raise ValueError('ERR: more than one normalization found at'%(k,kk))
+        msg='ERR: more than one normalization found at %s %d'%(self.reaction,k)
+        raise ValueError(msg)
       elif len(norm)==1:
-        if conf['datasets'][self.reaction]['norm'][k]['fixed']==False:
-          dN=self.tabs[k][norm[0]][0]/self.tabs[k]['value'][0]
-          conf['datasets'][self.reaction]['norm'][k]['dN']=dN
+        #print '%d has norm uncertainty'%k
+        dN=self.tabs[k][norm[0]][0]/self.tabs[k]['value'][0]
+        conf['datasets'][self.reaction]['norm'][k]['dN']=dN
+      elif len(norm)==0:
+        dN=1e-10#conf['default dN']
+        conf['datasets'][self.reaction]['norm'][k]['dN']=dN
 
   def setup_rparams(self):
-    if 'rparams' not in conf:
+    if 'rparams' not in conf: 
       conf['rparams']={}
-    if self.reaction not in conf['rparams']:
+    if self.reaction not in conf['rparams']: 
       conf['rparams'][self.reaction]={}
     for k in self.tabs:
       if k not in conf['rparams'][self.reaction]:
         conf['rparams'][self.reaction][k]={}
       corr = [x for x in self.tabs[k] if '_c' in x and '%' not in x]
-      for c in corr:
+      for c in corr: 
         conf['rparams'][self.reaction][k][c]={'value':0.0,'registered':False}
 
   def prepare_multiprocess(self):
@@ -72,13 +76,12 @@ class _RESIDUALS:
         data.append([k,i])
     if 'ncpus' in conf:
       ncpus=conf['ncpus']
-    else:
+    else: 
       ncpus=1
-    print '\nmultiprocess setup: ncpus=%d / observable'%ncpus
     self.mproc=MULTIPROC(ncpus,self._get_theory,data)
 
   # routines for IMC analysis
-
+ 
   def select_training_sets(self,tab):
     for k in tab:
       key=self.tabs[k].leys()[0]
@@ -87,13 +90,13 @@ class _RESIDUALS:
       if npts>5:
         nptsT = int(conf['training frac']*npts)
         iT=choice(npts,nptsT,replace=False)
-        for i in iT: tab[k]['iT'][i]=1
+        for i in iT: tab[k]['iT'][i]=1       
 
-  def resample(self,tab):
-    for k in tab:
-      key=self.tabs[k].leys()[0]
-      npts=len(self.tabs[k][key])
-      tab[k]+=randn(npts)*tab[k].alpha
+  def resample(self):
+    self.tabs=copy.deepcopy(self.original)
+    for k in self.tabs:
+      npts=len(self.tabs[k]['value'])
+      self.tabs[k]['value']+=randn(npts)*self.tabs[k]['alpha']
 
   def setup_imc(self):
     # only useful for IMC
@@ -111,14 +114,18 @@ class _RESIDUALS:
     self.retrieve_norm_uncertainty()
     self.setup_rparams()
     self.prepare_multiprocess()
-    self.setup_imc()
+    self.original=copy.deepcopy(self.tabs)
+    #self.setup_imc()
 
   # residuals
 
   def _get_residuals(self,k):
     npts=len(self.tabs[k]['value'])
     exp=self.tabs[k]['value']
-    norm=conf['datasets'][self.reaction]['norm'][k]['value']
+    if k in conf['datasets'][self.reaction]['norm']:
+      norm=conf['datasets'][self.reaction]['norm'][k]['value']
+    else:
+      norm=1.0
     thy=self.tabs[k]['thy']/norm
     alpha=self.tabs[k]['alpha']
     corr = [x for x in self.tabs[k] if '_c' in x and '%' not in x and 'norm' not in x]
@@ -129,21 +136,28 @@ class _RESIDUALS:
       self.tabs[k]['residuals']=(exp-thy)/alpha
       self.tabs[k]['shift']=np.zeros(exp.size)
     else:
-      B=[]
-      beta=[]
-      for c in corr:
-        beta_=self.tabs[k][c] * (thy/exp)
-        B.append(np.sum(beta_*(exp-thy)/alpha**2))
-        beta.append(beta_)
-      A=np.diag(np.diag(np.ones((ncorr,ncorr)))) \
-        +np.einsum('ik,jk,k->ij',beta,beta,1/alpha**2)
-      r=np.einsum('ij,j->i',np.linalg.inv(A),B)
+      beta=[self.tabs[k][c] * (thy/(exp+1e-100)) for c in corr]
+      A=np.diag(np.diag(np.ones((ncorr,ncorr)))) + np.einsum('ki,li,i->kl',beta,beta,1/alpha**2)
+      B=np.einsum('ki,i,i->k',beta,exp-thy,1/alpha**2)
+      try:
+        r=np.einsum('kl,l->k',np.linalg.inv(A),B)
+      except:
+        r=np.zeros(len(beta))
       shift=np.einsum('k,ki->i',r,beta)
       for i in range(ncorr):
         conf['rparams'][self.reaction][k][corr[i]]['value']=r[i]
       self.tabs[k]['N']=N
       self.tabs[k]['residuals']=(exp-shift-thy)/alpha
       self.tabs[k]['shift']=shift
+    return self.tabs[k]['residuals']
+
+  def _get_residuals_simple(self,k):
+    exp=self.tabs[k]['value']
+    thy=self.tabs[k]['thy']
+    alpha=self.tabs[k]['alpha']
+    self.tabs[k]['N']=np.ones(exp.size)
+    self.tabs[k]['residuals']=(exp-thy)/alpha
+    self.tabs[k]['shift']=np.zeros(exp.size)
     return self.tabs[k]['residuals']
 
   def _get_rres(self,k):
@@ -154,11 +168,10 @@ class _RESIDUALS:
     return np.array(rres)
 
   def _get_nres(self,k):
+    if k not in conf['datasets'][self.reaction]['norm']: return 0
+    if conf['datasets'][self.reaction]['norm'][k]['fixed']: return 0
     norm=conf['datasets'][self.reaction]['norm'][k]
-    if 'dN' in norm:
-      return (norm['value']-1)/norm['dN']
-    else:
-      return 0
+    return (norm['value']-1)/norm['dN']
 
   def get_theory(self):
     output=self.mproc.run()
@@ -169,15 +182,18 @@ class _RESIDUALS:
 
   def get_npts(self):
     npts=0
-    for k in self.tabs:
+    for k in self.tabs: 
       npts+=len(self.tabs[k]['value'])
     return npts
 
-  def get_residuals(self):
+  def get_residuals(self,calc=True,simple=False):
     res,rres,nres=[],[],[]
-    self.get_theory()
-    for k in self.tabs:
-      res=np.append(res  ,self._get_residuals(k))
+    if calc: self.get_theory()
+    for k in self.tabs: 
+      if simple: 
+        res=np.append(res,self._get_residuals_simple(k))
+      else:
+        res=np.append(res,self._get_residuals(k))
       rres=np.append(rres,self._get_rres(k))
       nres=np.append(nres,self._get_nres(k))
     return res,rres,nres
@@ -189,7 +205,7 @@ class _RESIDUALS:
     verb = 0: Do not print on screen. Only return list of strings
     verv = 1: print on screen the report
     level= 0: only the total chi2s
-    level= 1: include point by point
+    level= 1: include point by point 
     """
 
     L=[]
@@ -200,7 +216,7 @@ class _RESIDUALS:
       res =self._get_residuals(k)
       rres=self._get_rres(k)
       nres=self._get_nres(k)
-
+      
       chi2=np.sum(res**2)
       rchi2=np.sum(rres**2)
       nchi2=nres**2
@@ -210,9 +226,9 @@ class _RESIDUALS:
       L.append('%7d %10s %10s %5d %10.2f %10.2f %10.2f'%(k,tar,col,npts,chi2,rchi2,nchi2))
 
     if level==1:
-      L.append('-'*100)
+      L.append('-'*100)  
       for k in conf['sidistab']:
-        if len(conf['sidistab'][k].index)==0: continue
+        if len(conf['sidistab'][k].index)==0: continue 
         for i in range(len(conf['sidistab'][k].index)):
           x=conf['sidistab'][k]['x'].values[i]
           obs=conf['sidistab'][k]['obs'].values[i]
@@ -236,3 +252,5 @@ class _RESIDUALS:
 
   def ___save_results(self,path):
     save(self.tabs,path)
+
+

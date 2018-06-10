@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import sys,os
 import numpy as np
 from numpy.random import choice,randn,uniform
@@ -971,38 +970,3 @@ class PARMAN:
     for k in conf['params']['soft']:
       conf['aux'].soft[k]=conf['params']['soft'][k]['value']
 
-if __name__=='__main__':
-
-  load_config('input.py')
-
-  # setup for inclusive dis
-  conf['alphaSmode']='backward'
-  conf['Q20']=1
-  conf['order']='NLO'
-  conf['aux']=AUX()
-  conf['alphaS']=ALPHAS()
-  conf['pdf-NLO']=CJ()
-  conf['dis stfuncs']=DIS_STFUNCS()
-
-  # setup tmds
-  conf['order']='LO'
-  conf['_pdf']=CJ()
-  conf['_ppdf']=LSS()
-  conf['_ff']=DSS()
-  conf['pdf']=PDF()
-  conf['ppdf']=PPDF()
-  conf['ff']=FF()
-  conf['transversity']=TRANSVERSITY()
-  conf['sivers']=SIVERS()
-  conf['boermulders']=BOERMULDERS()
-  conf['pretzelosity']=PRETZELOSITY()
-  conf['wormgearg']=WORMGEARG()
-  conf['wormgearh']=WORMGEARH()
-  conf['collins']=COLLINS()
-
-  # setup sidis
-  conf['sidis tabs']=SIDIS_READER().load_data_sets('sidis')
-  conf['sidis stfuncs']=SIDIS_STFUNCS()
-  conf['sidis residuals']=SIDIS_RESIDUALS()
-
-  parman=PARMAN()

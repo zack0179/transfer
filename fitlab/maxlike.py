@@ -1,10 +1,9 @@
-#!/usr/bin/env python
 import sys,os
+import time
+import copy
 import numpy as np
 from tools.tools import load,save,checkdir,load_config
-import time
 from scipy.optimize import leastsq,minimize
-import copy
 from tools.config import conf
 
 class ML:
