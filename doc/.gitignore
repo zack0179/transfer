@@ -1,8 +1,1 @@
-more/*
-*.aux 
-*.log 
-*.bbl 
-*.blg 
-*.out 
-*.bib 
-*.toc
+slides/*

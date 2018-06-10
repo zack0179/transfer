@@ -5,7 +5,6 @@
 *~ 
 *.xml
 *.pyc
-*.pdf
 *-checkpoint*
 *.dat
 analyzes/*
