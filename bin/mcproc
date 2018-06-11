@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+import os
+import sys
+import time
+from tools.tools import load, save
+import numpy as np
+
+def get_runs():
+
+  # load runs
+  F=os.listdir('.')
+  F=[f for f in F if f.endswith('mc') if '-' in f]
+  if len(F)==0:
+    print '*.mc files not found'
+    sys.exit()
+
+  runs={}
+  cnt=0
+  for f in F:
+    runs[cnt]=load(f)
+    cnt+=1
+
+  # combine samples
+  nap=0
+  samples=[] 
+  nll=[]
+  for k in runs:
+    for p in runs[k]['samples']: samples.append(p)
+    nll.extend(runs[k]['nll'])
+    nap+=runs[k]['num active points'] 
+  nll=np.array(nll)
+  samples=np.array(samples)
+  runs['all']={'samples':samples,'nll':nll,'num active points':nap}
+
+  return runs
+
+def get_ordered_samples(nap,nll,samples):
+  I=np.argsort(nll)
+  nll=nll[I]
+  samples=samples[I]
+  likelihood=np.exp(-nll)    
+  x=np.array([((nap-1.)/nap)**i for i in range(likelihood.size+1)])[::-1]
+  dx=(0.5*(x[1:]-x[:-1]))
+  weights=likelihood*dx
+  weights/=np.sum(weights)
+  samples=np.array([samples[i] for i in range(weights.size) if weights[i]>0])
+  weights=np.array([weights[i] for i in range(weights.size) if weights[i]>0])
+  return weights,samples
+
+
+if __name__=="__main__":
+
+  runs=get_runs()
+
+  for k in runs:
+    nap=runs[k]['num active points']
+    nll=runs[k]['nll']
+    samples=runs[k]['samples']
+    weights,samples = get_ordered_samples(nap,nll,samples)
+    runs[k]={'nap':nap,'nll':nll,'samples':samples,'weights':weights}
+  
+  save(runs,'summary.mc')
+
+
+
+
+
+
+
+
+
+
