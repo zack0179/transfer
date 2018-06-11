@@ -379,19 +379,17 @@ class NEST:
     #self.logz.append(self.get_logz())
 
     # construct relative relative error for active nll 
-    std=np.std(np.array(self.active_nll)-conf['nll shift'])
-    mean=np.mean(np.array(self.active_nll)-conf['nll shift'])
+    std=np.std(np.array(self.active_nll))
+    mean=np.mean(np.array(self.active_nll))
     rel = abs(std/mean)
 
     # get range dchi2 range of active range
-    dchi2max=2*np.amax(self.active_nll)
-    dchi2min=2*np.amin(self.active_nll)
+    chi2max=2*np.amax(self.active_nll)
+    chi2min=2*np.amin(self.active_nll)
 
     # screen printout
-    #msg='iter=%d  logz=%.3f rel-err=%.3e  t-elapsed(h)=%.3e  dchi2min=%.3e dchi2max=%0.3e  attemps1=%10d  attemps2=%10d Vk/V0=%0.3e  %s  '
-    #msg=msg%(self.cnt,self.logz[-1],rel,t_elapsed,dchi2min,dchi2max,self.attempts1,self.attempts2,self.Vk/self.V0,self.msg)
-    msg='iter=%d  bs=%d rel-err=%.3e  t-elapsed(h)=%.3e  dchi2min=%.3e dchi2max=%0.3e  attemps1=%10d  attemps2=%10d Vk/V0=%0.3e  %s  '
-    msg=msg%(self.cnt,self.block_size,rel,t_elapsed,dchi2min,dchi2max,self.attempts1,self.attempts2,self.Vk/self.V0,self.msg)
+    msg='iter=%d  bs=%d rel-err=%.3e  t-elapsed(h)=%.3e  chi2min=%.3e chi2max=%0.3e  attemps1=%10d  attemps2=%10d Vk/V0=%0.3e  %s  '
+    msg=msg%(self.cnt,self.block_size,rel,t_elapsed,chi2min,chi2max,self.attempts1,self.attempts2,self.Vk/self.V0,self.msg)
     if self.verb: lprint(msg)
 
 
