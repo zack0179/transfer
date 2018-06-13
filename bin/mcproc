@@ -69,11 +69,28 @@ def get_ordered_samples(nap,nll,samples):
   nll=np.array([nll[i] for i in range(weights.size) if weights[i]>0])
   return nll,weights,samples
 
+def impose_cdf_cut(mcdata,cdfcut):
+   
+  weights=np.copy(mcdata['weights'])
+  samples=np.copy(mcdata['samples'])
+  I=np.argsort(weights)
+  weights=weights[I]
+  samples=samples[I]
+
+  cdf=[]
+  for i in range(weights.size):
+    cdf.append(np.sum(weights[:i+1]))
+  II=[i  for i in range(weights.size)  if cdf[i]>cdfcut]
+  weights=weights[II]
+  samples=samples[II]
+  return weights,samples
+
 if __name__=="__main__":
 
   ap = argparse.ArgumentParser()
   ap.add_argument('path2mc', help='path to *.mc files')
   ap.add_argument('-v','--veto', help='idx of vetoed runs. e.g 3,4,5',type=str,default='')
+  ap.add_argument('-c','--cdfcut', help='cdf cut ',default=None)
   args = ap.parse_args()
 
   if args.veto!='': 
@@ -91,11 +108,20 @@ if __name__=="__main__":
     nll,weights,samples = get_ordered_samples(nap,nll,samples)
     runs[k]={'nap':nap,'nll':nll,'samples':samples,'weights':weights}
 
-  if veto==[]:
-    save(runs,'%s/summary.mcp'%args.path2mc)
-  else:
-    save(runs,'%s/summary-veto-%s.mcp'%(args.path2mc,args.veto))
-    
+  if args.cdfcut==None:
+    if veto==[]:
+      fname='%s/summary.mcp'%args.path2mc
+      print 'creating %s'%fname
+      save(runs,fname)
+    else:
+      fname='%s/summary-veto-%s.mcp'%(args.path2mc,args.veto)
+      print 'creating %s'%fname
+      save(runs,fname)
+  elif args.cdfcut!=None:
+      weights,samples= impose_cdf_cut(runs['all'],float(args.cdfcut))
+      fname='%s/final.mcp'%(args.path2mc)
+      print 'creating %s'%fname
+      save({'weights':weights,'samples':samples},fname)
 
 
 
