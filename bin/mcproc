@@ -8,16 +8,30 @@ import numpy as np
 
 def get_runs(path2mc):
 
-  # load runs
+  # list mc file names
   F=os.listdir(path2mc)
   F=[f for f in F if f.endswith('mc') if '-' in f]
   if len(F)==0:
     raise ValueError('*.mc files not found')
 
+  # split mc files by runs
+  names=list(set([f.split('-')[0] for f in F]))
+
+  # combine blocks for each run
   runs={}
   cnt=0
-  for f in F:
-    runs[cnt]=load('%s/%s'%(path2mc,f))
+  for name in names:
+    run_files=[f for f in F if name in f]
+    run_data=[load('%s/%s'%(path2mc,f)) for f in run_files]
+    nap=run_data[0]['num active points']
+    samples=[] 
+    nll=[]
+    for _ in run_data: 
+      for p in _['samples']: samples.append(p)
+      nll.extend(_['nll'])
+    nll=np.array(nll)
+    samples=np.array(samples)
+    runs[cnt]={'samples':samples,'nll':nll,'num active points':nap}
     cnt+=1
 
   # combine samples
@@ -59,6 +73,7 @@ if __name__=="__main__":
   runs=get_runs(args.path2mc)
 
   for k in runs:
+    print k
     nap=runs[k]['num active points']
     nll=runs[k]['nll']
     samples=runs[k]['samples']
