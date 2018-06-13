@@ -82,6 +82,7 @@ def impose_cdf_cut(mcdata,cdfcut):
     cdf.append(np.sum(weights[:i+1]))
   II=[i  for i in range(weights.size)  if cdf[i]>cdfcut]
   weights=weights[II]
+  weights/=np.sum(weights)
   samples=samples[II]
   return weights,samples
 
