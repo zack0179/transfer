@@ -38,70 +38,70 @@ class ZmqBroker(object):
         partition = psutil.cpu_count(logical=True)
     self.partition = partition
     self.process = None
-      
+
   def run(self):
     context = zmq.Context(2)
-  
+
     # Socket facing clients
-    frontend = context.socket(ZMQ_ROUTER) 
+    frontend = context.socket(ZMQ_ROUTER)
     frontend.bind("tcp://*:55550")
-  
+
     # Socket facing services
-    backend  = context.socket(ZMQ_ROUTER) 
+    backend  = context.socket(ZMQ_ROUTER)
     backend.bind("tcp://*:55551")
     backend.router_mandatory = 1
     #backend.setsockopt(ZMQ_ROUTER_MANDATORY, 1)
-    
+
     # Idle workers
     ready_workers = deque()
-    
+
     # FIFO Queue of unassigned work
     pending_work = deque()
-    
+
     # Accumulation of results from workers, per-client
     results = {}
-    
+
     poller = zmq.Poller()
     poller.register(backend,ZMQ_POLLIN)
     poller.register(frontend,ZMQ_POLLIN)
-    
+
     # Used for debugging
     serial = 0
     workers = {}
 
     while True:
       sockets = dict(poller.poll())
-      
+
       # Incoming from worker
       if backend in sockets:
         request = backend.recv_multipart()
         worker, _, client = request[:3]
         ready_workers.append(worker)
-        
+
         # If this is a result message as opposed to a ready message, it will
         # contain more than three parts
         if len(request) > 3:
           _, sn, result = request[3:]
           results[client].append(result)
           logging.debug('backend %s serial %d results[%s] %d',workers[worker],int(sn),client,len(results[client]))
-          
+
           # If all workers have generated results, we can pass them to the client
           if len(results[client]) == self.partition:
             msg = [client,'']
             msg.extend(results[client])
             frontend.send_multipart(msg)
-            
+
         else:
             logging.debug('worker %s joins (%s)',client,worker)
             workers[worker] = client
-      
+
       # Incoming from master
       if frontend in sockets:
         client, _, request = frontend.recv_multipart()
         logging.debug('frontend %s',client)
         results[client] = []
         pending_work.append([client,request,0])
-          
+
       # Can we assign some work?
       while pending_work and ready_workers:
         worker = ready_workers.popleft()
@@ -136,7 +136,7 @@ class ZmqBroker(object):
         self.run()
       self.process = Process(target=run_runner,name='broker')
       self.process.start()
-      
+
   def stop(self):
       if self.process:
           self.process.terminate()
@@ -155,28 +155,28 @@ class ZmqServer(object):
     self.load_times = []
     self.store_times = []
     self.recv_times = []
-      
+
   def assign_work(self):
     if not self.context:
       self.context = zmq.Context()
       self.worksock = self.context.socket(ZMQ_REQ)
       self.worksock.connect('tcp://'+self.broker_ip+':55550')
-          
+
     t = timer()
     logging.debug('Assign work')
     state_tuples = []
-    for x in ['pdf','ff']:
+    for x in ['pdf','ff','transversity','collins','Htilde','sivers']:
         if x in conf: state_tuples.append((x,conf[x].get_state()))
     state = pickle.dumps(state_tuples,pickle.HIGHEST_PROTOCOL)
     self.worksock.send(state)
     self.received = False
     self.param_times.append(timer()-t)
-      
+
   def wrap_mproc(self,obs_name,mproc):
     # Remember the result table offset of this observable
     first = self.theory.size
     self.theory = np.resize(self.theory,first+len(mproc.data))
-     
+
     def run_mproc():
       a = timer()
       if not self.received:
@@ -201,7 +201,7 @@ class ZmqServer(object):
       tuples = [(mproc.data[i][0],mproc.data[i][1],self.theory[first+i]) for i in range(len(mproc.data))]
       self.store_times.append(timer()-t)
       self.mproc_times.append(timer()-a)
-      
+
       #verify = mproc.singlecore()
       #verify.sort(key = lambda x: x[1])
       #tuples.sort(key = lambda x: x[1])
@@ -209,10 +209,10 @@ class ZmqServer(object):
       #    if verify[i] != tuples[i]:
       #        logging.warn("Mismatch parallel [%d] %s != %s",i,verify[i],tuples[i])
       return tuples
-     
+
     Wrapper = namedtuple('Wrapper','run')
     return Wrapper(run_mproc)
-  
+
   def finis(self):
     logging.info('Time propagating params: %d',sum(self.param_times))
     #print 'Time gathering theory results : ',sum(self.mproc_times)
@@ -232,7 +232,7 @@ class ZmqWorker(object):
     Row = namedtuple('Row','func entry')
     for entry in mproc.data:
       self.bigtable.append(Row(mproc.func,entry))
-      
+
   def toil(self):
     mkl.set_num_threads(1)
     logging.debug('%s start',current_process().name)
@@ -240,7 +240,7 @@ class ZmqWorker(object):
     worksock = ctx.socket(ZMQ_REQ)
     worksock.connect('tcp://'+self.ip+':55551')
     worksock.send(socket.gethostname().split('.')[0]+':'+current_process().name)
-    
+
     while True:
       address,_,serial,offset,stride,blob = worksock.recv_multipart()
       serial = int(serial)
@@ -259,9 +259,9 @@ class ZmqWorker(object):
       logging.debug('%s send %d', current_process().name,serial)
       worksock.send_multipart([address,'',repr(serial),r])
       logging.debug('%s sent %d', current_process().name,serial)
-      
+
     logging.debug('%s done',current_process().name)
-      
+
   def run(self):
     nprocs = psutil.cpu_count(logical=True)
     logging.info('bigtable=%d',len(self.bigtable))
@@ -270,7 +270,7 @@ class ZmqWorker(object):
       worker.start()
       psutil.Process(worker.ident).cpu_affinity([i])
       self.workers.append(worker)
-    
+
     while len(self.workers):
         for w in list(self.workers):
             if not w.is_alive():
@@ -304,6 +304,3 @@ class ZmqWorker(object):
       if self.process:
           self.process.terminate()
           self.process.join(3)
-
-
-

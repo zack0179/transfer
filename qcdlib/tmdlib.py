@@ -394,6 +394,14 @@ class COLLINS(CORE):
     if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
 
+  def get_state(self):
+    return (self.widths,self.shape1,self.shape2)
+
+  def set_state(self,state):
+    self.widths=state[0]
+    self.shape1=state[1]
+    self.shape2=state[2]
+
 class HTILDE(CORE): #Htilde has same form as Collins
 
   def __init__(self):
@@ -500,6 +508,13 @@ class HTILDE(CORE): #Htilde has same form as Collins
     if hadron == 'pi0': C=self.pip2piz(C) #pi0 only for A_N (collinear)
     return C
 
+  def get_state(self):
+    return (self.widths,self.shape1)
+
+  def set_state(self,state):
+    self.widths=state[0]
+    self.shape1=state[1]
+
 class SIVERS(CORE):
 
   def __init__(self):
@@ -534,6 +549,13 @@ class SIVERS(CORE):
     C=self.get_collinear(x,target,Q2)
     if target=='n': C=self.p2n(C)
     return C
+
+  def get_state(self):
+    return (self.widths,self.shape)
+
+  def set_state(self,state):
+    self.widths=state[0]
+    self.shape=state[1]
 
 class TRANSVERSITY(CORE):
 
@@ -576,6 +598,13 @@ class TRANSVERSITY(CORE):
     C=self.get_collinear(x,target,Q2)
     if target=='n': C=self.p2n(C)
     return C
+
+  def get_state(self):
+    return (self.widths,self.shape)
+
+  def set_state(self,state):
+    self.widths=state[0]
+    self.shape=state[1]
 
 class PPDF(CORE):
 
