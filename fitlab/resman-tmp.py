@@ -1,11 +1,9 @@
-import os
+#!/usr/bin/env python
+import sys,os
 import argparse
-import sys
-import time
-import logging
-import fitlab.parallel as parallel
-
 import numpy as np
+from numpy.random import choice,randn,uniform
+import pandas as pd
 import external.CJLIB.CJ
 import external.DSSLIB.DSS
 import external.LSSLIB.LSS
@@ -27,51 +25,32 @@ import obslib.AN_pp.AN_theory
 import obslib.AN_pp.residuals
 import obslib.AN_pp.reader
 from parman import PARMAN
+from speedtest import SPEEDTEST
 from mcsamp import MCSAMP
 from maxlike import ML
 from tools.config import load_config,conf
 
 class RESMAN:
 
-  def __init__(self,mode='solo',ip=None,nworkers=None):
-
-    self.mode=mode
-    self.master = None
-    self.slave = None
-    self.broker = None
-
+  def __init__(self):
+    self.npts=0
     conf['aux']=qcdlib.aux.AUX()
     self.setup_tmds()
     conf['parman']=PARMAN()
+    self.setup()
 
-     
-    if self.mode == 'parallel':
-      self.master = parallel.Server(ip=ip)
-      self.slave = parallel.Worker(ip=ip)
-      self.broker = parallel.Broker()
-    elif self.mode == 'master':
-      self.master = parallel.Server(ip=ip)
-    elif self.mode == 'slave':
-      self.slave = parallel.Worker(ip=ip)
-      
-
+  def setup(self):
 
     conf['moments']=obslib.moments.moments.MOMENTS()
-
-    if 'datasets' in conf:
-      if 'sidis' in conf['datasets']:
-        self.setup_dis()
-        self.setup_sidis()
-      if 'sia' in conf['datasets']:
-        self.setup_sia()
-      if 'moments' in conf['datasets']:
-        self.setup_moments()
-      if 'AN' in conf['datasets']:
-        self.setup_AN()
-
-    if self.mode == 'parallel':
-      self.broker.run_subprocess()
-      self.slave.run_subprocess()
+    if 'sidis' in conf['datasets']:
+      self.setup_dis()
+      self.setup_sidis()
+    if 'sia' in conf['datasets']:
+      self.setup_sia()
+    if 'moments' in conf['datasets']:
+      self.setup_moments()
+    if 'AN' in conf['datasets']:
+      self.setup_AN()
 
   def setup_dis(self):
     conf['alphaSmode']='backward'
@@ -108,49 +87,46 @@ class RESMAN:
     conf['sidis tabs']      =obslib.sidis.reader.READER().load_data_sets('sidis')
     conf['sidis stfuncs']   =obslib.sidis.stfuncs.STFUNCS()
     self.sidisres=obslib.sidis.residuals.RESIDUALS()
-
-    if (self.slave):
-        self.slave.add_mproc('sidis',self.sidisres.mproc)
-    if (self.master):
-        self.sidisres.mproc = self.master.wrap_mproc('sidis',self.sidisres.mproc)
+    conf['sidisres']=self.sidisres
+    res,rres,nres=self.sidisres.get_residuals()
+    self.npts+=res.size
 
   def setup_sia(self):
     conf['sia tabs']      =obslib.sia.reader.READER().load_data_sets('sia')
     conf['sia stfuncs']   =obslib.sia.stfuncs.STFUNCS()
     self.siares=obslib.sia.residuals.RESIDUALS()
-
-    if (self.slave):
-        self.slave.add_mproc('sia',self.siares.mproc)
-    if (self.master):
-        self.siares.mproc = self.master.wrap_mproc('sia',self.siares.mproc)
+    res,rres,nres=self.siares.get_residuals()
+    self.npts+=res.size
 
   def setup_moments(self):
     conf['moments tabs']=obslib.moments.reader.READER().load_data_sets('moments')
     conf['moments']=obslib.moments.moments.MOMENTS()
     self.momres=obslib.moments.residuals.RESIDUALS()
-
-    if (self.slave):
-        self.slave.add_mproc('moments',self.momres.mproc)
-    if (self.master):
-        self.momres.mproc = self.master.wrap_mproc('moments',self.momres.mproc)
+    res,rres,nres=self.momres.get_residuals()
+    self.npts+=res.size
 
   def setup_AN(self):
     conf['AN tabs']      =obslib.AN_pp.reader.READER().load_data_sets('AN')
     conf['AN theory']   =obslib.AN_pp.AN_theory.ANTHEORY()
     self.ANres=obslib.AN_pp.residuals.RESIDUALS()
+    conf['ANres']=self.ANres
+    res,rres,nres=self.ANres.get_residuals()
+    self.npts+=res.size
 
-    if (self.slave):
-        self.slave.add_mproc('AN',self.ANres.mproc)
-    if (self.master):
-        self.ANres.mproc = self.master.wrap_mproc('AN',self.ANres.mproc)
+  def _get_residuals(self,func,res,rres,nres):
+    _res,_rres,_nres=func()
+    res=np.append(res,_res)
+    rres=np.append(rres,_rres)
+    nres=np.append(nres,_nres)
+    return res,rres,nres
 
   def get_residuals(self,par,calc=True,simple=False):
     conf['parman'].set_new_params(par)
 
-    if (self.master): self.master.assign_work()
+    #if (self.master): self.master.assign_work()
 
     res,rres,nres=[],[],[]
-    if 'sidis' in conf['datasets']: 
+    if 'sidis' in conf['datasets']:
       out=self.sidisres.get_residuals(calc=calc,simple=simple)
       res=np.append(res,out[0])
       rres=np.append(rres,out[1])
@@ -180,19 +156,37 @@ class RESMAN:
     if 'AN' in conf['datasets']: L.extend(self.ANres.gen_report(verb,level))
     return L
 
-  def run_worker(self):
-      self.slave.run()
-  
-  def shutdown(self):
-      if (self.master):
-          self.master.finis()
-          time.sleep(3)
-      if (self.slave):
-          self.slave.stop()
-      if (self.broker):
-          self.broker.stop()    
+if __name__=='__main__':
+
+  ap = argparse.ArgumentParser()
+  ap.add_argument('config', help='config file (e.g. input.py)')
+  msg =" 0: speedtest"
+  msg+=" 1: maxlike-minimize"
+  msg+=" 2: maxlike-leastsq"
+  msg+=" 3: mcsamp-nest"
+  msg+=" 4: mcsamp-imc"
+  msg+=" 5: mcsamp-analysis"
+  msg+=" 6: mcsamp-simulation"
+  msg+=" 7: mcsamp-simulation2"
+  ap.add_argument('-t','--task',type=int,default=0,help=msg)
+  ap.add_argument('-i','--runid',type=int,default=0,help=msg)
+  ap.add_argument('-f','--file',type=str,default='',help=" path to nest file")
+  ap.add_argument('-l','--list',nargs='+',help=" list of numbers e.g.: 123 234 345 ",default=[])
+  ap.add_argument('-r','--reaction',type=str,help=" e.g.: sidis, sia ",default='sidis')
+  args = ap.parse_args()
 
 
+  load_config(args.config)
+  conf['args']=args
+  conf['resman']=RESMAN()
 
-
-
+  if   args.task==0: SPEEDTEST().run()
+  elif args.task==1: ML().run_minimize()
+  elif args.task==2: ML().run_leastsq()
+  elif args.task==3: MCSAMP().run_nest()
+  elif args.task==4: MCSAMP().run_imc()
+  elif args.task==5: MCSAMP().analysis()
+  elif args.task==6: MCSAMP().simulation()
+  elif args.task==7: MCSAMP().simulation2()
+  elif args.task==8: ML().analysis()
+  elif args.task==9: ML().rap_fits()
