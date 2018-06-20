@@ -322,7 +322,14 @@ class NEST:
       if np.any(np.isnan(p)):
         raise ValueError('parameters are nan')
       self.attempts1+=1
-      if any([x<0 for x in p-self.pmin]) or any([x<0 for x in self.pmax-p]): continue
+      if any([x<0 for x in p-self.pmin]) or any([x<0 for x in self.pmax-p]): 
+
+        pmin=np.amin(self.active_p,axis=0)
+        pmax=np.amax(self.active_p,axis=0)
+        dp=(pmax-pmin)
+        u=uniform(0,1,self.dim)
+        p=pmin + u*dp
+
       self.attempts2+=1
       _nll = self.get_nll(p)
       if _nll<nll: break
