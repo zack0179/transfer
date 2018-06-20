@@ -1,33 +1,13 @@
 conf={}
 
-############################################################################
-conf['method']='cov'
-conf['kappa']=1.1
-conf['tol']=10e-10
-conf['num points'] = 30 #self.npar*3
-conf['burn size']  = 10
-conf['sample size']= 10000
-
-
-############################################################################
-# resouce allocation
-conf['ncpus']=4
-
-############################################################################
-# maxlike setup
-conf['screen mode']='plain'
-#conf['screen mode']='curses'
-
-############################################################################
-# mcsetup
-
-conf['method']='kde'
-conf['itmax']=None
-conf['tol']=1e-6
-conf['kde bw']=None
-conf['num points factor']=10
-
-############################################################################
+# mcsamp
+conf['nruns']=1
+conf['factor']=2
+conf['tol']=1e-10
+conf['itmax']=int(1e7)
+conf['block size']=100
+conf['kappa']=1.3
+conf['nll shift']=0
 
 ############################################################################
 # params
