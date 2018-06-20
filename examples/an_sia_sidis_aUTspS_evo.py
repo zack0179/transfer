@@ -1,5 +1,7 @@
 conf={}
 
+conf['nprocs']=20
+
 # mcsamp
 conf['nruns']=1
 conf['factor']=2
@@ -128,7 +130,7 @@ conf['params']['Htilde']['pi+ u N0 1']  = {'value':<<   -7.63627e-01>>,'fixed':F
 conf['params']['Htilde']['pi+ u a0 1']  = {'value':<<    6.13814e-01>>,'fixed':False,'min':-1,'max':5}
 conf['params']['Htilde']['pi+ u b0 1']  = {'value':<<    4.64564e+00>>,'fixed':False,'min':0,'max':10}
 
-conf['params']['Htilde']['pi+ d N0 1']  = {'value':<<    1.45281e+01>>,'fixed':False,'min':-15,'max':15}
+conf['params']['Htilde']['pi+ d N0 1']  = {'value':<<    10.0>>,'fixed':False,'min':-15,'max':15}
 conf['params']['Htilde']['pi+ d a0 1']  = {'value':<<    3.98995e+00>>,'fixed':False,'min': -1,'max':5}
 conf['params']['Htilde']['pi+ d b0 1']  = {'value':<<    2.16931e+00>>,'fixed':False,'min':0,'max':10}
 
