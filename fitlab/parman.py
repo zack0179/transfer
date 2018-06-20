@@ -424,7 +424,7 @@ class PARMAN:
     self.set_constraits('collins')
 
     if conf['evo']=='yes':
-        if 'pi+ u N1 1' in conf['params']['collins']:
+        if 'pi+ u N0 1' in conf['params']['collins']:
             conf['collins'].widths0['pi+ fav']     = conf['params']['collins']['widths0 pi+ fav']['value']
             conf['collins'].widths0['pi+ unfav']   = conf['params']['collins']['widths0 pi+ unfav']['value']
 
@@ -519,7 +519,7 @@ class PARMAN:
             conf['collins'].shape2['pi+'][4][9]=conf['params']['collins']['pi+ u d1 2']['value']
 
 
-        if 'k+ u N1 1' in conf['params']['collins']:
+        if 'k+ u N0 1' in conf['params']['collins']:
             conf['collins'].widths0['k+ fav']     = conf['params']['collins']['widths0 k+ fav']['value']
             conf['collins'].widths0['k+ unfav']   = conf['params']['collins']['widths0 k+ unfav']['value']
 
@@ -616,7 +616,7 @@ class PARMAN:
         conf['collins'].setup()
 
     else:
-        if 'pi+ u N 1' in conf['params']['collins']:
+        if 'pi+ u N0 1' in conf['params']['collins']:
             conf['collins'].widths0['pi+ fav']     = conf['params']['collins']['widths0 pi+ fav']['value']
             conf['collins'].widths0['pi+ unfav']   = conf['params']['collins']['widths0 pi+ unfav']['value']
 
@@ -671,7 +671,7 @@ class PARMAN:
             conf['collins'].shape2['pi+'][4][4]=conf['params']['collins']['pi+ u d0 2']['value']
 
 
-        if 'k+ u N 1' in conf['params']['collins']:
+        if 'k+ u N0 1' in conf['params']['collins']:
             conf['collins'].widths0['k+ fav']     = conf['params']['collins']['widths0 k+ fav']['value']
             conf['collins'].widths0['k+ unfav']   = conf['params']['collins']['widths0 k+ unfav']['value']
 
@@ -731,7 +731,7 @@ class PARMAN:
     self.set_constraits('Htilde')
 
     if conf['evo']=='yes':
-        if 'pi+ u N1 1' in conf['params']['Htilde']:
+        if 'pi+ u N0 1' in conf['params']['Htilde']:
             conf['Htilde'].widths0['pi+ fav']     = conf['params']['Htilde']['widths0 pi+ fav']['value']
             conf['Htilde'].widths0['pi+ unfav']   = conf['params']['Htilde']['widths0 pi+ unfav']['value']
 
@@ -826,7 +826,7 @@ class PARMAN:
             #conf['Htilde'].shape2['pi+'][4][9]=conf['params']['Htilde']['pi+ u d1 2']['value']
 
 
-        if 'k+ u N1 1' in conf['params']['Htilde']:
+        if 'k+ u N0 1' in conf['params']['Htilde']:
             conf['Htilde'].widths0['k+ fav']     = conf['params']['Htilde']['widths0 k+ fav']['value']
             conf['Htilde'].widths0['k+ unfav']   = conf['params']['Htilde']['widths0 k+ unfav']['value']
 
@@ -923,7 +923,7 @@ class PARMAN:
         conf['Htilde'].setup()
 
     else:
-        if 'pi+ u N 1' in conf['params']['Htilde']:
+        if 'pi+ u N0 1' in conf['params']['Htilde']:
             conf['Htilde'].widths0['pi+ fav']     = conf['params']['Htilde']['widths0 pi+ fav']['value']
             conf['Htilde'].widths0['pi+ unfav']   = conf['params']['Htilde']['widths0 pi+ unfav']['value']
 
@@ -978,7 +978,7 @@ class PARMAN:
             #conf['Htilde'].shape2['pi+'][4][4]=conf['params']['Htilde']['pi+ u d0 2']['value']
 
 
-        if 'k+ u N 1' in conf['params']['Htilde']:
+        if 'k+ u N0 1' in conf['params']['Htilde']:
             conf['Htilde'].widths0['k+ fav']     = conf['params']['Htilde']['widths0 k+ fav']['value']
             conf['Htilde'].widths0['k+ unfav']   = conf['params']['Htilde']['widths0 k+ unfav']['value']
 
