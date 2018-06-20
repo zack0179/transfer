@@ -71,7 +71,7 @@ class CORE:
             Q02=conf['Q02evo']
             s=np.log(np.log(Q2/lam2)/np.log(Q02/lam2))
             return (p[0]+p[1]*s)*x**(p[2]+p[3]*s)*(1-x)**(p[4]+p[5]*s)*(1+(p[6]+p[7]*s)*x+(p[8]+p[9]*s)*x**2)
-        else: return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)
+        else: return  p[0]*x**p[2]*(1-x)**p[4]*(1+p[6]*x+p[8]*x**2)
     elif conf['shape']==1:
         if conf['evo']=='yes':
             lam2=conf['lam2evo']
@@ -81,17 +81,17 @@ class CORE:
             +(p[8]+p[9]*s)*self.beta(1+(p[2]+p[3]*s)+2,(p[4]+p[5]*s)+1)
             return (p[0]+p[1]*s)*x**(p[2]+p[3]*s)*(1-x)**(p[4]+p[5]*s)*(1+(p[6]+p[7]*s)*x+(p[8]+p[9]*s)*x**2)/norm
         else:
-            norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
-            return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
+            norm=self.beta(1+p[2],p[4]+1)+p[6]*self.beta(1+p[2]+1,p[4]+1)+p[6]*self.beta(1+p[2]+2,p[4]+1)
+            return  p[0]*x**p[2]*(1-x)**p[4]*(1+p[6]*x+p[8]*x**2)/norm
     elif conf['shape']==2:
-        norm=self.beta(1+p[1],1+p[2])+p[3]*self.beta(1+p[1]+1,1+p[2])+p[4]*self.beta(1+p[1],1+p[2])*(psi(p[1]+p[2]+2)-psi(p[1]+1))
-        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*np.log(1/x))/norm
+        norm=self.beta(1+p[2],1+p[4])+p[6]*self.beta(1+p[2]+1,1+p[4])+p[4]*self.beta(1+p[2],1+p[4])*(psi(p[2]+p[4]+2)-psi(p[2]+1))
+        return  p[0]*x**p[2]*(1-x)**p[4]*(1+p[6]*x+p[8]*np.log(1/x))/norm
     elif conf['shape']==3:
-        norm = np.pow((p[1]+p[2]),p[1]+p[2])/(np.pow(p[1],p[1])*np.pow(p[2],p[2]))
-        return  norm*p[0]*x**p[1]*(1-x)**p[2]
+        norm = np.pow((p[2]+p[4]),p[2]+p[4])/(np.pow(p[2],p[2])*np.pow(p[4],p[4]))
+        return  norm*p[0]*x**p[2]*(1-x)**p[4]
     elif conf['shape']==4:
-        norm=self.beta(2+p[1],p[2]+1)+p[3]*self.beta(2+p[1]+1,p[2]+1)+p[4]*self.beta(2+p[1]+2,p[2]+1)
-        return  p[0]*x**p[1]*(1-x)**p[2]*(1+p[3]*x+p[4]*x**2)/norm
+        norm=self.beta(2+p[2],p[4]+1)+p[6]*self.beta(2+p[2]+1,p[4]+1)+p[8]*self.beta(2+p[2]+2,p[4]+1)
+        return  p[0]*x**p[2]*(1-x)**p[4]*(1+p[6]*x+p[8]*x**2)/norm
 
   def get_dshape(self,x,p,Q2):
     if conf['shape']==0:
@@ -101,7 +101,7 @@ class CORE:
             s=np.log(np.log(Q2/lam2)/np.log(Q02/lam2))
             return (p[0]+p[1]*s)*x**(p[2]+p[3]*s)*(1-x)**(p[4]+p[5]*s)*((p[6]+p[7]*s)+2.*(p[8]+p[9]*s)*x \
             +(1+(p[6]+p[7]*s)*x+(p[8]+p[9]*s)*x**2)*((p[2]+p[3]*s)/x-(p[4]+p[5]*s)/(1.-x)))
-        else: return  p[0]*x**p[1]*(1-x)**p[2]*(p[3]+2.*p[4]*x+(1+p[3]*x+p[4]*x**2)*(p[1]/x-p[2]/(1.-x)))
+        else: return  p[0]*x**p[2]*(1-x)**p[4]*(p[6]+2.*p[8]*x+(1+p[6]*x+p[8]*x**2)*(p[2]/x-p[4]/(1.-x)))
     if conf['shape']==1:
         if conf['evo']=='yes':
             lam2=conf['lam2evo']
@@ -112,8 +112,8 @@ class CORE:
             return (p[0]+p[1]*s)*x**(p[2]+p[3]*s)*(1-x)**(p[4]+p[5]*s)*((p[6]+p[7]*s)+2.*(p[8]+p[9]*s)*x \
             +(1+(p[6]+p[7]*s)*x+(p[8]+p[9]*s)*x**2)*((p[2]+p[3]*s)/x-(p[4]+p[5]*s)/(1.-x)))/norm
         else:
-            norm=self.beta(1+p[1],p[2]+1)+p[3]*self.beta(1+p[1]+1,p[2]+1)+p[4]*self.beta(1+p[1]+2,p[2]+1)
-            return  p[0]*x**p[1]*(1-x)**p[2]*(p[3]+2.*p[4]*x+(1+p[3]*x+p[4]*x**2)*(p[1]/x-p[2]/(1.-x)))/norm
+            norm=self.beta(1+p[2],p[4]+1)+p[6]*self.beta(1+p[2]+1,p[4]+1)+p[8]*self.beta(1+p[2]+2,p[4]+1)
+            return  p[0]*x**p[2]*(1-x)**p[4]*(p[6]+2.*p[8]*x+(1+p[6]*x+p[8]*x**2)*(p[2]/x-p[4]/(1.-x)))/norm
 
   def get_collinear(self,x,hadron,Q2):
     N=np.zeros(11)

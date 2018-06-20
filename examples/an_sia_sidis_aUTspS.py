@@ -1,38 +1,22 @@
 conf={}
 
-############################################################################
-conf['method']='cov'
-conf['kappa']=1.1
-conf['tol']=10e-10
-conf['num points'] = 30 #self.npar*3
-conf['burn size']  = 10
-conf['sample size']= 10000
-
-
-############################################################################
-# resouce allocation
-conf['ncpus']=4
-
-############################################################################
-# maxlike setup
-conf['screen mode']='plain'
-#conf['screen mode']='curses'
-
-############################################################################
-# mcsetup
-
-conf['method']='kde'
-conf['itmax']=None
-conf['tol']=1e-6
-conf['kde bw']=None
-conf['num points factor']=10
-
-############################################################################
+# mcsamp
+conf['nruns']=1
+conf['factor']=2
+conf['tol']=1e-10
+conf['itmax']=int(1e7)
+conf['block size']=100
+conf['kappa']=1.3
+conf['nll shift']=0
 
 ############################################################################
 # params
 
 conf['shape'] = 1
+
+conf['evo'] = 'no' #if 'no', set evo parameters to 'fixed':True
+conf['Q02evo'] = 4.0
+conf['lam2evo'] = 0.04
 
 conf['params']={}
 
@@ -44,70 +28,127 @@ conf['params']['ff']['widths0 k+ unfav'] = {'value':<<    2.02660000000000006803
 
 
 conf['params']['collins']={}
-conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    7.09071383491689383183e-02>>,'fixed':False,'min':0.05,'max':1.24049999999999993605e-01}
-conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    1.16176021085885011752e-01>>,'fixed':False,'min':1e-5,'max':1.43729999999999996652e-01}
-conf['params']['collins']['pi+ u N 1']  = {'value':<<    8.29522492678917533482e-01>>,'fixed':False,'min':0,'max':4}
-conf['params']['collins']['pi+ u a 1']  = {'value':<<   -1.72999166949845539776e+00>>,'fixed':False,'min':-2.5,'max':0}
-conf['params']['collins']['pi+ u b 1']  = {'value':<<    5.27423379507416978385e+00>>,'fixed':False,'min':3.,'max':7.}
+conf['params']['collins']['widths0 pi+ fav']     = {'value':<<    7.07300e-02>>,'fixed':False,'min':0.05,'max':1.24049999999999993605e-01}
+conf['params']['collins']['widths0 pi+ unfav']   = {'value':<<    1.14353e-01>>,'fixed':False,'min':1e-5,'max':1.43729999999999996652e-01}
+conf['params']['collins']['pi+ u N0 1']  = {'value':<<    7.69257e-01>>,'fixed':False,'min':0,'max':4}
+conf['params']['collins']['pi+ u a0 1']  = {'value':<<   -1.70922e+00>>,'fixed':False,'min':-2.5,'max':0}
+conf['params']['collins']['pi+ u b0 1']  = {'value':<<    5.30488e+00>>,'fixed':False,'min':3.,'max':7.}
 
-conf['params']['collins']['pi+ d N 1']  = {'value':<<   -3.67909429428114842509e+00>>,'fixed':False,'min':-15,'max':2}
-conf['params']['collins']['pi+ d a 1']  = {'value':<<    1.00865695465683469223e+00>>,'fixed':False,'min': 0.,'max':4.5}
-conf['params']['collins']['pi+ d b 1']  = {'value':<<    3.49992488224015074749e+00>>,'fixed':False,'min':2.5,'max':3.8}
+conf['params']['collins']['pi+ d N0 1']  = {'value':<<   -3.66485e+00>>,'fixed':False,'min':-15,'max':2}
+conf['params']['collins']['pi+ d a0 1']  = {'value':<<    9.61521e-01>>,'fixed':False,'min': 0.,'max':4.5}
+conf['params']['collins']['pi+ d b0 1']  = {'value':<<    3.50317e+00>>,'fixed':False,'min':2.5,'max':3.8}
 
-conf['params']['collins']['pi+ u c 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['collins']['pi+ d c 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['collins']['pi+ u d 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['collins']['pi+ d d 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u c0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d c0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u d0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d d0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
 
-conf['params']['collins']['pi+ u N 2']  = {'value':<<    1.32641634413895879163e+01>>,'fixed':False,'min':1,'max':52}
-conf['params']['collins']['pi+ u a 2']  = {'value':<<    6.15043112424838067653e+00>>,'fixed':False,'min':1,'max':20}
-conf['params']['collins']['pi+ u b 2']  = {'value':<<    3.16752363593252894702e+00>>,'fixed':False,'min':3,'max':25}
+conf['params']['collins']['pi+ u N0 2']  = {'value':<<    1.44230e+01>>,'fixed':False,'min':1,'max':52}
+conf['params']['collins']['pi+ u a0 2']  = {'value':<<    6.15076e+00>>,'fixed':False,'min':1,'max':20}
+conf['params']['collins']['pi+ u b0 2']  = {'value':<<    3.14458e+00>>,'fixed':False,'min':3,'max':25}
 
-conf['params']['collins']['pi+ d N 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-20,'max':0}
-conf['params']['collins']['pi+ d a 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-1,'max':5}
-conf['params']['collins']['pi+ d b 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':1e-5,'max':10}
-conf['params']['collins']['pi+ u c 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['collins']['pi+ d c 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['collins']['pi+ u d 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['collins']['pi+ d d 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d N0 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-20,'max':0}
+conf['params']['collins']['pi+ d a0 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-1,'max':5}
+conf['params']['collins']['pi+ d b0 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':1e-5,'max':10}
+conf['params']['collins']['pi+ u c0 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d c0 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u d0 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d d0 2']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+
+conf['params']['collins']['pi+ u N1 1']  = {'value':<<   8.34017e-02>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u a1 1']  = {'value':<<   -5.64913e-02>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u b1 1']  = {'value':<<   -6.89452e-02>>,'fixed':True,'min':-10,'max':10}
+
+conf['params']['collins']['pi+ d N1 1']  = {'value':<<   3.23804e-01>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d a1 1']  = {'value':<<   -3.74473e-02>>,'fixed':True,'min': -10,'max':10}
+conf['params']['collins']['pi+ d b1 1']  = {'value':<<   -4.19713e-02>>,'fixed':True,'min':-10,'max':10}
+
+conf['params']['collins']['pi+ u c1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d c1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u d1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d d1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+
+conf['params']['collins']['pi+ u N1 2']  = {'value':<<   -1.51110e-01>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u a1 2']  = {'value':<<   4.09761e-01>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u b1 2']  = {'value':<<   7.21864e-02>>,'fixed':True,'min':-10,'max':10}
+
+conf['params']['collins']['pi+ d N1 2']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d a1 2']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d b1 2']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u c1 2']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d c1 2']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ u d1 2']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['collins']['pi+ d d1 2']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
 
 
 conf['params']['transversity']={}
-conf['params']['transversity']['widths0 valence'] = {'value':<<    5.24140000000000050306e-01>>,'fixed':False,'min':1e-5,'max':0.52414}
-conf['params']['transversity']['widths0 sea']     = {'value':<<    5.84650000000000003020e-01>>,'fixed':False,'min':1e-5,'max':0.58465}
-conf['params']['transversity']['u N']             = {'value':<<    9.32414490195678702378e+00>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['transversity']['u a']             = {'value':<<    9.33003918858916314605e-01>> ,'fixed':False,'min':-1,'max':10}
-conf['params']['transversity']['u b']             = {'value':<<    1.92354447309722642601e+00>> ,'fixed':False,'min':1e-5,'max':10}
-conf['params']['transversity']['d N']             = {'value':<<   -1.17223951596258046948e+01>> ,'fixed':False,'min':-20,'max':20}
-conf['params']['transversity']['d a']             = {'value':<<    4.59276671592736995819e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['transversity']['d b']             = {'value':<<    4.93925762994796802019e+00>> ,'fixed':False,'min':1e-5,'max':20}
-conf['params']['transversity']['s N']             = {'value':<<   -7.37913697266300155908e-02>> ,'fixed':False,'min':-10,'max':10}
-conf['params']['transversity']['s a']             = {'value':<<    9.68223979895643793725e-01>> ,'fixed':False,'min':-1,'max':5}
-conf['params']['transversity']['s b']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':0.,'max':10}
+conf['params']['transversity']['widths0 valence'] = {'value':<<    5.24140e-01>>,'fixed':False,'min':1e-5,'max':0.52414}
+conf['params']['transversity']['widths0 sea']     = {'value':<<    5.84650e-01>>,'fixed':False,'min':1e-5,'max':0.58465}
+conf['params']['transversity']['u N0']             = {'value':<<    9.29112e+00>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['transversity']['u a0']             = {'value':<<    8.91427e-01>> ,'fixed':False,'min':-1,'max':10}
+conf['params']['transversity']['u b0']             = {'value':<<    2.09656e+00>> ,'fixed':False,'min':1e-5,'max':10}
+conf['params']['transversity']['d N0']             = {'value':<<   -8.77969e+00>> ,'fixed':False,'min':-20,'max':20}
+conf['params']['transversity']['d a0']             = {'value':<<    3.78697e-01>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['transversity']['d b0']             = {'value':<<    5.02649e+00>> ,'fixed':False,'min':1e-5,'max':20}
+conf['params']['transversity']['s N0']             = {'value':<<   -6.00545e-02>> ,'fixed':False,'min':-10,'max':10}
+conf['params']['transversity']['s a0']             = {'value':<<    9.77258e-01>> ,'fixed':False,'min':-1,'max':5}
+conf['params']['transversity']['s b0']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':0.,'max':10}
 
-conf['params']['transversity']['u c']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['transversity']['d c']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['transversity']['s c']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['u c0']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['d c0']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['s c0']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
 
-conf['params']['transversity']['u d']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['transversity']['d d']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
-conf['params']['transversity']['s d']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['u d0']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['d d0']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['s d0']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+
+conf['params']['transversity']['u N1']             = {'value':<<   5.14737e-01>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['u a1']             = {'value':<<   5.40537e-02>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['u b1']             = {'value':<<   -7.27416e-03>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['d N1']             = {'value':<<   -1.12126e-01>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['d a1']             = {'value':<<   -2.82484e-02>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['d b1']             = {'value':<<   3.35505e-01>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['s N1']             = {'value':<<   -2.15006e-02>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['s a1']             = {'value':<<   6.36481e-01>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['s b1']             = {'value':<<   0.0>> ,'fixed':True,'min':-10,'max':10}
+
+conf['params']['transversity']['u c1']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['d c1']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['s c1']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+
+conf['params']['transversity']['u d1']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['d d1']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+conf['params']['transversity']['s d1']             = {'value':<<    0.00000000000000000000e+00>> ,'fixed':True,'min':-10,'max':10}
+
 
 conf['params']['Htilde']={}
 conf['params']['Htilde']['widths0 pi+ fav']     = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':0.05,'max':1.24049999999999993605e-01}
 conf['params']['Htilde']['widths0 pi+ unfav']   = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':1e-5,'max':1.43729999999999996652e-01}
-conf['params']['Htilde']['pi+ u N 1']  = {'value':<<   -3.08102833514945606552e-01>>,'fixed':False,'min':-15,'max':15}
-conf['params']['Htilde']['pi+ u a 1']  = {'value':<<    4.59233607608972915770e-01>>,'fixed':False,'min':-1,'max':5}
-conf['params']['Htilde']['pi+ u b 1']  = {'value':<<    4.25739203150010236953e+00>>,'fixed':False,'min':2,'max':10}
+conf['params']['Htilde']['pi+ u N0 1']  = {'value':<<   -7.63627e-01>>,'fixed':False,'min':-15,'max':15}
+conf['params']['Htilde']['pi+ u a0 1']  = {'value':<<    6.13814e-01>>,'fixed':False,'min':-1,'max':5}
+conf['params']['Htilde']['pi+ u b0 1']  = {'value':<<    4.64564e+00>>,'fixed':False,'min':0,'max':10}
 
-conf['params']['Htilde']['pi+ d N 1']  = {'value':<<    1.50000000000000000000e+01>>,'fixed':False,'min':-15,'max':15}
-conf['params']['Htilde']['pi+ d a 1']  = {'value':<<    4.67871026367914666366e+00>>,'fixed':False,'min': -1,'max':5}
-conf['params']['Htilde']['pi+ d b 1']  = {'value':<<    2.00000000000000000000e+00>>,'fixed':False,'min':2,'max':10}
+conf['params']['Htilde']['pi+ d N0 1']  = {'value':<<    1.45281e+01>>,'fixed':False,'min':-15,'max':15}
+conf['params']['Htilde']['pi+ d a0 1']  = {'value':<<    3.98995e+00>>,'fixed':False,'min': -1,'max':5}
+conf['params']['Htilde']['pi+ d b0 1']  = {'value':<<    2.16931e+00>>,'fixed':False,'min':0,'max':10}
 
-conf['params']['Htilde']['pi+ u c 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['Htilde']['pi+ d c 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['Htilde']['pi+ u d 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
-conf['params']['Htilde']['pi+ d d 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ u c0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ d c0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ u d0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ d d0 1']  = {'value':<<    0.00000000000000000000e+00>>,'fixed':True,'min':-10,'max':10}
+
+conf['params']['Htilde']['pi+ u N1 1']  = {'value':<<   1.01593e+00>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ u a1 1']  = {'value':<<   3.31280e-01>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ u b1 1']  = {'value':<<   -1.09872e-01>>,'fixed':True,'min':-10,'max':10}
+
+conf['params']['Htilde']['pi+ d N1 1']  = {'value':<<   -5.88387e-01>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ d a1 1']  = {'value':<<   3.31412e+00>>,'fixed':True,'min': -10,'max':10}
+conf['params']['Htilde']['pi+ d b1 1']  = {'value':<<   4.02593e+00>>,'fixed':True,'min':-10,'max':10}
+
+conf['params']['Htilde']['pi+ u c1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ d c1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ u d1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
+conf['params']['Htilde']['pi+ d d1 1']  = {'value':<<   0.0>>,'fixed':True,'min':-10,'max':10}
 
 
 #conf['params']['Htilde']['pi+ u N 2']  = {'value':<<    1.03213181263992765935e+01>>,'fixed':False,'min':1,'max':52}

@@ -14,7 +14,7 @@ conf['nll shift']=0
 
 conf['shape'] = 1
 
-conf['evo'] = 'yes'
+conf['evo'] = 'yes' #if 'no', set evo parameters to 'fixed':True
 conf['Q02evo'] = 4.0
 conf['lam2evo'] = 0.04
 
