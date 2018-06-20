@@ -263,7 +263,10 @@ class ZmqWorker(object):
     logging.debug('%s done',current_process().name)
 
   def run(self):
-    nprocs = psutil.cpu_count(logical=True)
+
+    if 'nprocs' in conf:  nprocs=conf['nprocs']
+    else:                 nprocs=psutil.cpu_count(logical=True)
+
     logging.info('bigtable=%d',len(self.bigtable))
     for i in range(nprocs):
       worker = Process(target=self.toil,name='w'+str(i))
