@@ -50,7 +50,6 @@ class Plotter(object):
         self._data_plot_kw = None
         self._thy_plot_kw = None
 
- 
         if raw is not None:
             self.raw = raw
 
@@ -362,8 +361,7 @@ class Plotter(object):
         ndata_colors = len(data_colors)
         thy_colors = self.thy_colors
         nthy_colors = len(thy_colors)
-        
-        
+
         self._ax_bins = {
             (i + 1, j + 1): {
                 "Q2": (q2_bins[-i - 2], q2_bins[-i - 1]),
@@ -496,13 +494,15 @@ class Plotter(object):
                             data_z["thy"],
                             color=thy_colors[k % nthy_colors],
                             **self.thy_plot_kw)
-                    
+
                     # Theory error coridor
                     ax.fill_between(data_z[self.col_lab],
-                            data_z["thy"]-data_z["dthy"],data_z["thy"]+data_z["dthy"],
-                            color=thy_colors[k % nthy_colors],alpha=0.5,
-                            **self.thy_plot_kw)
- 
+                                    data_z["thy"] - data_z["dthy"], data_z["thy"] +
+                                    data_z["dthy"],
+                                    color=thy_colors[k %
+                                                     nthy_colors], alpha=0.5,
+                                    **self.thy_plot_kw)
+
                 ax.relim()
                 ax.autoscale_view()
 
@@ -511,4 +511,3 @@ class Plotter(object):
                                       label=self.z_labs[k])
                        for k in self.z_ids]
             bigax.legend(handles=patches, **self.legend_kw)
-             
